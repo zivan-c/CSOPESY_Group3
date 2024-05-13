@@ -119,10 +119,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="mainConsole.cpp" />
+    <ClCompile Include="marquee.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="nvidia-smi.cpp" />
+    <ClCompile Include="process_smi.cpp" />
+    <ClCompile Include="screen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="functions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
