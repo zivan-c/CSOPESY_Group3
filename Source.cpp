@@ -2,8 +2,6 @@
 #include <ostream>
 #include <string>
 
-
-
 void displayHelp(){
     std::cout << "\nCommand list: \n";
     std::cout << "help          displays commands\n";
