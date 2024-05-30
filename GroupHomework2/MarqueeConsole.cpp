@@ -36,6 +36,18 @@ private:
 
     }
 
+    void nextConsole(const std::string& consoleChoice) override {
+
+        if (consoleChoice == "exit"){
+            
+        }
+        else
+        {
+            
+        }
+
+    }
+
     
 public: 
 
@@ -45,6 +57,7 @@ public:
         printTime();
 
         std::string command = parseString();
+        nextConsole(command);
 
 
     }
