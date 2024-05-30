@@ -26,6 +26,9 @@ public:
         std::cout << "screen -s process  display process SMI console\n";
         std::cout << "screen -s nvidia   display nvidia process console\n";
         std::cout << "screen -s main          display main menu console\n";
+        std::cout << "exit                    display main menu console as well\n";
+
+        printTime();
 
         //Timestamp of when the screen is created in (MM/DD/YYYY, HH:MM:SS AM/PM) format.
 
