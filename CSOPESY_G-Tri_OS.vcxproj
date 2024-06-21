@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\FCFSScheduler.h" />
     <ClInclude Include="..\..\files\files\functions.h" />
   </ItemGroup>
   <ItemGroup>
