@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -17,6 +17,18 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\FCFSScheduler.h" />
+    <ClInclude Include="..\..\files\files\functions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\files\files\MainConsole.cpp" />
+    <ClCompile Include="..\..\files\files\screen.cpp" />
+    <ClCompile Include="..\..\marquee.cpp" />
+    <ClCompile Include="..\..\menu.cpp" />
+    <ClCompile Include="..\..\nvidia-smi.cpp" />
+    <ClCompile Include="..\..\process_smi.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -118,16 +130,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Console.cpp" />
-    <ClCompile Include="MarqueeConsole.cpp" />
-    <ClCompile Include="MenuConsole.cpp" />
-    <ClCompile Include="NvidiaConsole.cpp" />
-    <ClCompile Include="ProcessConsole.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Header.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
