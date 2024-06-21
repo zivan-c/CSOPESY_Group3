@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ClCompile Include="..\..\files\files\MainConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,20 +46,41 @@
     <ClCompile Include="process_smi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+=======
+    <ClCompile Include="mainConsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="marquee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nvidia-smi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process_smi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> parent of d6a01a9 (final sln vs error fix ?)
     <ClCompile Include="screen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp">
+<<<<<<< HEAD
+>>>>>>> parent of d6a01a9 (final sln vs error fix ?)
+=======
 >>>>>>> parent of d6a01a9 (final sln vs error fix ?)
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ClInclude Include="..\..\FCFSScheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\files\files\functions.h">
+=======
+    <ClInclude Include="functions.h">
+>>>>>>> parent of d6a01a9 (final sln vs error fix ?)
 =======
     <ClInclude Include="functions.h">
 >>>>>>> parent of d6a01a9 (final sln vs error fix ?)
