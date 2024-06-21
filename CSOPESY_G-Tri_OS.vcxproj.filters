@@ -15,24 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MenuConsole.cpp">
+    <ClCompile Include="..\..\files\files\MainConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NvidiaConsole.cpp">
+    <ClCompile Include="..\..\files\files\screen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessConsole.cpp">
+    <ClCompile Include="..\..\nvidia-smi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cpp">
+    <ClCompile Include="..\..\process_smi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MarqueeConsole.cpp">
+    <ClCompile Include="..\..\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\marquee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="..\..\FCFSScheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\files\files\functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
