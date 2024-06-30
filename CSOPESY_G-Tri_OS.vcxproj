@@ -130,20 +130,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-<<<<<<< HEAD
-=======
-  <ItemGroup>
-    <ClCompile Include="mainConsole.cpp" />
-    <ClCompile Include="marquee.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="nvidia-smi.cpp" />
-    <ClCompile Include="process_smi.cpp" />
-    <ClCompile Include="screen.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="functions.h" />
-  </ItemGroup>
->>>>>>> parent of d6a01a9 (final sln vs error fix ?)
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
