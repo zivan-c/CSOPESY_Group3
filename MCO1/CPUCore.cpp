@@ -6,7 +6,7 @@
 #include <ctime>
 
 
-CPUCore::CPUCore(int id, int executionDelay) {
+CPUCore::CPUCore(int id, float executionDelay) {
 
   this->cpuCoreID = id;
   this->executionDelay = executionDelay;
@@ -14,7 +14,7 @@ CPUCore::CPUCore(int id, int executionDelay) {
 
 };
 
-CPUCore::CPUCore(int id, int executionDelay, int quantumCycles){
+CPUCore::CPUCore(int id, float executionDelay, int quantumCycles){
 
   this->cpuCoreID = id;
   this->executionDelay = executionDelay;
@@ -65,7 +65,8 @@ void CPUCore::normalCPUBehavior(){
 
   if(processInCPUCore->getProcessState() == Process::PROCESSING){
     executeProcess();
-    std::this_thread::sleep_for(std::chrono::seconds(executionDelay));
+    std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
+    std::this_thread::sleep_for(delayDuration);
 
   }else{
       
@@ -81,7 +82,8 @@ void CPUCore::RRCPUBehavior(){
     if(processInCPUCore->getProcessState() == Process::PROCESSING){
 
       executeProcess();
-      std::this_thread::sleep_for(std::chrono::seconds(executionDelay));
+      std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
+      std::this_thread::sleep_for(delayDuration);
 
     }else{
       

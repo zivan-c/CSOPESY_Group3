@@ -24,7 +24,7 @@ void ProcessScreen::runScreen(std::shared_ptr<Process> process) {
 
   std::thread processScreenThread;
   processScreenThread = std::thread([this, process](){
-    singletonInstance->isRunning = true;
+    this->isRunning = true;
     attachProcess(process);
     system("clear");
     std::cout << "Process name: " << screenProcess->getProcessName() << "\n" << std::endl;

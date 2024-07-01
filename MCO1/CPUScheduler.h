@@ -31,12 +31,12 @@ public:
   static CPUScheduler* getInstance();
 
   
-  void initialize(int cpuCores, SchedulerAlgorithm schedulerAlgorithm, int executionDelay,
-  int quantumCycles, int preemptive, int creationDelay,
-  int instructionsLowerBound, int instructionsHigherBound);
+  static void initialize(int cpuCores, SchedulerAlgorithm schedulerAlgorithm, float executionDelay,
+                          int quantumCycles, int preemptive, int creationDelay,
+                          int instructionsLowerBound, int instructionsHigherBound);
 
 
-  void setupCPUS();
+
   void setupScheduler(); //include parameters for algorithm, quantum cycles, etc 
   void createDynamicProcesses(); //for scheduler-start, just the creation of new processes
   void stopGeneratingProcesses(); //for scheduler-stop
@@ -62,10 +62,10 @@ public:
   SchedulerAlgorithm scheduler;
   int quantumCycles;
   int preemptive;
-  int creationDelay;
+  float creationDelay;
   int instructionsLowerBound;
   int instructionsHigherBound;
-  int executionDelay;
+  float executionDelay;
 
 private:
 

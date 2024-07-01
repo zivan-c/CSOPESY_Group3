@@ -6,9 +6,11 @@
 CPUScheduler *CPUScheduler::singletonInstance = nullptr;
 CPUScheduler *CPUScheduler::getInstance() { return singletonInstance; };
 
+
+
 void CPUScheduler::initialize(int cpuCores,
                               SchedulerAlgorithm schedulerAlgorithm,
-                              int executionDelay, int quantumCycles,
+                              float executionDelay, int quantumCycles,
                               int preemptive, int creationDelay,
                               int instructionsLowerBound,
                               int instructionsHigherBound) {
@@ -26,8 +28,16 @@ void CPUScheduler::initialize(int cpuCores,
   singletonInstance->instructionsHigherBound = instructionsHigherBound;
   singletonInstance->executionDelay = executionDelay;
 
-  singletonInstance->setupCPUS();
   singletonInstance->setupScheduler();
+  singletonInstance->setupCPUS();
+
+
+  for (auto &core : singletonInstance->cpuCores) {
+    core->runCore();
+  }
+
+  singletonInstance->CPUSchedulerAlgorithm.runScheduler(); 
+
 };
 
 void CPUScheduler::setupCPUS() {
@@ -76,11 +86,14 @@ void CPUScheduler::setupScheduler() {
 void CPUScheduler::createProcess(std::string name) {
 
   int isNameUsed = 0;
-  for (auto &i : readyQueue) {
 
-    if (i->getProcessName() == name) {
-      std::cout << "The name " << name << " already exists.\n" << std::endl;
-      isNameUsed = 1;
+  if(!(readyQueue.empty())){
+    for (auto &i : readyQueue) {
+
+      if (i->getProcessName() == name) {
+        std::cout << "The name " << name << " already exists.\n" << std::endl;
+        isNameUsed = 1;
+      }
     }
   }
 
@@ -107,11 +120,15 @@ void CPUScheduler::createDynamicProcesses() {
 
       int isNameUsed = 0;
       std::string name = getNewProcessName();
-      for (auto &i : readyQueue) {
 
-        if (i->getProcessName() == name) {
-          std::cout << "The name " << name << " already exists.\n" << std::endl;
-          isNameUsed = 1;
+      if(!(readyQueue.empty())){
+
+        for (auto &i : readyQueue) {
+
+          if (i->getProcessName() == name) {
+            std::cout << "The name " << name << " already exists.\n" << std::endl;
+            isNameUsed = 1;
+          }
         }
       }
 
@@ -120,7 +137,9 @@ void CPUScheduler::createDynamicProcesses() {
             name, this->instructionsLowerBound, this->instructionsHigherBound);
 
         this->readyQueue.push_back(process);
-        std::this_thread::sleep_for(std::chrono::seconds(this->creationDelay));
+        std::chrono::duration<float, std::milli> delayDuration(creationDelay * 1000); 
+        std::this_thread::sleep_for(delayDuration);
+
       } else {
 
         Process::processCount++;
@@ -138,14 +157,10 @@ std::string CPUScheduler::getNewProcessName() {
   std::string name = "p" + std::to_string(Process::processCount);
   Process::processCount++;
   return name;
-}
+};
 
 void CPUScheduler::startScheduler() {
-
-  for (auto &core : this->cpuCores) {
-    core->runCore();
-  }
-
+  this->keepGenerating = true;
   this->createDynamicProcesses();
 };
 
@@ -153,9 +168,6 @@ void CPUScheduler::stopScheduler() {
 
   this->stopGeneratingProcesses();
 
-  for (auto &core : this->cpuCores) {
-    core->isRunning = false;
-  }
 };
 
 void CPUScheduler::printReport() {

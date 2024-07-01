@@ -11,14 +11,13 @@ class CPUCore{
 
 public:
 
-  CPUCore(int id, int executionDelay);
-  CPUCore(int id, int executionDelay, int quantumCycles);
+  CPUCore(int id, float executionDelay);
+  CPUCore(int id, float executionDelay, int quantumCycles);
 
   bool isRunning;
   bool isAvailable;
 
   void runCore();
-  bool isProcessFinished();
   std::string getDateandTime();
   void executeProcess();
   std::shared_ptr<Process> getProcessinCPUCore();
@@ -30,9 +29,6 @@ public:
   void removeProcessinCPUCore();
   void addToFinishedList(std::vector<std::shared_ptr<Process>>& finishedQueue);
 
-
-  //CPU Algorithm Scheduler for each core class to be instantiated when the CPU scheduler is run 
-  //
 private:
 
   std::thread coreThread;
@@ -40,7 +36,7 @@ private:
 
   int cpuCoreID;
   int quantumCycles;
-  int executionDelay;
+  float executionDelay;
   std::shared_ptr<Process> processInCPUCore;
 
   void normalCPUBehavior();
