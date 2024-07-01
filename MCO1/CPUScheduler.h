@@ -36,7 +36,7 @@ public:
                           int instructionsLowerBound, int instructionsHigherBound);
 
 
-
+  void setupCPUS();
   void setupScheduler(); //include parameters for algorithm, quantum cycles, etc 
   void createDynamicProcesses(); //for scheduler-start, just the creation of new processes
   void stopGeneratingProcesses(); //for scheduler-stop
@@ -54,9 +54,9 @@ public:
 //When initialized, set the CPU core numbers and initialize them with their respective schedulers and ready queue
 //The CPU Scheduler should have the waiting queue,
 
-  std::vector <std::shared_ptr<Process>> readyQueue;
-  std::vector <std::shared_ptr<Process>> finishedProcesses;
-  std::vector <std::shared_ptr<CPUCore>> cpuCores;
+  std::vector <std::shared_ptr<Process> > readyQueue;
+  std::vector <std::shared_ptr<Process> > finishedProcesses;
+  std::vector <std::shared_ptr<CPUCore> > cpuCores;
 
   int cpuCoresAmount;
   SchedulerAlgorithm scheduler;

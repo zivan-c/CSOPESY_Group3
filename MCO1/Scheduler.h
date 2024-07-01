@@ -13,6 +13,7 @@ class Scheduler {
 public:
 
   Scheduler();
+  ~Scheduler() = default;
   virtual void runScheduler();
   bool isRunning;
   int executionDelay;

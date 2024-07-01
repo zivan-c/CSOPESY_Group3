@@ -17,7 +17,7 @@ int main(){
   int preemptive = 0;
   CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::FCFS;
 
-  CPUScheduler::initialize(4, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
+  CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
                           executionDelay, lowerInstructionsBound, higherInstructionsBound);
 
   ProcessScreen::initialize();

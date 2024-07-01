@@ -7,7 +7,7 @@ public:
 
   NonPreemptiveSJF();
   ~NonPreemptiveSJF();
-  void sortReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue); 
+  void sortReadyQueue(std::vector<std::shared_ptr<Process> >& readyQueue); 
   void runScheduler() override;
 
 private: 

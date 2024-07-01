@@ -13,6 +13,7 @@ public:
 
   CPUCore(int id, float executionDelay);
   CPUCore(int id, float executionDelay, int quantumCycles);
+  ~CPUCore() = default;
 
   bool isRunning;
   bool isAvailable;
@@ -23,16 +24,15 @@ public:
   std::shared_ptr<Process> getProcessinCPUCore();
   int getCoreID();
 
-  void getProcessFromReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue);
+  void getProcessFromReadyQueue(std::vector<std::shared_ptr<Process> >& readyQueue);
   void attachProcesstoCPUCore(std::shared_ptr<Process> process);
-  void returnProcesstoReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue);
+  void returnProcesstoReadyQueue(std::vector<std::shared_ptr<Process> >& readyQueue);
   void removeProcessinCPUCore();
-  void addToFinishedList(std::vector<std::shared_ptr<Process>>& finishedQueue);
+  void addToFinishedList(std::vector<std::shared_ptr<Process> >& finishedQueue);
 
 private:
 
   std::thread coreThread;
-  ~CPUCore() = default;
 
   int cpuCoreID;
   int quantumCycles;

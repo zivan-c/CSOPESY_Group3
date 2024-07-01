@@ -1,4 +1,11 @@
 #include "CPUScheduler.h"
+#include "CPUCore.h"
+#include "Scheduler.h"
+#include "FCFSScheduler.h"
+#include "RRScheduler.h"
+#include "NonPreemptiveSJF.h"
+#include "Process.h"
+#include "PreemptiveSJF.h"
 #include <chrono>
 #include <thread>
 #include <fstream>
