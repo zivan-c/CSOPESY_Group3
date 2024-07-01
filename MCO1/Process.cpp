@@ -7,7 +7,8 @@
 #include <sstream>
 #include <iomanip>
 
-
+int Process::processCount = 0;
+int Process::processIDCount = 0;
 
 Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound){
 

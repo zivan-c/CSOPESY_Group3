@@ -15,14 +15,9 @@ public:
   void runScreen(std::shared_ptr<Process> process);
 
 private:
-
-  ProcessScreen();
-  ~ProcessScreen() = default;
   bool isRunning;
   std::shared_ptr<Process> screenProcess;
-
   static ProcessScreen* singletonInstance;
-
 };
 
 

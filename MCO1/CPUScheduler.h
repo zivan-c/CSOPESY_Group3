@@ -13,8 +13,6 @@
 #include <memory>
 
 
-
-
 class CPUScheduler: public Console{
 
 
@@ -29,12 +27,10 @@ public:
   };
 
   static CPUScheduler* getInstance();
-
   
   static void initialize(int cpuCores, SchedulerAlgorithm schedulerAlgorithm, float executionDelay,
                           int quantumCycles, int preemptive, int creationDelay,
                           int instructionsLowerBound, int instructionsHigherBound);
-
 
   void setupCPUS();
   void setupScheduler(); //include parameters for algorithm, quantum cycles, etc 
@@ -68,13 +64,7 @@ public:
   float executionDelay;
 
 private:
-
-  CPUScheduler();
-  ~CPUScheduler();
-  
-
   bool keepGenerating;
   Scheduler CPUSchedulerAlgorithm;
-
   static CPUScheduler* singletonInstance;
 };

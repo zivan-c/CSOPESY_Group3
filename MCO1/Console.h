@@ -6,18 +6,17 @@ class Console{
 
 public:
 
-  std::string consoleName;
+  //std::string consoleName;
 
-  Console(std::string consoleName);
-  ~Console(); 
+  //Console(std::string consoleName);
 
-  std::string getName();
+  //std::string getName();
 
-  virtual void runConsole(); //Function that runs when the console is called
-  virtual void commandInterpreter(); //Function that processess the input of the user
+  //virtual void runConsole(); //Function that runs when the console is called
+  //virtual void commandInterpreter(); //Function that processess the input of the user
 
 
-  friend class ConsoleManager;
+  //friend class ConsoleManager;
 
 
 private:

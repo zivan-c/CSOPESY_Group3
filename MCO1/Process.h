@@ -22,11 +22,7 @@ public:
   static int processCount;
 
   Process(std::string name, int instructionsLowerBound, int instructionsHigherBound);
-  Process();
-  ~Process() = default;
-
   void executeInstruction();
-
   int getRemainingInstructions();
   int getTotalInstructions();
   void setProcessState(ProcessState state);
@@ -35,7 +31,6 @@ public:
   int getProcessID();
   int getCoreID();
   void setCoreID(int coreID);
-
   void printProcessProgress();
   std::string getDateAndTime();
 
