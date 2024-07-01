@@ -130,6 +130,8 @@
     <ClCompile Include="ProcessScreen.cpp" />
     <ClCompile Include="RRScheduler.cpp" />
     <ClCompile Include="Scheduler.cpp" />
+    <ClCompile Include="OSConfig.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h" />

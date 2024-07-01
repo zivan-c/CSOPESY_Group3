@@ -7,7 +7,7 @@ CPUScheduler *CPUScheduler::singletonInstance = nullptr;
 CPUScheduler *CPUScheduler::getInstance() { return singletonInstance; };
 
 void CPUScheduler::initialize(int cpuCores,
-                              SchedulerAlgorithm schedulerAlgorithm,
+                              CPUScheduler::SchedulerAlgorithm schedulerAlgorithm,
                               int executionDelay, int quantumCycles,
                               int preemptive, int creationDelay,
                               int instructionsLowerBound,
