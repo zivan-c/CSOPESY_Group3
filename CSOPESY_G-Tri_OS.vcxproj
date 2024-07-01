@@ -25,6 +25,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\files\files\MainConsole.cpp" />
     <ClCompile Include="..\..\files\files\screen.cpp" />
+    <ClCompile Include="marquee.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="scheduler.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
