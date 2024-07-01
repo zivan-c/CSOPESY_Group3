@@ -26,9 +26,9 @@
     <ClCompile Include="..\..\files\files\MainConsole.cpp" />
     <ClCompile Include="..\..\files\files\screen.cpp" />
     <ClCompile Include="..\..\marquee.cpp" />
-    <ClCompile Include="marquee.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="scheduler.cpp" />
+    <ClCompile Include="..\..\menu.cpp" />
+    <ClCompile Include="..\..\nvidia-smi.cpp" />
+    <ClCompile Include="..\..\process_smi.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
