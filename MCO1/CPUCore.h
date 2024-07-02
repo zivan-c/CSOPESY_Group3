@@ -5,7 +5,7 @@
 #include <string>
 #include <thread>
 #include "Scheduler.h"
-
+#include <mutex>
 
 class CPUCore{
 
@@ -16,23 +16,25 @@ public:
   ~CPUCore() = default;
 
   bool isRunning;
-  bool isAvailable;
 
+  int isCoreFree();
   void runCore();
   std::string getDateandTime();
   void executeProcess();
   std::shared_ptr<Process> getProcessinCPUCore();
   int getCoreID();
 
-  void getProcessFromReadyQueue(std::vector<std::shared_ptr<Process> >& readyQueue);
-  void attachProcesstoCPUCore(std::shared_ptr<Process> process);
-  void returnProcesstoReadyQueue(std::vector<std::shared_ptr<Process> >& readyQueue);
+  void getProcessFromReadyQueue();
+  void attachProcesstoCPUCore();
+  void returnProcesstoReadyQueue();
+  void addToFinishedList();
   void removeProcessinCPUCore();
-  void addToFinishedList(std::vector<std::shared_ptr<Process> >& finishedQueue);
 
 private:
 
   std::thread coreThread;
+  std::mutex queueMutex;
+  bool isAvailable;
 
   int cpuCoreID;
   int quantumCycles;

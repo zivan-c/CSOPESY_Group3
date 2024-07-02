@@ -25,7 +25,7 @@ void ProcessScreen::runScreen(std::shared_ptr<Process> process) {
   std::thread processScreenThread;
   processScreenThread = std::thread([this, process](){
     this->isRunning = true;
-    attachProcess(process);
+    attachProcessToScreen(process);
     system("clear");
     std::cout << "Process name: " << screenProcess->getProcessName() << "\n" << std::endl;
     std::cout << "Process ID: " << screenProcess->getProcessID() << "\n" << std::endl;
@@ -67,7 +67,7 @@ void ProcessScreen::processUserInput(std::string input){
 }; 
 
 
-void ProcessScreen::attachProcess(std::shared_ptr<Process> process){
+void ProcessScreen::attachProcessToScreen(std::shared_ptr<Process> process){
 
   this->screenProcess = process;
 

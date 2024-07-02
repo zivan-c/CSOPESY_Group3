@@ -5,34 +5,26 @@
 void RRScheduler::runScheduler(){
 
   std::thread schedulerThread;
+  isRunning = 1;
 
   schedulerThread = std::thread([this](){
 
     std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-    std::vector<std::shared_ptr<Process>>& readyQueue = CPUScheduler::getInstance()->readyQueue;
+
+    std::cout << "RRSCHED is running!" << std::endl;
 
     while(isRunning){
-      if((!(readyQueue.empty())) && (!(cpuCores.empty()))){
+      if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(cpuCores.empty()))){
       
         for (auto& i : cpuCores){
+          //forchecking
 
-          if(i->isAvailable){
+          if(i->isCoreFree()){
 
-            std::shared_ptr<Process> readyProcess = readyQueue.front();
-            readyQueue.erase(readyQueue.begin());
-            i->attachProcesstoCPUCore(readyProcess);
+            i->attachProcesstoCPUCore();
 
-          }else{
-
-            std::shared_ptr<Process> readyProcess = readyQueue.front();
-            if((i->getProcessinCPUCore()->getRemainingInstructions()) < readyProcess->getRemainingInstructions()){
-
-              i->returnProcesstoReadyQueue(readyQueue);
-              i->attachProcesstoCPUCore(readyProcess);
-              readyQueue.erase(readyQueue.begin());
-
-            }
           }
+
         }
       } 
     }

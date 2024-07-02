@@ -9,7 +9,7 @@ class ProcessScreen {
 public:
 
   static ProcessScreen* getInstance();
-  void attachProcess(std::shared_ptr<Process> process);
+  void attachProcessToScreen(std::shared_ptr<Process> process);
   void processUserInput(std::string input);
   static void initialize();
   void runScreen(std::shared_ptr<Process> process);

@@ -23,7 +23,7 @@ Process::Process(std::string name, int instructionsLowerBound, int instructionsH
 
   this->totalInstructions = dis(gen);
   this->remainingInstructions = this->totalInstructions;
-  this->processState = READY;
+  this->processState = Process::ProcessState::READY;
 
 };
 
@@ -33,12 +33,13 @@ void Process::executeInstruction() {
 
     if (this->remainingInstructions == 0){
 
-      this->processState = FINISHED;
-      this->instructionDateAndTime = getDateAndTime();
+      this->processState = Process::ProcessState::FINISHED;
 
     } else {
         remainingInstructions--;
-        this->instructionDateAndTime = getDateAndTime();
+        std::string date;
+        date = getDateAndTime();
+        this->instructionDateAndTime = date; 
     }
 
   } 
@@ -57,7 +58,7 @@ int Process::getTotalInstructions() {
 
 };
 
-void Process::setProcessState(ProcessState state) {
+void Process::setProcessState(Process::ProcessState state) {
 
   this->processState = state;
 
@@ -65,7 +66,7 @@ void Process::setProcessState(ProcessState state) {
 
 Process::ProcessState Process::getProcessState() {
 
-  return processState;
+  return this->processState;
 
 };
 
@@ -119,12 +120,15 @@ std::string Process::getDateAndTime(){
 
   std::tm local_tm = *std::localtime(&calendarTime);
 
+
   std::ostringstream oss;
   oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)"); 
 
   std::string dateAndTime = oss.str();
 
   return dateAndTime;
+  
+
 
 };
 

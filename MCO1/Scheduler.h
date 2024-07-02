@@ -10,9 +10,8 @@
 class Scheduler {
 
 public:
-  virtual void runScheduler();
-  bool isRunning;
-  int executionDelay;
+  virtual void runScheduler() = 0;
+  int isRunning = 1;
 private:
 
 

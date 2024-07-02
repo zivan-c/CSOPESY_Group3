@@ -35,14 +35,15 @@ std::shared_ptr<Process> CPUCore::getProcessinCPUCore(){
 
 void CPUCore::runCore(){
 
-
   coreThread = std::thread([this](){
-    this->isRunning = true;
+  this->isRunning = true;
+
+  //for checking
+  std::cout << "CPUCORE: " << cpuCoreID << " is being run." << std::endl;
 
     while(isRunning){
-
-      if(processInCPUCore != nullptr){
-
+      //for checking, removing if processInCPUCore
+      //if(processInCPUCore != nullptr){
         if(quantumCycles){
           RRCPUBehavior();
         }
@@ -50,7 +51,7 @@ void CPUCore::runCore(){
           normalCPUBehavior();
         }
 
-      }
+      //}
     };
   });
 
@@ -63,97 +64,163 @@ void CPUCore::runCore(){
 
 void CPUCore::normalCPUBehavior(){
 
-  if(processInCPUCore->getProcessState() == Process::PROCESSING){
-    executeProcess();
-    std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
-    std::this_thread::sleep_for(delayDuration);
-
-  }else{
-      
-    addToFinishedList(CPUScheduler::getInstance()->finishedProcesses);
-
-  }   
-};
-
-void CPUCore::RRCPUBehavior(){
-
-  for(int i = 0; i < quantumCycles; i++){
-
-    if(processInCPUCore->getProcessState() == Process::PROCESSING){
-
+  if(processInCPUCore){
+    if(processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING){
       executeProcess();
       std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
       std::this_thread::sleep_for(delayDuration);
 
     }else{
-      
-      addToFinishedList(CPUScheduler::getInstance()->finishedProcesses);
-      getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
-      break;
-
-    }
+      addToFinishedList();
+    }   
   }
-
-  returnProcesstoReadyQueue(CPUScheduler::getInstance()->readyQueue);
-  getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
-
-  
-  
 };
 
-void CPUCore::attachProcesstoCPUCore(std::shared_ptr<Process> process) {
+void CPUCore::RRCPUBehavior() {
+    if (processInCPUCore) {
+        for (int i = 0; i < quantumCycles; i++) {
+            if (processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING) {
+                executeProcess();
+                std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000);
+                std::this_thread::sleep_for(delayDuration);
+            } else {
+                // Lock the mutex before accessing the shared queue
+                addToFinishedList();
+                getProcessFromReadyQueue();
+                break;
+            }
+        }
+        
+        // After processing, return the process to the ready queue
+        returnProcesstoReadyQueue();
+        getProcessFromReadyQueue();
+    } else {
+        // Lock the mutex before accessing the shared queue
+        if (CPUScheduler::getInstance()->isReadyQueueAvailable()) {
+            getProcessFromReadyQueue();
+        }
+    }
+};
 
-  if(this->isAvailable){
+//void CPUCore::RRCPUBehavior(){
 
-    this->processInCPUCore = process;
+  //testing adding the processINCPUCore within the running function
+  //if(processInCPUCore){
+
+    //for(int i = 0; i < quantumCycles; i++){
+
+      //if(processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING){
+
+        //executeProcess();
+        //std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
+        //std::this_thread::sleep_for(delayDuration);
+
+      //}else{
+        //addToFinishedList(CPUScheduler::getInstance()->finishedProcesses);
+        //getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
+        //break;
+
+      //}
+    //}
+
+    //returnProcesstoReadyQueue(CPUScheduler::getInstance()->readyQueue);
+    //getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
+
+  //}    
+  //else{
+
+    //if(!(CPUScheduler::getInstance()->readyQueue.empty())){
+      //getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
+      
+    //}
+  //}
+
+  
+  
+//};
+
+
+//FIX THIS
+void CPUCore::attachProcesstoCPUCore() {
+
+  if(this->isCoreFree()){
+
+    this->processInCPUCore = CPUScheduler::getInstance()->removeProcessFromReadyQueue();
     this->isAvailable = false;
     
     processInCPUCore->setCoreID(cpuCoreID);
-    processInCPUCore->setProcessState(Process::PROCESSING);
+    processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
+
+    //for checking 
+    std::cout << "process: " << this->processInCPUCore->getProcessName() << " has been attached to CPUCORE: " 
+      << this->cpuCoreID << std::endl;
+
   }
 
 };
 
 
-void CPUCore::getProcessFromReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue){
+void CPUCore::getProcessFromReadyQueue(){
 
-  if(!(readyQueue.empty())){
-  
-    this->processInCPUCore = readyQueue.front();
+  if(CPUScheduler::getInstance()->isReadyQueueAvailable()){
+
+    std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+    this->processInCPUCore = CPUScheduler::getInstance()->removeProcessFromReadyQueue(); 
     this->isAvailable = false;
-    processInCPUCore->setProcessState(Process::PROCESSING);
-    readyQueue.erase(readyQueue.begin());
+    if(processInCPUCore){
+
+      processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
+      std::cout << "Process: " << processInCPUCore->getProcessName() << " from ready queue sent to CPUCORE: "
+      << cpuCoreID << std::endl;
+
+    };
+    
 
   }else{
 
-    std::cout << "Ready Queue is empty!" << std::endl;
-
   }
 
 };
 
 
-void CPUCore::addToFinishedList(std::vector<std::shared_ptr<Process>>& finishedQueue){
+void CPUCore::addToFinishedList(){
 
-    finishedQueue.push_back(processInCPUCore);
-    removeProcessinCPUCore();
+    if(processInCPUCore){
+      processInCPUCore->setProcessState(Process::ProcessState::FINISHED);
+      CPUScheduler::getInstance()->addProcessToFinishedProcesses(processInCPUCore);
+    //for checking
+  
+      std::cout << "Process: " << processInCPUCore->getProcessName() 
+      << " sent to FINISHED LIST from CPUCORE: " << cpuCoreID << std::endl;
+      removeProcessinCPUCore();
+    }
 
 };
 
-void CPUCore::returnProcesstoReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue){
+void CPUCore::returnProcesstoReadyQueue(){
 
-    processInCPUCore->setProcessState(Process::READY);
-    readyQueue.push_back(processInCPUCore);
-    removeProcessinCPUCore();
+    if(processInCPUCore){
+      processInCPUCore->setProcessState(Process::ProcessState::READY);
+      CPUScheduler::getInstance()->addProcessToReadyQueue(processInCPUCore); 
+    //for checkign
+      std::cout << "process: " << processInCPUCore->getProcessName() << 
+      " returned to ready queue from CPUCORE: " << cpuCoreID << std::endl; 
+      removeProcessinCPUCore();
+    }
 
 };
 
 
 void CPUCore::removeProcessinCPUCore(){
 
-  processInCPUCore.reset(); //Now, the CPUCore is empty;
-  this->isAvailable = true; //CPU Core is available to be used
-  //
+
+  if(processInCPUCore){
+    processInCPUCore.reset(); //Now, the CPUCore is empty;
+    this->isAvailable = true; //CPU Core is available to be used
+  //for checking
+    std::cout << "CPUCORE: " << cpuCoreID << " is now empty." << std::endl;
+
+  }
 };
 
 int CPUCore::getCoreID(){
@@ -162,3 +229,11 @@ int CPUCore::getCoreID(){
 
 };
 
+int CPUCore::isCoreFree(){
+  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+  if (this->isAvailable){
+    return 1;
+  }else{
+    return 0;
+  }
+};
