@@ -1,25 +1,23 @@
 #pragma once
 #include <string>
 
-
 class Console{
+private:
+	std::string consoleName;
 
 public:
+	Console(std::string consoleName);
+	~Console(); 
 
-  std::string consoleName;
+	std::string getName();
 
-  Console(std::string consoleName);
-  ~Console(); 
-
-  std::string getName();
-
-  virtual void runConsole(); //Function that runs when the console is called
-  virtual void commandInterpreter(); //Function that processess the input of the user
+	virtual void runConsole();		// Runs Console Process
+	virtual void cmdReader();			// Reads Commands
 
 
-  friend class ConsoleManager;
+	virtual void activate() = 0;
+	virtual void display() = 0;
+	virtual void process() = 0;
 
-
-private:
-
+	friend class ConsoleManager;
 };

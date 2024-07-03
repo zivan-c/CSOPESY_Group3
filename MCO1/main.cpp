@@ -1,11 +1,22 @@
-// #include stuff here
-// ...
-#include "OSConfig.h"
-#include "Console.h"
-#include "Scheduler.h"
+#include <iostream>
+#include <memory>
+#include <string>
+#include "ConsoleManager.h"
 
-int main()
-{
-	OSConfig::initialize();
-	OSConfig::readConfig();
-}
+
+int main(){
+  
+  bool running = 1;
+
+  while(running){
+
+        ConsoleManager::initConMgr();
+        //ConsoleManager::getInst()->startConsole();
+        running = 0;
+  }      
+  
+  
+
+
+
+};

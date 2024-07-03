@@ -120,10 +120,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="ConsoleManager.cpp" />
+    <ClCompile Include="ConsoleManager.h" />
     <ClCompile Include="CPUCore.cpp" />
     <ClCompile Include="CPUScheduler.cpp" />
     <ClCompile Include="FCFSScheduler.cpp" />
-    <ClCompile Include="MainProgram.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Marquee.cpp" />
     <ClCompile Include="NonPreemptiveSJF.cpp" />
     <ClCompile Include="PreemptiveSJF.cpp" />
     <ClCompile Include="Process.cpp" />
@@ -131,13 +134,16 @@
     <ClCompile Include="RRScheduler.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="OSConfig.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h" />
     <ClInclude Include="CPUCore.h" />
     <ClInclude Include="CPUScheduler.h" />
     <ClInclude Include="FCFSScheduler.h" />
+    <ClInclude Include="IETThread.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MarqueeWorkerThread.h" />
     <ClInclude Include="NonPreemptiveSJF.h" />
     <ClInclude Include="OSConfig.h" />
     <ClInclude Include="PreemptiveSJF.h" />
