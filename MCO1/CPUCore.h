@@ -5,45 +5,43 @@
 #include <string>
 #include <thread>
 #include "Scheduler.h"
+#include <mutex>
 
-
-class CPUCore{
+class CPUCore {
 
 public:
 
-  CPUCore(int id, int executionDelay);
-  CPUCore(int id, int executionDelay, int quantumCycles);
+	CPUCore(int id, float executionDelay);
+	CPUCore(int id, float executionDelay, int quantumCycles);
+	~CPUCore() = default;
 
-  bool isRunning;
-  bool isAvailable;
+	bool isRunning = false;
 
-  void runCore();
-  bool isProcessFinished();
-  std::string getDateandTime();
-  void executeProcess();
-  std::shared_ptr<Process> getProcessinCPUCore();
-  int getCoreID();
+	int isCoreFree();
+	void runCore();
+	std::string getDateandTime();
+	void executeProcess();
+	std::shared_ptr<Process> getProcessinCPUCore();
+	int getCoreID();
 
-  void getProcessFromReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue);
-  void attachProcesstoCPUCore(std::shared_ptr<Process> process);
-  void returnProcesstoReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue);
-  void removeProcessinCPUCore();
-  void addToFinishedList(std::vector<std::shared_ptr<Process>>& finishedQueue);
+	void getProcessFromReadyQueue();
+	void attachProcesstoCPUCore();
+	void returnProcesstoReadyQueue();
+	void addToFinishedList();
+	void removeProcessinCPUCore();
 
-
-  //CPU Algorithm Scheduler for each core class to be instantiated when the CPU scheduler is run 
-  //
 private:
 
-  std::thread coreThread;
-  ~CPUCore() = default;
+	std::thread coreThread;
+	std::mutex queueMutex;
+	bool isAvailable = true;
 
-  int cpuCoreID;
-  int quantumCycles;
-  int executionDelay;
-  std::shared_ptr<Process> processInCPUCore;
+	int cpuCoreID;
+	int quantumCycles;
+	float executionDelay;
+	std::shared_ptr<Process> processInCPUCore;
 
-  void normalCPUBehavior();
-  void RRCPUBehavior();
+	void normalCPUBehavior();
+	void RRCPUBehavior();
 
 };

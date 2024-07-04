@@ -5,7 +5,7 @@
 #include "OSConfig.h"
 #include "Scheduler.h"
 
-MainMenu::MainMenu() : Console(MAINCON) {
+MainMenu::MainMenu() : Console(MAIN) {
 }
 
 void MainMenu::setConfig()
@@ -76,7 +76,7 @@ void MainMenu::process() {
         }
 
         if (command == "schedule") {
-            break;
+            ConsoleManager::getInst()->changeConsole(SCHED);
         }
 
     }

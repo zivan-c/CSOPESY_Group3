@@ -1,36 +1,30 @@
 #include "FCFSScheduler.h"
-#include "CPUCore.h"
 #include "CPUScheduler.h"
 #include <thread> 
+#include "CPUCore.h"
+#include "Process.h"
 
 
-void FCFSScheduler::runScheduler(){
+void FCFSScheduler::runScheduler() {
 
-  std::thread schedulerThread;
-  schedulerThread = std::thread([this](){
+    std::thread schedulerThread;
+    schedulerThread = std::thread([this]() {
 
-    std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-    std::vector<std::shared_ptr<Process>>& readyQueue = CPUScheduler::getInstance()->readyQueue;
+        while (isRunning) {
 
-    while(isRunning){
+            if ((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
 
-      if((!(readyQueue.empty())) && !(cpuCores.empty())) {
-      
-          for (auto& i : cpuCores){
-
-            if(i->isAvailable){
-
-              std::shared_ptr<Process> readyProcess = readyQueue.front();
-              readyQueue.erase(readyQueue.begin());
-              i->attachProcesstoCPUCore(readyProcess);
-
+                for (auto& i : CPUScheduler::getInstance()->cpuCores) {
+                    if (i->isCoreFree()) {
+                        //std::cout << "RR Checking CPUCORE: " << i->getCoreID() << std::endl;
+                        i->getProcessFromReadyQueue();
+                    }
+                }
             }
-          }
-      } 
-    }
+        }
 
-  });
+        });
 
-  schedulerThread.detach();
+    schedulerThread.detach();
 
 };

@@ -1,5 +1,6 @@
 #include "ConsoleManager.h"
 #include "MainMenu.h"
+#include "Scheduler.h"
 #include <iostream>
 #include <unordered_map>
 #include <stdexcept> // For std::runtime_error
@@ -69,6 +70,22 @@ void ConsoleManager::process() const
     }
 }
 
+void ConsoleManager::changeConsole(std::string name)
+{
+    try
+    {
+        system("cls");
+        this->lastCon = this->curCon;
+        this->curCon = this->conMap.at(name);
+        this->curCon->activate();
+    }
+    catch (const std::out_of_range&)
+    {
+        std::cerr << "Console " << name << " not found. Check screens or fix spelling..." << std::endl;
+    }
+}
+
+
 // Unregister a screen from the conMap
 void ConsoleManager::unregisterScreen(std::string name)
 {
@@ -83,7 +100,6 @@ void ConsoleManager::changeScreen(std::string name)
 {
     try
     {
-        // Clear the screen
         system("cls");
         this->lastCon = this->curCon;
         this->curCon = this->conMap.at(name);
@@ -119,21 +135,20 @@ ConsoleManager::ConsoleManager()
 
     // Main Menu
     const std::shared_ptr<MainMenu> mainMenu = std::make_shared<MainMenu>();
-    this->conMap[MAINCON] = mainMenu;
+    this->conMap[MAIN] = mainMenu;
+
+    // Scheduler [Mostly Working, Just Pull]
+    const std::shared_ptr<Scheduler> schedConsole = std::make_shared<Scheduler>();
+    this->conMap[SCHED] = schedConsole;
 
     // Marquee [Mich]
     // const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
-    // this->consoleTable[MARQUEE_CONSOLE] = marqueeConsole;
-    
-
-    // Scheduler [Mostly Working, Just Pull]
-    // const std::shared_ptr<SchedulingConsole> schedulingConsole = std::make_shared<SchedulingConsole>();
-    // this->consoleTable[SCHEDULING_CONSOLE] = schedulingConsole;
+    // this->consoleTable[MARQCONSOLE] = marqueeConsole;      
 
     // Screen [Almost Done]
     // Config
 
-    this->changeConsole(MAINCON);
+    this->changeConsole(MAIN);
 }
 
 // Check if the application is running

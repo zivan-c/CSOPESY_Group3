@@ -4,12 +4,7 @@
 class RRScheduler : public Scheduler {
 
 public:
-
-  RRScheduler();
-  ~RRScheduler() = default;
-  void runScheduler() override; 
-
+	void runScheduler() override;
 private:
 
 };
-

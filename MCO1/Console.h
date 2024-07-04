@@ -7,7 +7,7 @@ private:
 
 public:
 	Console(std::string consoleName);
-	~Console(); 
+	virtual ~Console(); 
 
 	std::string getName();
 

@@ -6,10 +6,10 @@
 #include <memory>
 #include "Console.h"
 
-const std::string MAINCON = "MAIN_CONSOLE";     // Constant string representing the "Main Console"
-const std::string MMRYCON = "MEMORY_CONSOLE";   // Constant string representing the "Memory Console"
-const std::string SCHDCON = "SCHEDULE_CONSOLE"; // Constant string representing the "Schedule Console"
-const std::string MARQCON = "MARQUEE_CONSOLE";  // Constant string representing the "Marquee Console"
+const std::string MAIN = "MAIN_CONSOLE";     // Constant string representing the "Main Console"
+const std::string MEMORY = "MEMORY_CONSOLE";   // Constant string representing the "Memory Console"
+const std::string SCHED = "SCHEDULE_CONSOLE"; // Constant string representing the "Schedule Console"
+const std::string MARQ = "MARQUEE_CONSOLE";  // Constant string representing the "Marquee Console"
 
 class ConsoleManager
 {

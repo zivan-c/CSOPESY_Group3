@@ -3,61 +3,44 @@
 
 
 
-void PreemptiveSJF::runScheduler(){
+void PreemptiveSJF::runScheduler() {
 
-  std::thread schedulerThread;
+    std::thread schedulerThread;
 
-  schedulerThread = std::thread([this](){
+    schedulerThread = std::thread([this]() {
 
-    std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-    std::vector<std::shared_ptr<Process>>& readyQueue = CPUScheduler::getInstance()->readyQueue;
+        std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
 
-    while(isRunning){
+        while (isRunning) {
 
 
-      if((!(readyQueue.empty())) && (!(cpuCores.empty()))){
-      
-        for (auto& i : cpuCores){
+            if ((!(CPUScheduler::getInstance()->isReadyQueueAvailable())) && (!(cpuCores.empty()))) {
 
-          sortReadyQueue(readyQueue);
+                for (auto& i : cpuCores) {
 
-          if(i->isAvailable){
+                    CPUScheduler::getInstance()->sortReadyQueue();
 
-            std::shared_ptr<Process> readyProcess = readyQueue.front();
-            readyQueue.erase(readyQueue.begin());
-            i->attachProcesstoCPUCore(readyProcess);
+                    if (i->isCoreFree()) {
 
-          }else{
+                        i->attachProcesstoCPUCore();
 
-            i->getProcessinCPUCore()->setProcessState(Process::WAITING); //set to waiting to prevent instruction execution
-            std::shared_ptr<Process> readyProcess = readyQueue.front();
-            if((i->getProcessinCPUCore()->getRemainingInstructions()) < readyProcess->getRemainingInstructions()){
+                    }
+                    else {
 
-              i->returnProcesstoReadyQueue(readyQueue);
-              i->attachProcesstoCPUCore(readyProcess);
-              readyQueue.erase(readyQueue.begin());
+                        i->getProcessinCPUCore()->setProcessState(Process::WAITING); //set to waiting to prevent instruction execution
+                        if ((i->getProcessinCPUCore()->getRemainingInstructions()) <
+                            CPUScheduler::getInstance()->returnLowestRemainingInstructions()) {
 
+                            i->attachProcesstoCPUCore();
+
+                        }
+                    }
+                }
             }
-          }
         }
-      } 
-    }
-  });
+        });
 
 
-  schedulerThread.detach();
+    schedulerThread.detach();
 
 };
-
-
-
-void PreemptiveSJF::sortReadyQueue(std::vector<std::shared_ptr<Process>>& readyQueue){
-
-
-
-  //sort it according to the remaining number of instructions
-  //the first one should be the one with the least number of instructions remaining
-
-
-}; 
-

@@ -2,42 +2,34 @@
 #include "CPUScheduler.h"
 #include <thread>
 
-void RRScheduler::runScheduler(){
+void RRScheduler::runScheduler() {
 
-  std::thread schedulerThread;
+    std::thread schedulerThread;
+    isRunning = 1;
 
-  schedulerThread = std::thread([this](){
+    schedulerThread = std::thread([this]() {
 
-    std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-    std::vector<std::shared_ptr<Process>>& readyQueue = CPUScheduler::getInstance()->readyQueue;
+        std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
 
-    while(isRunning){
-      if((!(readyQueue.empty())) && (!(cpuCores.empty()))){
-      
-        for (auto& i : cpuCores){
+        std::cout << "RRSCHED is running!" << std::endl;
 
-          if(i->isAvailable){
+        while (isRunning) {
+            if ((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(cpuCores.empty()))) {
 
-            std::shared_ptr<Process> readyProcess = readyQueue.front();
-            readyQueue.erase(readyQueue.begin());
-            i->attachProcesstoCPUCore(readyProcess);
+                for (auto& i : cpuCores) {
+                    //forchecking
 
-          }else{
+                    if (i->isCoreFree()) {
 
-            std::shared_ptr<Process> readyProcess = readyQueue.front();
-            if((i->getProcessinCPUCore()->getRemainingInstructions()) < readyProcess->getRemainingInstructions()){
+                        i->attachProcesstoCPUCore();
 
-              i->returnProcesstoReadyQueue(readyQueue);
-              i->attachProcesstoCPUCore(readyProcess);
-              readyQueue.erase(readyQueue.begin());
+                    }
 
+                }
             }
-          }
         }
-      } 
-    }
-  });
-  
-  schedulerThread.detach();
+        });
+
+    schedulerThread.detach();
 
 };

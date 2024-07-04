@@ -7,129 +7,129 @@
 #include <sstream>
 #include <iomanip>
 
+int Process::processCount = 0;
+int Process::processIDCount = 0;
 
+Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound) {
 
-Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(instructionsLowerBound, instructionsHigherBound);
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(instructionsLowerBound, instructionsHigherBound);
+    this->processName = name;
+    this->processID = processIDCount;
 
-  this->processName = name;
-  this->processID = processIDCount;
+    processIDCount++;
 
-  processIDCount++;
-
-  this->totalInstructions = dis(gen);
-  this->remainingInstructions = this->totalInstructions;
-  this->processState = READY;
+    this->totalInstructions = dis(gen);
+    this->remainingInstructions = this->totalInstructions;
+    this->processState = Process::ProcessState::READY;
 
 };
 
 void Process::executeInstruction() {
- 
-  if (this->processState == PROCESSING){
 
-    if (this->remainingInstructions == 0){
+    if (this->processState == PROCESSING) {
 
-      this->processState = FINISHED;
-      this->instructionDateAndTime = getDateAndTime();
+        if (this->remainingInstructions == 0) {
 
-    } else {
-        remainingInstructions--;
-        this->instructionDateAndTime = getDateAndTime();
+            this->processState = Process::ProcessState::FINISHED;
+
+        }
+        else {
+            remainingInstructions--;
+            std::string date;
+            date = getDateAndTime();
+            this->instructionDateAndTime = date;
+        }
+
     }
 
-  } 
-    
 };
 
 int Process::getRemainingInstructions() {
 
-  return remainingInstructions;
+    return remainingInstructions;
 
 };
 
 int Process::getTotalInstructions() {
 
-  return totalInstructions;
+    return totalInstructions;
 
 };
 
-void Process::setProcessState(ProcessState state) {
+void Process::setProcessState(Process::ProcessState state) {
 
-  this->processState = state;
+    this->processState = state;
 
 };
 
 Process::ProcessState Process::getProcessState() {
 
-  return processState;
+    return this->processState;
 
 };
 
-std::string Process::getProcessName(){
+std::string Process::getProcessName() {
 
-  return processName;
+    return processName;
 
 };
 
-int Process::getProcessID(){
+int Process::getProcessID() {
 
-  return processID;
+    return processID;
 
 };
 
 void Process::setCoreID(int coreID) {
 
-  this->coreID = coreID;
+    this->coreID = coreID;
 
 };
 
 int Process::getCoreID() {
 
-  return this->coreID;
+    return this->coreID;
 
 };
 
 void Process::printProcessProgress() {
 
-  std::cout << "Process: " << this->processName << "\n" << std::endl;
-  std::cout << "ID: " << this->processID << "\n\n" << std::endl;
+    std::cout << "Process: " << this->processName << "\n" << std::endl;
+    std::cout << "ID: " << this->processID << "\n\n" << std::endl;
 
-  if (remainingInstructions == 0) {
+    if (remainingInstructions == 0) {
 
-    std::cout << "Process finished!" << "\n" << std::endl;
+        std::cout << "Process finished!" << "\n" << std::endl;
 
-  } else {
+    }
+    else {
 
-    std::cout << "Current Instruction Line: " << this->remainingInstructions << "\n" << std::endl;
-    std::cout << "Lines of code: " << this->totalInstructions << "\n" << std::endl;
+        std::cout << "Current Instruction Line: " << this->remainingInstructions << "\n" << std::endl;
+        std::cout << "Lines of code: " << this->totalInstructions << "\n" << std::endl;
 
-  }
-
-};
-
-std::string Process::getDateAndTime(){
-
-  auto now = std::chrono::system_clock::now();
-
-  std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
-
-  std::tm local_tm = *std::localtime(&calendarTime);
-
-  std::ostringstream oss;
-  oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)"); 
-
-  std::string dateAndTime = oss.str();
-
-  return dateAndTime;
+    }
 
 };
 
+std::string Process::getDateAndTime() {
+
+    auto now = std::chrono::system_clock::now();
+
+    std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
+
+    std::tm local_tm = *std::localtime(&calendarTime);
+
+
+    std::ostringstream oss;
+    oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)");
+
+    std::string dateAndTime = oss.str();
+
+    return dateAndTime;
 
 
 
-
-
-
+};
