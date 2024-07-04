@@ -15,7 +15,7 @@ void CPUScheduler::initialize(int cpuCores,
 
   Process::processIDCount = 0;
   Process::processCount = 0;
-  singletonInstance = new CPUScheduler();
+  singletonInstance = new CPUScheduler();   // Needs to actually connect to Console class
 
   singletonInstance->cpuCoresAmount = cpuCores;
   singletonInstance->scheduler = schedulerAlgorithm;

@@ -121,14 +121,17 @@ ConsoleManager::ConsoleManager()
     const std::shared_ptr<MainMenu> mainMenu = std::make_shared<MainMenu>();
     this->conMap[MAINCON] = mainMenu;
 
-    // Marquee
+    // Marquee [Mich]
     // const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
     // this->consoleTable[MARQUEE_CONSOLE] = marqueeConsole;
     
 
-    // Scheduler
+    // Scheduler [Mostly Working, Just Pull]
     // const std::shared_ptr<SchedulingConsole> schedulingConsole = std::make_shared<SchedulingConsole>();
     // this->consoleTable[SCHEDULING_CONSOLE] = schedulingConsole;
+
+    // Screen [Almost Done]
+    // Config
 
     this->changeConsole(MAINCON);
 }

@@ -9,14 +9,7 @@ int main(){
   bool running = 1;
 
   while(running){
-
         ConsoleManager::initConMgr();
-        //ConsoleManager::getInst()->startConsole();
         running = 0;
-  }      
-  
-  
-
-
-
+  }     
 };
