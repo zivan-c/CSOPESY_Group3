@@ -13,8 +13,8 @@ int main(){
   int quantumCycles = 5;
   int lowerInstructionsBound = 10;
   int higherInstructionsBound = 100;
-  float executionDelay = 0.25;
-  float creationDelay = 2;
+  float executionDelay = 0.15;
+  float creationDelay = 1;
   int preemptive = 0;
   CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::FCFS;
 
@@ -39,14 +39,7 @@ int main(){
     }
 
   }      
-
-
   
-  
-  
-
-
-
 };
 
 void commandCheck(std::string input){

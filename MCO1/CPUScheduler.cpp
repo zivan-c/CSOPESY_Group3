@@ -65,7 +65,7 @@ void CPUScheduler::setupCPUS() {
     for (int i = 0; i < this->cpuCoresAmount; i++) {
 
       std::shared_ptr<CPUCore> cpuCore =
-          std::make_shared<CPUCore>(i + 1, executionDelay);
+          std::make_shared<CPUCore>(i + 1, executionDelay, 0);
           //for checking
           std::cout << "Created CPUCORE: " << i+1 << std::endl;
       this->cpuCores.push_back(cpuCore);
@@ -412,7 +412,7 @@ int CPUScheduler::returnLowestRemainingInstructions(){
 
 std::shared_ptr<Process> CPUScheduler::removeProcessFromReadyQueue(){
 
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutexcpusch.c
   if (!readyQueue.empty()) {
     auto front = readyQueue.front();
     readyQueue.erase(readyQueue.begin());

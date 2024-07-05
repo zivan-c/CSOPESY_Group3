@@ -19,11 +19,14 @@ void RRScheduler::runScheduler(){
         for (auto& i : cpuCores){
           //forchecking
 
+
           if(i->isCoreFree()){
 
-            i->attachProcesstoCPUCore();
+            i->getProcessFromReadyQueue();
 
           }
+
+
 
         }
       } 
