@@ -14,6 +14,15 @@
 CPUScheduler* CPUScheduler::singletonInstance = nullptr;
 CPUScheduler* CPUScheduler::getInstance() { return singletonInstance; };
 
+// Define the CPUScheduler constructor
+CPUScheduler::CPUScheduler() {
+    // Initialization code
+}
+
+CPUScheduler::~CPUScheduler() {
+    // Cleanup code if necessary
+}
+
 void CPUScheduler::initialize(int cpuCores,
     SchedulerAlgorithm schedulerAlgorithm,
     float executionDelay, int quantumCycles,

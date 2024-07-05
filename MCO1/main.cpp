@@ -4,12 +4,22 @@
 #include "ConsoleManager.h"
 
 
-int main(){
-  
-  bool running = 1;
-
-  while(running){
+int main() {
+    try {
+        // Initialize ConsoleManager
         ConsoleManager::initConMgr();
-        running = 0;
-  }     
-};
+
+        // Get the ConsoleManager instance
+        ConsoleManager* consoleMgr = ConsoleManager::getInst();
+
+        // Main loop
+        while (consoleMgr->isRunning()) {
+            consoleMgr->process();
+        }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return 0;
+}

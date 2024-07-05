@@ -2,10 +2,26 @@
 #include "MainMenu.h"
 #include "Console.h"
 #include "ConsoleManager.h"
+#include "CPUScheduler.h"
 #include "OSConfig.h"
 #include "Scheduler.h"
+#include "Process.h"
+#include "ProcessScreen.h"
 
 MainMenu::MainMenu() : Console(MAIN) {
+}
+
+MainMenu::~MainMenu() {
+    // Cleanup code if necessary
+}
+
+// Define the activate method
+void MainMenu::activate() {
+    this->isNew = true;
+}
+
+// Define the display method
+void MainMenu::display() {
 }
 
 void MainMenu::setConfig()
@@ -16,13 +32,13 @@ void MainMenu::setConfig()
 
 void MainMenu::help() {
     std::cout << "\nCommand list: \n";
-    std::cout << "help          displays commands\n";
-    std::cout << "marquee       display marquee console\n";
-    std::cout << "process-smi   display process SMI\n";
-    std::cout << "nvidia-smi    display nvidia SMI\n";
-    std::cout << "screen        view process-specific screen\n";
-    std::cout << "clear         clear screen\n";
-    std::cout << "exit          exit OS\n";
+    std::cout << "help          Shows all commands\n";
+    std::cout << "marquee       Open the Marquee Console\n";
+    std::cout << "memory        Manage memory usage\n";
+    std::cout << "schedule      Manage  process scheduler\n";
+    std::cout << "screen        Manage screens\n";
+    std::cout << "clear         Clear the screen\n";
+    std::cout << "exit          Exit OS\n";
 }
 
 void MainMenu::printHeader() {
@@ -42,6 +58,8 @@ void MainMenu::printHeader() {
 }
 
 void MainMenu::process() {
+    // Print Header
+    printHeader();
 
     // Setup Console Handle
     HANDLE consoleHandle = ConsoleManager::getInst()->getConHandle();
@@ -63,23 +81,37 @@ void MainMenu::process() {
         }
 
         if (command == "exit") {
-            ConsoleManager::getInst()->exitApp();
+            ConsoleManager::getInst()->exitApp(); 
+            std::cout << "Exiting the OS..." << std::endl;
+            exit(0);
         }
 
         if (command == "marquee") {
-            break;
+            // switch to marquee console
 
-        }
-
-        if (command == "screen") {
-            break;
         }
 
         if (command == "schedule") {
-            ConsoleManager::getInst()->changeConsole(SCHED);
+            // switch to schedule console
         }
 
+        if (command == "memory") {
+            // switch to memory console
+        }
+        
+        if (command.compare(0, 5, "screen") == 0) {
+            if (command.compare(6, 9, " -ls")) {
+                CPUScheduler::getInstance()->printReport();
+            }
+
+            else if (command.compare(6, 8, " -r")) {
+
+            }
+
+            else if (command.compare(6, 8, " -s")) {
+
+            }
+        }       
+
     }
-
-
 }

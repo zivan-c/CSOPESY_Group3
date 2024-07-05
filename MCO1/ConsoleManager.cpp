@@ -1,6 +1,9 @@
 #include "ConsoleManager.h"
 #include "MainMenu.h"
+#include "CPUScheduler.h"
 #include "Scheduler.h"
+#include "Process.h"
+#include "ProcessScreen.h"
 #include <iostream>
 #include <unordered_map>
 #include <stdexcept> // For std::runtime_error
@@ -111,22 +114,6 @@ void ConsoleManager::changeScreen(std::string name)
     }
 }
 
-// Go back to the previously accessed console
-void ConsoleManager::prvsCon()
-{
-    if (this->lastCon != nullptr)
-    {
-        // Clear the screen
-        system("cls");
-        this->curCon = this->lastCon;
-        this->curCon->activate();
-    }
-    else
-    {
-        std::cerr << "This is the first console opened..." << std::endl;
-    }
-}
-
 // Constructor
 ConsoleManager::ConsoleManager()
 {
@@ -137,15 +124,25 @@ ConsoleManager::ConsoleManager()
     const std::shared_ptr<MainMenu> mainMenu = std::make_shared<MainMenu>();
     this->conMap[MAIN] = mainMenu;
 
-    // Scheduler [Mostly Working, Just Pull]
-    const std::shared_ptr<Scheduler> schedConsole = std::make_shared<Scheduler>();
-    this->conMap[SCHED] = schedConsole;
+    // Scheduler
+    bool running = 1;
+    int cpuCores = 4;
+    int quantumCycles = 5;
+    int lowerInstructionsBound = 10;
+    int higherInstructionsBound = 100;
+    float executionDelay = 0.25;
+    int creationDelay = 2;
+    int preemptive = 0;
+    CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::FCFS;
+    CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive, creationDelay, lowerInstructionsBound, higherInstructionsBound);
 
     // Marquee [Mich]
     // const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
     // this->consoleTable[MARQCONSOLE] = marqueeConsole;      
 
     // Screen [Almost Done]
+    ProcessScreen::initialize();
+
     // Config
 
     this->changeConsole(MAIN);

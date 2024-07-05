@@ -8,3 +8,11 @@ OSConfig* OSConfig::getInstance()
 OSConfig::OSConfig() {
 	std::ifstream configReader;
 }
+
+void OSConfig::readConfig() {
+	// Implementation code
+}
+
+void OSConfig::initialize() {
+	// Implementation code
+}

@@ -12,3 +12,13 @@ std::string Console::getName() {
 
 Console::~Console() { // Implement the destructor
 }
+
+// Define the runConsole method
+void Console::runConsole() {
+    // Implementation of runConsole
+}
+
+// Define the cmdReader method
+void Console::cmdReader() {
+    // Implementation of cmdReader
+}
