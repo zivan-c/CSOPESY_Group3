@@ -18,8 +18,6 @@ class CPUScheduler {
 
 
 public:
-    CPUScheduler();
-    virtual ~CPUScheduler();
 
     enum SchedulerAlgorithm {
         FCFS,

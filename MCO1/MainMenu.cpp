@@ -33,13 +33,15 @@ void MainMenu::setConfig()
 
 void MainMenu::help() {
     std::cout << "\nCommand list: \n";
-    std::cout << "help          Shows all commands\n";
-    std::cout << "marquee       Open the Marquee Console\n";
-    std::cout << "memory        Manage memory usage\n";
-    std::cout << "schedule      Manage  process scheduler\n";
-    std::cout << "screen        Manage screens\n";
-    std::cout << "clear         Clear the screen\n";
-    std::cout << "exit          Exit OS\n";
+    std::cout << "help              Shows all commands\n";
+    std::cout << "marquee           Open the Marquee Console\n";
+    std::cout << "memory            Manage memory usage\n";
+    std::cout << "scheduler-test    Generate test processes\n";
+    std::cout << "scheduler-stop    Stop process scheduler\n";
+    std::cout << "screen            Manage screens\n";
+    std::cout << "test              Create test processes\n";
+    std::cout << "clear             Clear the screen\n";
+    std::cout << "exit              Exit OS\n";
 }
 
 void MainMenu::printHeader() {
@@ -62,10 +64,11 @@ void MainMenu::process() {
     // Print Header
     printHeader();
 
+    //Valid Input
+    bool validInput = false;
+
     // Setup Console Handle
     HANDLE consoleHandle = ConsoleManager::getInst()->getConHandle();
-
-    bool validInput = false;
 
     while (!validInput) {
         // Enter Commands
@@ -82,7 +85,7 @@ void MainMenu::process() {
         }
 
         if (command == "exit") {
-            ConsoleManager::getInst()->exitApp(); 
+            ConsoleManager::getInst()->exitApp();
             std::cout << "Exiting the OS..." << std::endl;
             exit(0);
         }
@@ -99,9 +102,17 @@ void MainMenu::process() {
         if (command == "memory") {
             // switch to memory console
         }
-        
-        if (command.compare(0, 5, "screen") == 0) {
-            if (command.compare(6, 9, " -ls")) {
+
+        if (command == "scheduler-test") {
+            CPUScheduler::getInstance()->startScheduler();
+        }
+
+        if (command == "scheduler-stop") {
+            CPUScheduler::getInstance()->stopScheduler();
+        }
+
+        if (command.find("screen")) {
+            if (command.find(" -ls")) {
                 CPUScheduler::getInstance()->printReport();
             }
 
@@ -112,7 +123,6 @@ void MainMenu::process() {
             else if (command.compare(6, 8, " -s")) {
 
             }
-        }       
-
-    }
+        }
+    }    
 }

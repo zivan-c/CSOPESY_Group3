@@ -7,16 +7,16 @@
 
 void FCFSScheduler::runScheduler() {
 
+    std::vector<std::shared_ptr<CPUCore>>& reference = CPUScheduler::getInstance()->cpuCores;
     std::thread schedulerThread;
     schedulerThread = std::thread([this]() {
 
         while (isRunning) {
 
             if ((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
+                for (auto i : CPUScheduler::getInstance()->cpuCores) {
 
-                for (auto& i : CPUScheduler::getInstance()->cpuCores) {
                     if (i->isCoreFree()) {
-                        //std::cout << "RR Checking CPUCORE: " << i->getCoreID() << std::endl;
                         i->getProcessFromReadyQueue();
                     }
                 }

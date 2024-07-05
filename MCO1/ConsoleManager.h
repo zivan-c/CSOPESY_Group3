@@ -38,14 +38,14 @@ public:
 private:
     ConsoleManager();                                       // Private constructor for singleton pattern
     ~ConsoleManager() = default;                            // Default destructor
-    ConsoleManager(ConsoleManager const&) {};               // Private copy constructor
-    ConsoleManager& operator=(ConsoleManager const&) {};    // Private assignment operator
+    ConsoleManager(ConsoleManager const&) = delete;         // Private copy constructor
+    ConsoleManager& operator=(ConsoleManager const&) = delete; // Private assignment operator
 
-    HANDLE conHandle;                               // The console's handle
-    static ConsoleManager* cmmnInst;                // Singleton instance of the ConsoleManager
+    HANDLE conHandle = nullptr;                             // The console's handle
+    static ConsoleManager* cmmnInst;                        // Singleton instance of the ConsoleManager
 
-    std::shared_ptr<Console> curCon;                // Currently accessed console
-    std::shared_ptr<Console> lastCon;               // Previously accessed console
+    std::shared_ptr<Console> curCon = nullptr;              // Currently accessed console
+    std::shared_ptr<Console> lastCon = nullptr;             // Previously accessed console
 
-    bool isConsoleRunning = true;                   // Flag indicating if the console is running
+    bool isConsoleRunning = true;                           // Flag indicating if the console is running
 };
