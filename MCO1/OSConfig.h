@@ -1,21 +1,26 @@
 #pragma once
 #include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
+#include <unordered_map>
 // reader class for config, when initializing
 
 class OSConfig {
 public:
-	static int NUM_CPU;
-	enum SCHEDULER {
+	static int NUM_CPU; //ok
+	enum SCHEDULER { //ok
 		FCFS,
 		SJF,
 		RR
 	};
-	static int TIMESLICE;
-	static bool PREEMPTIVE; 
-	static int BATCH_PROCESS_FREQ;
+	static SCHEDULER type;
+	static int TIMESLICE; //ok
+	static bool PREEMPTIVE; //not yet
+	static float BATCH_PROCESS_FREQ;
 	static int MIN_INS;
 	static int MAX_INS;
-	static int DELAYS_PER_EXEC;
+	static float DELAYS_PER_EXEC;
 
 	static void readConfig();
 	
@@ -24,7 +29,6 @@ public:
 	static void destroy();
 
 	
-
 private:
 	static OSConfig* sharedInstance;
 	OSConfig();

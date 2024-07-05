@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "MCO1\\x64\\Debug\\ConsoleManager.h.obj",
+            "outputs": [
+                "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MCO1\\x64\\Debug\\vc143.pdb",
+                "MCO1\\x64\\Debug\\",
+                "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MCO1\\x64\\Debug\\ConsoleManager.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "ConsoleManager.h",
+                    "source-path": "c:\\users\\renka\\documents\\github\\csopesy_group3\\mco1\\consolemanager.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

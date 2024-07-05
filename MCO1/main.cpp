@@ -1,16 +1,19 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include "OSConfig.h"
 #include "ConsoleManager.h"
 
 
 int main() {
     try {
-        // Initialize ConsoleManager
+        OSConfig::initialize();
+        OSConfig::readConfig();
+         //Initialize ConsoleManager
         ConsoleManager::initConMgr();
 
         // Get the ConsoleManager instance
-        ConsoleManager* consoleMgr = ConsoleManager::getInst();
+       ConsoleManager* consoleMgr = ConsoleManager::getInst();
 
         // Main loop
         while (consoleMgr->isRunning()) {

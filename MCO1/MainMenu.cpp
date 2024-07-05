@@ -1,5 +1,6 @@
 #pragma once
 #include "MainMenu.h"
+#include <Windows.h>
 #include "Console.h"
 #include "ConsoleManager.h"
 #include "CPUScheduler.h"

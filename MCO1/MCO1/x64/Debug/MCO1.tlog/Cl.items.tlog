@@ -1,0 +1,16 @@
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\Console.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\Console.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\ConsoleManager.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\ConsoleManager.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\ConsoleManager.h;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\ConsoleManager.h.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\CPUCore.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\CPUCore.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\CPUScheduler.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\CPUScheduler.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\FCFSScheduler.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\FCFSScheduler.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\main.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\main.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\Marquee.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\Marquee.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\NonPreemptiveSJF.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\NonPreemptiveSJF.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\PreemptiveSJF.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\PreemptiveSJF.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\Process.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\Process.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\ProcessScreen.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\ProcessScreen.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\RRScheduler.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\RRScheduler.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\Scheduler.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\Scheduler.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\OSConfig.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\OSConfig.obj
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MainMenu.cpp;C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\MCO1\x64\Debug\MainMenu.obj

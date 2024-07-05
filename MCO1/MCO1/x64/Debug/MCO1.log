@@ -1,0 +1,7 @@
+﻿  Scanning sources for module dependencies...
+  OSConfig.cpp
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\OSConfig.cpp(65,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\OSConfig.cpp(68,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+  Generating Code...
+  MCO1.vcxproj -> C:\Users\renka\Documents\GitHub\CSOPESY_Group3\MCO1\x64\Debug\MCO1.exe
