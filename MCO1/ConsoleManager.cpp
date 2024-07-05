@@ -135,7 +135,7 @@ ConsoleManager::ConsoleManager()
     int preemptive = 0;
     CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::FCFS;
     CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive, creationDelay, lowerInstructionsBound, higherInstructionsBound);
-
+    
     // Marquee [Mich]
     // const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
     // this->consoleTable[MARQCONSOLE] = marqueeConsole;      

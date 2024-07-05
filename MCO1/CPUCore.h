@@ -15,7 +15,7 @@ public:
 	CPUCore(int id, float executionDelay, int quantumCycles);
 	~CPUCore() = default;
 
-	bool isRunning = false;
+	bool isRunning;
 
 	int isCoreFree();
 	void runCore();
@@ -34,7 +34,7 @@ private:
 
 	std::thread coreThread;
 	std::mutex queueMutex;
-	bool isAvailable = true;
+	bool isAvailable;
 
 	int cpuCoreID;
 	int quantumCycles;

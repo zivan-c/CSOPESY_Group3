@@ -37,6 +37,7 @@ void MainMenu::help() {
     std::cout << "memory        Manage memory usage\n";
     std::cout << "schedule      Manage  process scheduler\n";
     std::cout << "screen        Manage screens\n";
+    std::cout << "test          Create test processes\n";
     std::cout << "clear         Clear the screen\n";
     std::cout << "exit          Exit OS\n";
 }
@@ -61,10 +62,11 @@ void MainMenu::process() {
     // Print Header
     printHeader();
 
+    //Valid Input
+    bool validInput = false;
+
     // Setup Console Handle
     HANDLE consoleHandle = ConsoleManager::getInst()->getConHandle();
-
-    bool validInput = false;
 
     while (!validInput) {
         // Enter Commands
@@ -81,7 +83,7 @@ void MainMenu::process() {
         }
 
         if (command == "exit") {
-            ConsoleManager::getInst()->exitApp(); 
+            ConsoleManager::getInst()->exitApp();
             std::cout << "Exiting the OS..." << std::endl;
             exit(0);
         }
@@ -98,7 +100,11 @@ void MainMenu::process() {
         if (command == "memory") {
             // switch to memory console
         }
-        
+
+        if (command == "test") {
+            CPUScheduler::getInstance()->startScheduler();
+        }
+
         if (command.compare(0, 5, "screen") == 0) {
             if (command.compare(6, 9, " -ls")) {
                 CPUScheduler::getInstance()->printReport();
@@ -111,7 +117,6 @@ void MainMenu::process() {
             else if (command.compare(6, 8, " -s")) {
 
             }
-        }       
-
-    }
+        }
+    }    
 }

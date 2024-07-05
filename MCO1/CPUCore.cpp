@@ -8,11 +8,10 @@
 
 CPUCore::CPUCore(int id, float executionDelay) {
 
-    this->isRunning = false;
-    this->isAvailable = true;
     this->cpuCoreID = id;
     this->executionDelay = executionDelay;
     this->quantumCycles = 0;
+    this->isAvailable = true;
 
 };
 
@@ -21,16 +20,24 @@ CPUCore::CPUCore(int id, float executionDelay, int quantumCycles) {
     this->cpuCoreID = id;
     this->executionDelay = executionDelay;
     this->quantumCycles = quantumCycles;
+    this->isAvailable = true;
 
 };
 
 void CPUCore::executeProcess() {
-    this->processInCPUCore->executeInstruction();
+    if (processInCPUCore) {
+        this->processInCPUCore->executeInstruction();
+    }
 };
 
 std::shared_ptr<Process> CPUCore::getProcessinCPUCore() {
 
-    return processInCPUCore;
+    if (processInCPUCore) {
+        return processInCPUCore;
+    }
+    else {
+        return nullptr;
+    }
 
 };
 
@@ -107,43 +114,6 @@ void CPUCore::RRCPUBehavior() {
     }
 };
 
-//void CPUCore::RRCPUBehavior(){
-
-  //testing adding the processINCPUCore within the running function
-  //if(processInCPUCore){
-
-    //for(int i = 0; i < quantumCycles; i++){
-
-      //if(processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING){
-
-        //executeProcess();
-        //std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
-        //std::this_thread::sleep_for(delayDuration);
-
-      //}else{
-        //addToFinishedList(CPUScheduler::getInstance()->finishedProcesses);
-        //getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
-        //break;
-
-      //}
-    //}
-
-    //returnProcesstoReadyQueue(CPUScheduler::getInstance()->readyQueue);
-    //getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
-
-  //}    
-  //else{
-
-    //if(!(CPUScheduler::getInstance()->readyQueue.empty())){
-      //getProcessFromReadyQueue(CPUScheduler::getInstance()->readyQueue);
-
-    //}
-  //}
-
-
-
-//};
-
 
 //FIX THIS
 void CPUCore::attachProcesstoCPUCore() {
@@ -205,6 +175,8 @@ void CPUCore::addToFinishedList() {
 
 void CPUCore::returnProcesstoReadyQueue() {
 
+    std::lock_guard<std::mutex> lock(queueMutex);
+
     if (processInCPUCore) {
         processInCPUCore->setProcessState(Process::ProcessState::READY);
         CPUScheduler::getInstance()->addProcessToReadyQueue(processInCPUCore);
@@ -236,6 +208,7 @@ int CPUCore::getCoreID() {
 };
 
 int CPUCore::isCoreFree() {
+
     std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
     if (this->isAvailable) {
         return 1;

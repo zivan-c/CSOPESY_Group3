@@ -29,33 +29,39 @@ Process::Process(std::string name, int instructionsLowerBound, int instructionsH
 
 void Process::executeInstruction() {
 
-    if (this->processState == PROCESSING) {
-
-        if (this->remainingInstructions == 0) {
-
-            this->processState = Process::ProcessState::FINISHED;
-
+    if (this != nullptr) {
+        if (this->processState == PROCESSING) {
+            if (this->remainingInstructions == 0) {
+                this->processState = Process::ProcessState::FINISHED;
+            }
+            else {
+                remainingInstructions--;
+                std::string date;
+                date = getDateAndTime();
+                this->instructionDateAndTime = date;
+            }
         }
-        else {
-            remainingInstructions--;
-            std::string date;
-            date = getDateAndTime();
-            this->instructionDateAndTime = date;
-        }
-
     }
-
 };
 
 int Process::getRemainingInstructions() {
 
-    return remainingInstructions;
-
+    if (this != nullptr) {
+        return remainingInstructions;
+    }
+    else {
+        return -1;
+    }
 };
 
 int Process::getTotalInstructions() {
 
-    return totalInstructions;
+    if (this != nullptr) {
+        return totalInstructions;
+    }
+    else {
+        return -1;
+    }
 
 };
 
@@ -67,19 +73,35 @@ void Process::setProcessState(Process::ProcessState state) {
 
 Process::ProcessState Process::getProcessState() {
 
-    return this->processState;
+    if (this != nullptr) {
+        return this->processState;
+    }
+    else {
+        return PROCESSING;
+    }
 
 };
 
 std::string Process::getProcessName() {
 
-    return processName;
+    if (this != nullptr) {
+        return processName;
+    }
+    else {
+        return nullptr;
+    }
 
 };
 
 int Process::getProcessID() {
 
-    return processID;
+    if (this != nullptr) {
+        return processID;
+    }
+    else {
+        return -1;
+    }
+
 
 };
 
@@ -91,7 +113,12 @@ void Process::setCoreID(int coreID) {
 
 int Process::getCoreID() {
 
-    return this->coreID;
+    if (this != nullptr) {
+        return this->coreID;
+    }
+    else {
+        return -1;
+    }
 
 };
 
