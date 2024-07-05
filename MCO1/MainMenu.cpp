@@ -32,14 +32,15 @@ void MainMenu::setConfig()
 
 void MainMenu::help() {
     std::cout << "\nCommand list: \n";
-    std::cout << "help          Shows all commands\n";
-    std::cout << "marquee       Open the Marquee Console\n";
-    std::cout << "memory        Manage memory usage\n";
-    std::cout << "schedule      Manage  process scheduler\n";
-    std::cout << "screen        Manage screens\n";
-    std::cout << "test          Create test processes\n";
-    std::cout << "clear         Clear the screen\n";
-    std::cout << "exit          Exit OS\n";
+    std::cout << "help              Shows all commands\n";
+    std::cout << "marquee           Open the Marquee Console\n";
+    std::cout << "memory            Manage memory usage\n";
+    std::cout << "scheduler-test    Generate test processes\n";
+    std::cout << "scheduler-stop    Stop process scheduler\n";
+    std::cout << "screen            Manage screens\n";
+    std::cout << "test              Create test processes\n";
+    std::cout << "clear             Clear the screen\n";
+    std::cout << "exit              Exit OS\n";
 }
 
 void MainMenu::printHeader() {
@@ -101,12 +102,16 @@ void MainMenu::process() {
             // switch to memory console
         }
 
-        if (command == "test") {
+        if (command == "scheduler-test") {
             CPUScheduler::getInstance()->startScheduler();
         }
 
-        if (command.compare(0, 5, "screen") == 0) {
-            if (command.compare(6, 9, " -ls")) {
+        if (command == "scheduler-stop") {
+            CPUScheduler::getInstance()->stopScheduler();
+        }
+
+        if (command.find("screen")) {
+            if (command.find(" -ls")) {
                 CPUScheduler::getInstance()->printReport();
             }
 
