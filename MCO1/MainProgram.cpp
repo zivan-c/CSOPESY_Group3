@@ -15,8 +15,8 @@ int main(){
   int higherInstructionsBound = 100;
   float executionDelay = 0.15;
   float creationDelay = 1;
-  int preemptive = 0;
-  CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::FCFS;
+  int preemptive = 1;
+  CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::SJF;
 
   CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
                           creationDelay, lowerInstructionsBound, higherInstructionsBound);

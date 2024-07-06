@@ -111,26 +111,6 @@ void CPUCore::RRCPUBehavior() {
 };
 
 
-//FIX THIS
-void CPUCore::attachProcesstoCPUCore() {
-
-  if(this->isCoreFree()){
-
-    this->processInCPUCore = CPUScheduler::getInstance()->removeProcessFromReadyQueue();
-    this->isAvailable = false;
-    
-    processInCPUCore->setCoreID(cpuCoreID);
-    processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
-
-    //for checking 
-    std::cout << "process: " << this->processInCPUCore->getProcessName() << " has been attached to CPUCORE: " 
-      << this->cpuCoreID << std::endl;
-
-  }
-
-};
-
-
 void CPUCore::getProcessFromReadyQueue(){
 
   if(CPUScheduler::getInstance()->isReadyQueueAvailable()){

@@ -13,26 +13,29 @@ void PreemptiveSJF::runScheduler(){
 
     while(isRunning){
 
-
-      if((!(CPUScheduler::getInstance()->isReadyQueueAvailable())) && (!(cpuCores.empty()))){
+      if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
       
         for (auto& i : cpuCores){
 
-          CPUScheduler::getInstance()->sortReadyQueue();
-
           if(i->isCoreFree()){
 
-            i->attachProcesstoCPUCore();
+            i->getProcessFromReadyQueue();
 
           }else{
 
-            i->getProcessinCPUCore()->setProcessState(Process::WAITING); //set to waiting to prevent instruction execution
-            if((i->getProcessinCPUCore()->getRemainingInstructions()) < 
+              i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING); //set to waiting to prevent instruction execution
+              if((i->getProcessinCPUCore()->getRemainingInstructions()) >
             CPUScheduler::getInstance()->returnLowestRemainingInstructions()){
 
-              i->attachProcesstoCPUCore();
+                i->returnProcesstoReadyQueue();
+                i->getProcessFromReadyQueue();
+                CPUScheduler::getInstance()->sortReadyQueue();
+                
 
-            }
+              }else{
+                i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
+              }
+
           }
         }
       } 

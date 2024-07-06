@@ -25,7 +25,6 @@ public:
   int getCoreID();
 
   void getProcessFromReadyQueue();
-  void attachProcesstoCPUCore();
   void returnProcesstoReadyQueue();
   void addToFinishedList();
   void removeProcessinCPUCore();

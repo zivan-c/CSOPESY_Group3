@@ -7,7 +7,6 @@
 
 void FCFSScheduler::runScheduler(){
 
-  std::vector<std::shared_ptr<CPUCore>>& reference = CPUScheduler::getInstance()->cpuCores;  
   std::thread schedulerThread;
   schedulerThread = std::thread([this](){
 

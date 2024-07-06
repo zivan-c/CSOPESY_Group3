@@ -11,23 +11,19 @@ void NonPreemptiveSJF::runScheduler(){
   schedulerThread = std::thread([this](){
 
     std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-
+      
     while(isRunning){
 
-      if((!(CPUScheduler::getInstance()->isReadyQueueAvailable())) && (!(cpuCores.empty()))) {
-      
-        for (auto& i : cpuCores){
+      if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
+          for (auto i : CPUScheduler::getInstance()->cpuCores){
 
-          CPUScheduler::getInstance()->sortReadyQueue();
-
-          if(i->isCoreFree()){
-
-            i->attachProcesstoCPUCore();
-
-          } 
-        }
-      } 
+            if(i->isCoreFree()){
+              i->getProcessFromReadyQueue();
+            }
+          }
+      }
     }
+
   });
 
   schedulerThread.detach();
