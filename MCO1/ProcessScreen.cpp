@@ -20,12 +20,11 @@ void ProcessScreen::initialize(){  //must run alongside initializing of schedule
 };
 
 
-void ProcessScreen::runScreen(std::shared_ptr<Process> process) {
+void ProcessScreen::runScreen() {
 
-  std::thread processScreenThread;
-  processScreenThread = std::thread([this, process](){
+    std::thread processScreenThread;
+    processScreenThread = std::thread([this](){
     this->isRunning = true;
-    attachProcessToScreen(process);
     system("clear");
     std::cout << "Process name: " << screenProcess->getProcessName() << "\n" << std::endl;
     std::cout << "Process ID: " << screenProcess->getProcessID() << "\n" << std::endl;
@@ -48,7 +47,7 @@ void ProcessScreen::processUserInput(std::string input){
   if(input == "exit") {
 
     singletonInstance->isRunning = false;
-    //return to main menu
+    //insert code for returning to the main menu
 
   }
   else if (input == "process-smi") {

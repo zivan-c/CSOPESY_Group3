@@ -434,3 +434,29 @@ void CPUScheduler::sortReadyQueue(){
         return a->getRemainingInstructions() < b->getRemainingInstructions();
     }); 
 };
+
+
+std::shared_ptr<Process> CPUScheduler::getProcessPointer(std::string process){
+  
+  for(auto& i : cpuCores){
+
+    if(!(i->isCoreFree())){
+      if (i->getProcessinCPUCore()->getProcessName() == process){
+        return i->getProcessinCPUCore();
+      }
+    }
+  }
+
+  if(!(readyQueue.empty())){
+    for(auto& i : readyQueue){
+      if(i->getProcessName() == process){
+        return i;
+      }
+    }
+  }
+
+  return nullptr;
+
+
+};
+

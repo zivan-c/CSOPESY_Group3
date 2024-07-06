@@ -38,6 +38,7 @@ public:
   void createProcess(std::string name);
   void startScheduler();
   void stopScheduler();
+  std::shared_ptr<Process> getProcessPointer(std::string process);
 
   void printReport();
   void createReportFile();
