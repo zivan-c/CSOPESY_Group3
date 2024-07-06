@@ -1,8 +1,6 @@
 #include "FCFSScheduler.h"
 #include "CPUScheduler.h"
 #include <thread> 
-#include "CPUCore.h"
-#include "Process.h"
 
 
 void FCFSScheduler::runScheduler(){
@@ -15,6 +13,7 @@ void FCFSScheduler::runScheduler(){
       if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
           for (auto i : CPUScheduler::getInstance()->cpuCores){
 
+            //Checks if the core is free, then attaches a process from the ready queue to it
             if(i->isCoreFree()){
               i->getProcessFromReadyQueue();
             }

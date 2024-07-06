@@ -10,6 +10,7 @@ class Process{
 
 public:
 
+  //Enum for process states
   enum ProcessState {
 
       READY,

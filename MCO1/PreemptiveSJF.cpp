@@ -9,30 +9,30 @@ void PreemptiveSJF::runScheduler(){
 
   schedulerThread = std::thread([this](){
 
-    std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-
     while(isRunning){
 
+      //Checks if ready queue has processes and there are CPU cores)
       if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
       
-        for (auto& i : cpuCores){
+        for (auto& i : CPUScheduler::getInstance()->cpuCores){
 
+          //Moves a process from the ready queue to the CPU core if available
           if(i->isCoreFree()){
-
             i->getProcessFromReadyQueue();
-
           }else{
-
               i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING); //set to waiting to prevent instruction execution
+            //if the instructions left in the process in the core is greater than the one
+            //in the front of th sorted ready queue
               if((i->getProcessinCPUCore()->getRemainingInstructions()) >
             CPUScheduler::getInstance()->returnLowestRemainingInstructions()){
 
+                //Exchange of processes
                 i->returnProcesstoReadyQueue();
                 i->getProcessFromReadyQueue();
-                CPUScheduler::getInstance()->sortReadyQueue();
-                
 
               }else{
+
+                //If less, continue to execute
                 i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
               }
 

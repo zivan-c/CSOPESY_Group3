@@ -9,28 +9,8 @@ void RRScheduler::runScheduler(){
 
   schedulerThread = std::thread([this](){
 
-    std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-
-    std::cout << "RRSCHED is running!" << std::endl;
-
-    while(isRunning){
-      if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(cpuCores.empty()))){
-      
-        for (auto& i : cpuCores){
-          //forchecking
-
-
-          if(i->isCoreFree()){
-
-            i->getProcessFromReadyQueue();
-
-          }
-
-
-
-        }
-      } 
-    }
+    //Implementation is within the CPUCore class
+    //
   });
   
   schedulerThread.detach();

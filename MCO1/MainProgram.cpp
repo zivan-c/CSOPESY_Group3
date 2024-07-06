@@ -11,10 +11,10 @@ int main(){
   bool running = 1;
   int cpuCores = 4;
   int quantumCycles = 5;
-  int lowerInstructionsBound = 10;
-  int higherInstructionsBound = 100;
-  float executionDelay = 0.15;
-  float creationDelay = 1;
+  int lowerInstructionsBound = 1000;
+  int higherInstructionsBound = 2000;
+  float executionDelay = 0.25;
+  float creationDelay = 0.5;
   int preemptive = 1;
   CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::SJF;
 
