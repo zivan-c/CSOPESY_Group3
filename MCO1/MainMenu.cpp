@@ -6,8 +6,10 @@
 #include "CPUScheduler.h"
 #include "OSConfig.h"
 #include "Scheduler.h"
+#include <string.h>
 #include "Process.h"
 #include "ProcessScreen.h"
+#include "marqueeWorkerThread.h"  // Include the header for marquee functionality
 
 MainMenu::MainMenu() : Console(MAIN) {
 }
@@ -27,14 +29,15 @@ void MainMenu::display() {
 
 void MainMenu::setConfig()
 {
-	OSConfig::initialize();
-	OSConfig::readConfig();
+    OSConfig::initialize();
+    OSConfig::readConfig();
 }
 
 void MainMenu::help() {
     std::cout << "\nCommand list: \n";
     std::cout << "help              Shows all commands\n";
     std::cout << "marquee           Open the Marquee Console\n";
+    std::cout << "initialize        Initialize the OS's processor\n";
     std::cout << "scheduler-test    Generate test processes\n";
     std::cout << "scheduler-stop    Stop process scheduler\n";
     std::cout << "screen            Manage screens\n";
@@ -64,6 +67,7 @@ void MainMenu::process() {
 
     //Valid Input
     bool validInput = false;
+    bool initialized = false;
 
     // Setup Console Handle
     HANDLE consoleHandle = ConsoleManager::getInst()->getConHandle();
@@ -74,49 +78,62 @@ void MainMenu::process() {
         std::cout << "\nEnter command (\"help\" for list of commands ): ";
         std::getline(std::cin, command);
 
-        if (command == "help") {
-            help();
-        }
-
-        if (command == "clear") {
-            system("cls");
-        }
-
         if (command == "exit") {
             ConsoleManager::getInst()->exitApp();
             std::cout << "Exiting the OS..." << std::endl;
             exit(0);
         }
 
-        if (command == "marquee") {
-            // switch to marquee console
-
+        if (command == "initialize") {
+            OSConfig::initialize();
+            OSConfig::readConfig();
+            initialized = true;
         }
 
-        if (command == "schedule") {
-            // switch to schedule console
-        }
-
-        if (command == "scheduler-test") {
-            CPUScheduler::getInstance()->startScheduler();
-        }
-
-        if (command == "scheduler-stop") {
-            CPUScheduler::getInstance()->stopScheduler();
-        }
-
-        if (command.find("screen")) {
-            if (command.find(" -ls")) {
-                CPUScheduler::getInstance()->printReport();
+        if (initialized == true) {
+            if (command == "help") {
+                help();
             }
 
-            else if (command.compare(6, 8, " -r")) {
-
+            if (command == "clear") {
+                system("cls");
             }
 
-            else if (command.compare(6, 8, " -s")) {
+            if (command == "marquee") {
+                // Call the marquee function
+                // marquee();
+            }
 
+            if (command == "schedule") {
+                // switch to schedule console
+            }
+
+            if (command == "scheduler-test") {
+                CPUScheduler::getInstance()->startScheduler();
+            }
+
+            if (command == "scheduler-stop") {
+                CPUScheduler::getInstance()->stopScheduler();
+            }
+
+            if (command.find("screen") != std::string::npos) {
+                if (command.find(" -ls") != std::string::npos) {
+                    CPUScheduler::getInstance()->printReport();
+                }
+
+                else if (command.find(" -r") != std::string::npos) {
+                    std::string exsProcess = command.erase(0, 8);
+                }
+
+                else if (command.find(" -s") != std::string::npos) {
+                    std::string newProcess = command.erase(0, 8);
+                }
             }
         }
-    }    
+        
+        else{
+            std::cout << "Operating System not initialized...\n";
+        }
+        
+    }
 }

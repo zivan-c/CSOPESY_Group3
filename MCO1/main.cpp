@@ -7,13 +7,11 @@
 
 int main() {
     try {
-        OSConfig::initialize();
-        OSConfig::readConfig();
-         //Initialize ConsoleManager
+        //Initialize ConsoleManager
         ConsoleManager::initConMgr();
 
         // Get the ConsoleManager instance
-       ConsoleManager* consoleMgr = ConsoleManager::getInst();
+        ConsoleManager* consoleMgr = ConsoleManager::getInst();
 
         // Main loop
         while (consoleMgr->isRunning()) {

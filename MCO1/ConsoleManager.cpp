@@ -124,18 +124,7 @@ ConsoleManager::ConsoleManager()
     const std::shared_ptr<MainMenu> mainMenu = std::make_shared<MainMenu>();
     this->conMap[MAIN] = mainMenu;
 
-    // Scheduler
-    bool running = 1;
-    int cpuCores = 4;
-    int quantumCycles = 5;
-    int lowerInstructionsBound = 10;
-    int higherInstructionsBound = 100;
-    float executionDelay = 0.25;
-    int creationDelay = 2;
-    int preemptive = 0;
-    CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::FCFS;
-    CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive, creationDelay, lowerInstructionsBound, higherInstructionsBound);
-    
+       
     // Marquee [Mich]
     // const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
     // this->consoleTable[MARQCONSOLE] = marqueeConsole;      
@@ -143,7 +132,6 @@ ConsoleManager::ConsoleManager()
     // Screen [Almost Done]
     const std::shared_ptr<ProcessScreen> processScreen = std::make_shared<ProcessScreen>();
     this->conMap[PROCESS] = processScreen;
-
 
     // Config
     this->changeConsole(MAIN);

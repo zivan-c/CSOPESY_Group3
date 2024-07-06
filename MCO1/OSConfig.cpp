@@ -1,7 +1,8 @@
 #include "OSConfig.h"
+#include "CPUScheduler.h"
 
 int OSConfig::NUM_CPU = 1;
-OSConfig::SCHEDULER FCFS;
+CPUScheduler::SchedulerAlgorithm algo;
 int OSConfig::TIMESLICE = 1;
 bool OSConfig::PREEMPTIVE = 1;
 float OSConfig::BATCH_PROCESS_FREQ = 1.0f;
@@ -46,12 +47,15 @@ void OSConfig::readConfig() {
 	}
 	if (umap["scheduler"] == "\"rr\"") {
 		OSConfig::type = RR;
+		algo = CPUScheduler::SchedulerAlgorithm::RR;
 	}
 	else if (umap["scheduler"] == "\"sjf\"") {
 		OSConfig::type = SJF;
+		algo = CPUScheduler::SchedulerAlgorithm::SJF;
 	}
 	else if (umap["scheduler"] == "\"fcfs\"") {
 		OSConfig::type = FCFS;
+		algo = CPUScheduler::SchedulerAlgorithm::FCFS;
 	}
 
 	if (umap["preemptive"] == "0") {
@@ -67,6 +71,8 @@ void OSConfig::readConfig() {
 	OSConfig::MAX_INS = std::stoi(umap["max-ins"]);
 	OSConfig::DELAYS_PER_EXEC = std::stod(umap["delays-per-exec"]);
 
+	// Scheduler
+	CPUScheduler::initialize(NUM_CPU, algo, DELAYS_PER_EXEC, TIMESLICE, PREEMPTIVE, BATCH_PROCESS_FREQ, MIN_INS, MAX_INS);
 }
 
 void OSConfig::initialize() {
