@@ -1,19 +1,18 @@
-#pragma once
-#include <vector>
-#include <string>
-#include <iostream>
-#include <memory>
-#include "Process.h"
-#include "CPUCore.h"
+#include "RRScheduler.h"
+#include "CPUScheduler.h"
+#include <thread>
 
+void RRScheduler::runScheduler() {
 
-//Scheduler class that each algorithm inherits for easier linkage
-class Scheduler {
+    std::thread schedulerThread;
+    isRunning = 1;
 
-public:
-	virtual void runScheduler() = 0;
-	int isRunning = 1;
-private:
+    schedulerThread = std::thread([this]() {
 
+        //Implementation is within the CPUCore class
+        //
+        });
+
+    schedulerThread.detach();
 
 };

@@ -3,10 +3,24 @@
 #include <cstdlib> 
 #include <thread>
 
+ProcessScreen::ProcessScreen() {
+}
+
+ProcessScreen::~ProcessScreen() {
+    // Cleanup code if necessary
+}
+
+void ProcessScreen::display() {
+    // Implementation of the display function
+}
+
+void ProcessScreen::activate() {
+    // Implementation of the process function
+}
 
 //Overrides the virtual function
 //Should only be run once a process has been attached
-void ProcessScreen::runConsole() {
+void ProcessScreen::process() {
 
     std::thread processScreenThread;
     processScreenThread = std::thread([this]() {
