@@ -21,7 +21,6 @@ int main(){
   CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
                           creationDelay, lowerInstructionsBound, higherInstructionsBound);
 
-  ProcessScreen::initialize();
   
 
   while(running){

@@ -33,6 +33,7 @@ public:
   void setCoreID(int coreID);
   void printProcessProgress();
   std::string getDateAndTime();
+  std::string getInstructionTime();
 
 
 private:

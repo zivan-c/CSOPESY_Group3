@@ -14,7 +14,7 @@
 #include <mutex>
 
 
-class CPUScheduler: public Console{
+class CPUScheduler{
 
 
 public:
