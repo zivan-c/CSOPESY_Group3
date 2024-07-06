@@ -1,6 +1,6 @@
+
 #include "CPUScheduler.h"
 #include "CPUCore.h"
-#include "Scheduler.h"
 #include "FCFSScheduler.h"
 #include "RRScheduler.h"
 #include "NonPreemptiveSJF.h"
@@ -43,6 +43,9 @@ void CPUScheduler::initialize(int cpuCores,
     for (auto core : singletonInstance->cpuCores) {
         core->runCore();
     }
+
+    singletonInstance->CPUSchedulerAlgorithm->runScheduler();
+
 
 };
 
@@ -134,6 +137,10 @@ void CPUScheduler::createProcess(std::string name) {
         Process::processCount++;
         this->readyQueue.push_back(process);
 
+        if (scheduler == SJF) {
+            this->sortReadyQueue();
+        };
+
         //for checking of pushing to ready queue
         std::cout << "Process: " << name << " pushed to ready queue" << std::endl;
 
@@ -173,6 +180,12 @@ void CPUScheduler::createDynamicProcesses() {
 
                 this->readyQueue.push_back(process);
 
+                if (scheduler == SJF) {
+
+                    this->sortReadyQueue();
+
+                }
+
                 //for checking of pushing to ready queue
                 //
                 std::chrono::duration<float, std::milli> delayDuration(creationDelay * 1000);
@@ -201,7 +214,6 @@ std::string CPUScheduler::getNewProcessName() {
 void CPUScheduler::startScheduler() {
     //for checking
     std::cout << "Started process creation" << std::endl;
-    this->CPUSchedulerAlgorithm->runScheduler();
     this->keepGenerating = true;
     this->createDynamicProcesses();
 };
@@ -231,18 +243,20 @@ void CPUScheduler::stopScheduler() {
 
 void CPUScheduler::printReport() {
 
-    std::cout << "CPU utilization: 100%\n" << std::endl;
     int coresUsed = 0;
     int coresAvailable = 0;
-    for (auto i : this->cpuCores) {
+    for (auto& i : this->cpuCores) {
         if (i->isCoreFree()) {
             coresAvailable++;
         }
         else {
-            //i->getProcessinCPUCore()->setProcessState(Process::WAITING);
             coresUsed++;
         }
     }
+
+    double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
+
+    std::cout << "CPU utilization: " << percentage << "%\n" << std::endl;
     std::cout << "Cores used: " << coresUsed << std::endl;
     std::cout << "Cores available: " << coresAvailable << "\n" << std::endl;
     std::cout << "----------------------------------------" << "\n"
@@ -256,7 +270,7 @@ void CPUScheduler::printReport() {
             auto process = i->getProcessinCPUCore();
             if (process != nullptr) {  // Check if the process is not a null pointer
                 std::string processName = process->getProcessName();
-                std::string processInstructionTime = process->getDateAndTime();
+                std::string processInstructionTime = process->getInstructionTime();
                 int coreID = i->getCoreID();
                 int remainingInstructions = process->getRemainingInstructions();
                 int totalInstructions = process->getTotalInstructions();
@@ -280,23 +294,6 @@ void CPUScheduler::printReport() {
 
 
 
-    //for (auto i : this->cpuCores) {
-      //if (!(i->isCoreFree())) {
-
-        //std::string processName = i->getProcessinCPUCore()->getProcessName();
-        //std::string processInstructionTime = i->getProcessinCPUCore()->getDateAndTime();
-        //int coreID = i->getCoreID();
-        //int remainingInstructions = i->getProcessinCPUCore()->getRemainingInstructions();
-        //int totalInstructions = i->getProcessinCPUCore()->getTotalInstructions();
-
-        //std::cout << processName << " " << 
-        //processInstructionTime << " Core: " <<
-        //coreID << " " << 
-        //remainingInstructions << "/" <<
-        //totalInstructions << std::endl;
-      //}
-    //}
-
     std::cout << "\n";
     std::cout << "Finished processes:" << std::endl;
 
@@ -304,7 +301,7 @@ void CPUScheduler::printReport() {
     for (auto i : finishedProcesses) {
 
         std::string processName = i->getProcessName();
-        std::string processInstructionTime = i->getDateAndTime();
+        std::string processInstructionTime = i->getInstructionTime();
         int totalInstructions = i->getTotalInstructions();
 
         std::cout << processName << " " <<
@@ -315,17 +312,6 @@ void CPUScheduler::printReport() {
     }
 
     std::cout << "----------------------------------------" << std::endl;
-
-    for (auto& i : cpuCores) {
-
-        if (!(i->isCoreFree()))
-        {
-
-            //i->getProcessinCPUCore()->setProcessState(Process::PROCESSING);
-
-        }
-
-    }
 
 };
 
@@ -341,8 +327,6 @@ void CPUScheduler::createReportFile() {
     }
     else {
 
-
-        outputFile << "CPU utilization: 100%\n" << std::endl;
         int coresUsed = 0;
         int coresAvailable = 0;
         for (auto& i : this->cpuCores) {
@@ -350,10 +334,13 @@ void CPUScheduler::createReportFile() {
                 coresAvailable++;
             }
             else {
-                //i->getProcessinCPUCore()->setProcessState(Process::WAITING);
                 coresUsed++;
             }
         }
+
+        double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
+
+        outputFile << "CPU utilization: " << percentage << "%\n" << std::endl;
         outputFile << "Cores used: " << coresUsed << std::endl;
         outputFile << "Cores available: " << coresAvailable << "\n" << std::endl;
         outputFile << "----------------------------------------" << "\n"
@@ -365,7 +352,7 @@ void CPUScheduler::createReportFile() {
             if (!(i->isCoreFree())) {
 
                 std::string processName = i->getProcessinCPUCore()->getProcessName();
-                std::string processInstructionTime = i->getProcessinCPUCore()->getDateAndTime();
+                std::string processInstructionTime = i->getProcessinCPUCore()->getInstructionTime();
                 int coreID = i->getCoreID();
                 int remainingInstructions = i->getProcessinCPUCore()->getRemainingInstructions();
                 int totalInstructions = i->getProcessinCPUCore()->getTotalInstructions();
@@ -385,7 +372,7 @@ void CPUScheduler::createReportFile() {
         for (auto& i : finishedProcesses) {
 
             std::string processName = i->getProcessName();
-            std::string processInstructionTime = i->getDateAndTime();
+            std::string processInstructionTime = i->getInstructionTime();
             int totalInstructions = i->getTotalInstructions();
 
             outputFile << processName << " " <<
@@ -397,15 +384,6 @@ void CPUScheduler::createReportFile() {
 
         outputFile << "----------------------------------------" << std::endl;
         outputFile.close();
-
-
-        for (auto& i : cpuCores) {
-
-            if (!(i->isCoreFree()))
-            {
-                // i->getProcessinCPUCore()->setProcessState(Process::PROCESSING);
-            }
-        }
 
         std::cout << "Report generated in csopesy-log.txt" << std::endl;
     }
@@ -465,10 +443,33 @@ void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> proces
 void CPUScheduler::sortReadyQueue() {
 
     std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-    // 
     //
     std::sort(readyQueue.begin(), readyQueue.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
         return a->getRemainingInstructions() < b->getRemainingInstructions();
         });
+};
+
+
+std::shared_ptr<Process> CPUScheduler::getProcessPointer(std::string process) {
+
+    for (auto& i : cpuCores) {
+
+        if (!(i->isCoreFree())) {
+            if (i->getProcessinCPUCore()->getProcessName() == process) {
+                return i->getProcessinCPUCore();
+            }
+        }
+    }
+
+    if (!(readyQueue.empty())) {
+        for (auto& i : readyQueue) {
+            if (i->getProcessName() == process) {
+                return i;
+            }
+        }
+    }
+
+    return nullptr;
+
 
 };

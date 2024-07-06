@@ -10,6 +10,7 @@ const std::string MAIN = "MAIN_CONSOLE";     // Constant string representing the
 const std::string MEMORY = "MEMORY_CONSOLE";   // Constant string representing the "Memory Console"
 const std::string SCHED = "SCHEDULE_CONSOLE"; // Constant string representing the "Schedule Console"
 const std::string MARQ = "MARQUEE_CONSOLE";  // Constant string representing the "Marquee Console"
+const std::string PROCESS = "PROCESS_CONSOLE";
 
 class ConsoleManager
 {

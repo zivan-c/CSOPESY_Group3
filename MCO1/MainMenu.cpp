@@ -35,11 +35,9 @@ void MainMenu::help() {
     std::cout << "\nCommand list: \n";
     std::cout << "help              Shows all commands\n";
     std::cout << "marquee           Open the Marquee Console\n";
-    std::cout << "memory            Manage memory usage\n";
     std::cout << "scheduler-test    Generate test processes\n";
     std::cout << "scheduler-stop    Stop process scheduler\n";
     std::cout << "screen            Manage screens\n";
-    std::cout << "test              Create test processes\n";
     std::cout << "clear             Clear the screen\n";
     std::cout << "exit              Exit OS\n";
 }
@@ -97,10 +95,6 @@ void MainMenu::process() {
 
         if (command == "schedule") {
             // switch to schedule console
-        }
-
-        if (command == "memory") {
-            // switch to memory console
         }
 
         if (command == "scheduler-test") {

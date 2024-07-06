@@ -14,20 +14,16 @@ void NonPreemptiveSJF::runScheduler() {
 
         while (isRunning) {
 
-            if ((!(CPUScheduler::getInstance()->isReadyQueueAvailable())) && (!(cpuCores.empty()))) {
-
-                for (auto& i : cpuCores) {
-
-                    CPUScheduler::getInstance()->sortReadyQueue();
+            if ((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
+                for (auto i : CPUScheduler::getInstance()->cpuCores) {
 
                     if (i->isCoreFree()) {
-
-                        i->attachProcesstoCPUCore();
-
+                        i->getProcessFromReadyQueue();
                     }
                 }
             }
         }
+
         });
 
     schedulerThread.detach();

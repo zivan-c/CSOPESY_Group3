@@ -141,7 +141,9 @@ ConsoleManager::ConsoleManager()
     // this->consoleTable[MARQCONSOLE] = marqueeConsole;      
 
     // Screen [Almost Done]
-    ProcessScreen::initialize();
+    const std::shared_ptr<ProcessScreen> processScreen = std::make_shared<ProcessScreen>();
+    this->conMap[PROCESS] = processScreen;
+
 
     // Config
 

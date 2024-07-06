@@ -2,6 +2,10 @@
 #include <string>
 #include "Console.h"
 
+Console::Console() {
+    // Initialize any necessary members
+}
+
 Console::Console(std::string name) {
     this->consoleName = name;
 }
@@ -19,6 +23,3 @@ void Console::runConsole() {
 }
 
 // Define the cmdReader method
-void Console::cmdReader() {
-    // Implementation of cmdReader
-}

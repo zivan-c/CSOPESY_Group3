@@ -38,6 +38,7 @@ public:
     void createProcess(std::string name);
     void startScheduler();
     void stopScheduler();
+    std::shared_ptr<Process> getProcessPointer(std::string process);
 
     void printReport();
     void createReportFile();
@@ -68,7 +69,6 @@ public:
     std::vector <std::shared_ptr<CPUCore> > cpuCores;
 
     int cpuCoresAmount;
-    SchedulerAlgorithm scheduler;
     int quantumCycles;
     int preemptive;
     float creationDelay;
@@ -79,6 +79,7 @@ public:
 private:
     std::mutex queueMutex;
     bool keepGenerating;
+    SchedulerAlgorithm scheduler;
     std::shared_ptr<Scheduler> CPUSchedulerAlgorithm;
     static CPUScheduler* singletonInstance;
     std::vector <std::shared_ptr<Process> > readyQueue;

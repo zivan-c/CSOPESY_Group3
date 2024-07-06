@@ -19,13 +19,11 @@ public:
 
 	int isCoreFree();
 	void runCore();
-	std::string getDateandTime();
 	void executeProcess();
 	std::shared_ptr<Process> getProcessinCPUCore();
 	int getCoreID();
 
 	void getProcessFromReadyQueue();
-	void attachProcesstoCPUCore();
 	void returnProcesstoReadyQueue();
 	void addToFinishedList();
 	void removeProcessinCPUCore();
