@@ -65,6 +65,9 @@ void MainMenu::process() {
     // Print Header
     printHeader();
 
+    // Display Instructions
+    help();
+
     //Valid Input
     bool validInput = false;
     bool initialized = false;
@@ -91,12 +94,12 @@ void MainMenu::process() {
         }
 
         if (initialized == true) {
-            if (command == "help") {
-                help();
-            }
-
             if (command == "clear") {
                 system("cls");
+            }
+
+            if (command == "help") {
+                help();
             }
 
             if (command == "marquee") {
@@ -132,7 +135,7 @@ void MainMenu::process() {
         }
         
         else{
-            std::cout << "Operating System not initialized...\n";
+            std::cout << "Operating System not initialized. Enter \"initialize\"...\n";
         }
         
     }

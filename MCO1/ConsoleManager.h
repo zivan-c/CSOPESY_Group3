@@ -6,11 +6,9 @@
 #include <memory>
 #include "Console.h"
 
-const std::string MAIN = "MAIN_CONSOLE";     // Constant string representing the "Main Console"
-const std::string MEMORY = "MEMORY_CONSOLE";   // Constant string representing the "Memory Console"
-const std::string SCHED = "SCHEDULE_CONSOLE"; // Constant string representing the "Schedule Console"
-const std::string MARQ = "MARQUEE_CONSOLE";  // Constant string representing the "Marquee Console"
-const std::string PROCESS = "PROCESS_CONSOLE";
+const std::string MAIN = "MAIN_CONSOLE";        // Constant string representing the "Main Console"
+const std::string SCHED = "SCHEDULE_CONSOLE";   // Constant string representing the "Schedule Console"
+const std::string PROCESS = "PROCESS_CONSOLE";  // Constant string representing the "Process Console"
 
 class ConsoleManager
 {
@@ -27,9 +25,6 @@ public:
     void changeConsole(std::string name);           // Change the currently accessed console
 
     void changeScreen(std::string name);            // Change the currently accessed screen
-    void registerScreen(std::string name);          // Register a screen into the conMap
-    void unregisterScreen(std::string name);        // Unregister a screen from the conMap
-    void prvsCon();                                 // Go back to the previously accessed console
     void exitApp();                                 // Exit the application
     bool isRunning() const;                         // Check if the application is running
 

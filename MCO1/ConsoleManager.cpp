@@ -88,16 +88,6 @@ void ConsoleManager::changeConsole(std::string name)
     }
 }
 
-
-// Unregister a screen from the conMap
-void ConsoleManager::unregisterScreen(std::string name)
-{
-    if (this->conMap.erase(name) == 0)
-    {
-        std::cerr << "Screen " << name << " not found. Check screens or fix spelling..." << std::endl;
-    }
-}
-
 // Change the currently accessed screen
 void ConsoleManager::changeScreen(std::string name)
 {
@@ -122,18 +112,13 @@ ConsoleManager::ConsoleManager()
 
     // Main Menu
     const std::shared_ptr<MainMenu> mainMenu = std::make_shared<MainMenu>();
-    this->conMap[MAIN] = mainMenu;
-
-       
-    // Marquee [Mich]
-    // const std::shared_ptr<MarqueeConsole> marqueeConsole = std::make_shared<MarqueeConsole>();
-    // this->consoleTable[MARQCONSOLE] = marqueeConsole;      
+    this->conMap[MAIN] = mainMenu;    
 
     // Screen [Almost Done]
     const std::shared_ptr<ProcessScreen> processScreen = std::make_shared<ProcessScreen>();
     this->conMap[PROCESS] = processScreen;
 
-    // Config
+    // Set Main Console
     this->changeConsole(MAIN);
 }
 
