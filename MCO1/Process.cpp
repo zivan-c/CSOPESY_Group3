@@ -67,7 +67,9 @@ int Process::getTotalInstructions() {
 
 void Process::setProcessState(Process::ProcessState state) {
 
-    this->processState = state;
+    if (this != nullptr) {
+        this->processState = state;
+    }
 
 };
 

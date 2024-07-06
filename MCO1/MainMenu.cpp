@@ -111,8 +111,8 @@ void MainMenu::process() {
             CPUScheduler::getInstance()->stopScheduler();
         }
 
-        if (command.find("screen")) {
-            if (command.find(" -ls")) {
+        if (command.find("screen") != std::string::npos) {
+            if (command.find(" -ls") != std::string::npos) {
                 CPUScheduler::getInstance()->printReport();
             }
 
