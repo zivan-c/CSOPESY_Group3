@@ -29,7 +29,7 @@ public:
   static CPUScheduler* getInstance();
   
   static void initialize(int cpuCores, SchedulerAlgorithm schedulerAlgorithm, float executionDelay,
-                          int quantumCycles, int preemptive, int creationDelay,
+                          int quantumCycles, int preemptive, float creationDelay,
                           int instructionsLowerBound, int instructionsHigherBound);
 
   void setupCPUS();

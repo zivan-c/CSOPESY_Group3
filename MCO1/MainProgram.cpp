@@ -9,14 +9,14 @@ void commandCheck(std::string input);
 int main(){
   
   bool running = 1;
-  int cpuCores = 4;
+  int cpuCores = 8;
   int quantumCycles = 5;
-  int lowerInstructionsBound = 1000;
-  int higherInstructionsBound = 2000;
-  float executionDelay = 0.25;
-  float creationDelay = 0.5;
+  int lowerInstructionsBound = 100;
+  int higherInstructionsBound = 100;
+  float executionDelay = 0.05;
+  float creationDelay = 0.15;
   int preemptive = 1;
-  CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::SJF;
+  CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::RR;
 
   CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
                           creationDelay, lowerInstructionsBound, higherInstructionsBound);

@@ -25,6 +25,7 @@ void CPUCore::executeProcess(){
 //Returns the pointer for the process inside of it
 std::shared_ptr<Process> CPUCore::getProcessinCPUCore(){
 
+  std::lock_guard<std::mutex> lock(queueMutex); 
   if(processInCPUCore){
     return processInCPUCore;
   }else{
@@ -82,7 +83,7 @@ void CPUCore::RRCPUBehavior() {
                 std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000);
                 std::this_thread::sleep_for(delayDuration);
             } else {
-                std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+                //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
                 addToFinishedList();
                 getProcessFromReadyQueue();
                 break;
@@ -91,7 +92,6 @@ void CPUCore::RRCPUBehavior() {
         returnProcesstoReadyQueue();
         getProcessFromReadyQueue();
     } else {
-        //std::lock_guard<std::mutex> lock(queueMutex); 
         if (CPUScheduler::getInstance()->isReadyQueueAvailable()) {
             getProcessFromReadyQueue();
         }
@@ -110,10 +110,6 @@ void CPUCore::getProcessFromReadyQueue(){
     if(processInCPUCore){
       processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
     };
-    
-
-  }else{
-
   }
 
 };

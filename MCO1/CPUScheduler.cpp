@@ -18,7 +18,7 @@ CPUScheduler *CPUScheduler::getInstance() { return singletonInstance; };
 void CPUScheduler::initialize(int cpuCores,
                               SchedulerAlgorithm schedulerAlgorithm,
                               float executionDelay, int quantumCycles,
-                              int preemptive, int creationDelay,
+                              int preemptive, float creationDelay,
                               int instructionsLowerBound,
                               int instructionsHigherBound) {
 
@@ -164,10 +164,10 @@ void CPUScheduler::createDynamicProcesses() {
         std::shared_ptr<Process> process = std::make_shared<Process>(
             name, this->instructionsLowerBound, this->instructionsHigherBound);
         //for checking of process creation
+      
 
         this->pushToReadyQueue(process);
 
-        std::cout << "created Process: " << name << std::endl;
 //
         //If the scheduler is SJF, sort the readyQueue with the addition of the new process
         if(scheduler == SJF){
@@ -177,8 +177,8 @@ void CPUScheduler::createDynamicProcesses() {
         }
 
         //Delay for creation of new process
-        std::chrono::duration<float, std::milli> delayDuration(creationDelay * 1000); 
-        std::this_thread::sleep_for(delayDuration);
+      std::chrono::duration<float, std::milli> delayDuration(creationDelay * 1000); 
+      std::this_thread::sleep_for(delayDuration);
 
       //} else {
 
@@ -223,11 +223,14 @@ void CPUScheduler::printReport() {
   //To check how many cores are being used
   int coresUsed = 0;
   int coresAvailable = 0;
-  for (auto &i : this->cpuCores) {
-    if (i->isCoreFree()) {
-      coresAvailable++;
-    } else {
+  for (auto i : this->cpuCores) {
+    auto process = i->getProcessinCPUCore();
+    if(process != nullptr){ 
+    //if (i != nullptr && !(i->isCoreFree())) {
+      //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
       coresUsed++;
+    } else {
+      coresAvailable++;
     }
   }
 
@@ -243,8 +246,6 @@ void CPUScheduler::printReport() {
   std::cout << "Running processes:" << std::endl;
 
   for (auto i : this->cpuCores) {
-      if (i != nullptr && !(i->isCoreFree())) {  // Check if i is not a null pointer and if it's not available
-
           auto process = i->getProcessinCPUCore();
           if (process != nullptr) {  // Check if the process is not a null pointer
               
@@ -260,31 +261,23 @@ void CPUScheduler::printReport() {
                         coreID << " " << 
                         remainingInstructions << "/" <<
                         totalInstructions << std::endl;
-          } else {
-              std::cerr << "Error: getProcessinCPUCore() returned a null pointer" << std::endl;
-          }
-      } else {
-          if (i == nullptr) {
-              std::cerr << "Error: Encountered null pointer in cpuCores" << std::endl;
-          }
+        }
       }
-  }
-
-
 
   std::cout << "\n";
   std::cout << "Finished processes:" << std::endl;
   
   //Prints out process information for all finished processes
-  for(auto i : finishedProcesses){
+  for(auto& i : finishedProcesses){
 
       std::string processName = i->getProcessName();
       std::string processInstructionTime = i->getInstructionTime();
       int totalInstructions = i->getTotalInstructions();
+      int remainingInstructions = i->getRemainingInstructions();
 
       std::cout << processName << " " << 
       processInstructionTime << " FINISHED " <<
-      totalInstructions << "/" <<
+      remainingInstructions << "/" <<
       totalInstructions << std::endl;
 
   }
@@ -292,6 +285,7 @@ void CPUScheduler::printReport() {
   std::cout << "----------------------------------------" << std::endl;
 
   for (auto &i : this->cpuCores) {
+  i->runCore();
     if (i->isCoreFree()) {
       i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
     }
@@ -313,63 +307,71 @@ void CPUScheduler::createReportFile() {
 
     int coresUsed = 0;
     int coresAvailable = 0;
-    for (auto &i : this->cpuCores) {
-      if (i->isCoreFree()) {
-        coresAvailable++;
-      } else {
-        coresUsed++;
-      }
+  for (auto i : this->cpuCores) {
+    auto process = i->getProcessinCPUCore();
+    if(process != nullptr){ 
+    //if (i != nullptr && !(i->isCoreFree())) {
+      //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
+      coresUsed++;
+    } else {
+      coresAvailable++;
     }
+  }
 
-    double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
+  //For utilization percentage
+  double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
 
-    outputFile << "CPU utilization: " << percentage << "%\n" << std::endl;
-    outputFile << "Cores used: " << coresUsed << std::endl;
-    outputFile << "Cores available: " << coresAvailable << "\n" << std::endl;
-    outputFile << "----------------------------------------" << "\n"
+  outputFile << "CPU utilization: " << percentage << "%\n" << std::endl;
+  outputFile << "Cores used: " << coresUsed << std::endl;
+  outputFile << "Cores available: " << coresAvailable << "\n" << std::endl;
+  outputFile << "----------------------------------------" << "\n"
               << std::endl;
 
-    outputFile << "Running processes:" << std::endl;
+  outputFile << "Running processes:" << std::endl;
 
-    for (auto &i : this->cpuCores) {
-      if (!(i->isCoreFree())) {
+  for (auto i : this->cpuCores) {
+          auto process = i->getProcessinCPUCore();
+          if (process != nullptr) {  // Check if the process is not a null pointer
+              
+              //Prints the process information inside the core.
+              std::string processName = process->getProcessName();
+              std::string processInstructionTime = process->getInstructionTime();
+              int coreID = i->getCoreID();
+              int remainingInstructions = process->getRemainingInstructions();
+              int totalInstructions = process->getTotalInstructions();
 
-        std::string processName = i->getProcessinCPUCore()->getProcessName();
-        std::string processInstructionTime = i->getProcessinCPUCore()->getInstructionTime();
-        int coreID = i->getCoreID();
-        int remainingInstructions = i->getProcessinCPUCore()->getRemainingInstructions();
-        int totalInstructions = i->getProcessinCPUCore()->getTotalInstructions();
-
-        outputFile << processName << " " << 
-        processInstructionTime << " Core: " <<
-        coreID << " " << 
-        remainingInstructions << "/" <<
-        totalInstructions << std::endl;
-
+              outputFile << processName << " " << 
+                        processInstructionTime << " Core: " <<
+                        coreID << " " << 
+                        remainingInstructions << "/" <<
+                        totalInstructions << std::endl;
+        }
       }
-    }
 
-    outputFile << "\n";
-    outputFile << "Finished processes:" << std::endl;
+  outputFile << "\n";
+  outputFile << "Finished processes:" << std::endl;
+  
+  //Prints out process information for all finished processes
+  for(auto& i : finishedProcesses){
 
-    for(auto& i : finishedProcesses){
+      std::string processName = i->getProcessName();
+      std::string processInstructionTime = i->getInstructionTime();
+      int totalInstructions = i->getTotalInstructions();
+      int remainingInstructions = i->getRemainingInstructions();
 
-        std::string processName = i->getProcessName();
-        std::string processInstructionTime = i->getInstructionTime();
-        int totalInstructions = i->getTotalInstructions();
+      outputFile << processName << " " << 
+      processInstructionTime << " FINISHED " <<
+      remainingInstructions << "/" <<
+      totalInstructions << std::endl;
 
-        outputFile << processName << " " << 
-        processInstructionTime << " FINISHED " <<
-        totalInstructions << "/" <<
-        totalInstructions << std::endl;
-
-    }
-
-    outputFile << "----------------------------------------" << std::endl;
-    outputFile.close();
-    
-    std::cout << "Report generated in csopesy-log.txt" << std::endl;
   }
+
+  outputFile << "----------------------------------------" << std::endl;
+
+};
+
+  std::cout << "Report generated in csopesy-log.txt" << std::endl;
+
 
 };
 
