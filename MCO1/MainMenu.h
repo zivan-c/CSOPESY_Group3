@@ -6,11 +6,8 @@ class MainMenu : public Console
 public:
 	MainMenu();						// Constructor
 	~MainMenu();					// Destructor
-
-	// Overridden Console Methods
-	void activate() override;		 
-	void display() override;		 
-	void process() override;		 
+	void activate();
+	void runConsole() override;
 
 private:
 	bool isNew = false;

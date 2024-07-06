@@ -36,9 +36,7 @@ void Process::executeInstruction() {
             }
             else {
                 remainingInstructions--;
-                std::string date;
-                date = getDateAndTime();
-                this->instructionDateAndTime = date;
+                this->instructionDateAndTime = getDateAndTime();
             }
         }
     }
@@ -145,20 +143,36 @@ void Process::printProcessProgress() {
 
 std::string Process::getDateAndTime() {
 
-    auto now = std::chrono::system_clock::now();
+    //auto now = std::chrono::system_clock::now();
 
+    //std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
+
+    //std::tm local_tm = *std::localtime(&calendarTime);
+    //std::ostringstream oss;
+    //oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)"); 
+
+    //std::string dateAndTime = oss.str();
+
+    //return dateAndTime;
+
+
+
+    auto now = std::chrono::system_clock::now();
     std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
 
-    std::tm local_tm = *std::localtime(&calendarTime);
-
+    std::tm local_tm;
+    localtime_s(&local_tm, &calendarTime); // Use localtime_s for thread safety on Windows
 
     std::ostringstream oss;
     oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)");
 
-    std::string dateAndTime = oss.str();
+    return oss.str();
 
-    return dateAndTime;
+};
 
 
+std::string Process::getInstructionTime() {
+
+    return this->instructionDateAndTime;
 
 };

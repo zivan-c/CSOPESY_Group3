@@ -3,33 +3,29 @@
 #include <string>
 #include <iostream>
 
-
-class ProcessScreen : public Console {
-
+//should inherit console class
+class ProcessScreen: public Console {
 
 public:
 
-	static ProcessScreen* getInstance();
+	ProcessScreen();
+	~ProcessScreen();
 	void attachProcessToScreen(std::shared_ptr<Process> process);
 	void processUserInput(std::string input);
-	static void initialize();
-	void runScreen();
+	void runConsole() override; //should have override keyword
 
 private:
 	bool isRunning;
 	std::shared_ptr<Process> screenProcess;
-	static ProcessScreen* singletonInstance;
 };
 
-
-//should do ProcessScreen::initialize alongside the cpuscheduler
 
 //in process-s<process_name>
 //CPUScheduler::getInstance()->createProcess(process_name);
 //std::shared_ptr<Process> process =  CPUScheduler::getInstance()->getProcessPointer(process_name);
 //if (process != nullptr)
-//ProcessScreen::getInstance()->attachProcessToScreen(process);
-//ProcessScreen::getInstnace()->runScreen();
+//access the process pointer then, attachProcessToScreen(process);
+//access the process pointer then, runScreen();
 //else
 //std::cout << "Process: " << process_name << " not found." << std::endl;
 
@@ -37,8 +33,8 @@ private:
 //in process-r<process_name>
 //std::shared_ptr<Process> process =  CPUScheduler::getInstance()->getProcessPointer(process_name);
 //if (process != nullptr)
-//ProcessScreen::getInstance()->attachProcessToScreen(process);
-//ProcessScreen::getInstance()->runScreen();
+//access the process pointer then, attachProcessToScreen(process);
+//access the process pointer then, runScreen();
 //else
 //std::cout << "Process: " << process_name << " not found." << std::endl;
 //

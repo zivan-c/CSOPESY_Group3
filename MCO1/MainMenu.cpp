@@ -9,7 +9,7 @@
 #include "Process.h"
 #include "ProcessScreen.h"
 
-MainMenu::MainMenu() : Console(MAIN) {
+MainMenu::MainMenu() : Console() {
 }
 
 MainMenu::~MainMenu() {
@@ -19,10 +19,6 @@ MainMenu::~MainMenu() {
 // Define the activate method
 void MainMenu::activate() {
     this->isNew = true;
-}
-
-// Define the display method
-void MainMenu::display() {
 }
 
 void MainMenu::setConfig()
@@ -60,7 +56,7 @@ void MainMenu::printHeader() {
     }
 }
 
-void MainMenu::process() {
+void MainMenu::runConsole() {
     // Print Header
     printHeader();
 

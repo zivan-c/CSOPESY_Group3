@@ -2,23 +2,14 @@
 #include <string>
 #include "Console.h"
 
-Console::Console(std::string name) {
-    this->consoleName = name;
+Console::Console() { // Basic Constructor
+
 }
 
-std::string Console::getName() {
-    return this->consoleName;
-}
-
-Console::~Console() { // Implement the destructor
+Console::~Console() { // Basic Destructor
 }
 
 // Define the runConsole method
 void Console::runConsole() {
     // Implementation of runConsole
-}
-
-// Define the cmdReader method
-void Console::cmdReader() {
-    // Implementation of cmdReader
 }

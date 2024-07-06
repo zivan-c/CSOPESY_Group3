@@ -19,7 +19,6 @@ public:
 
 	int isCoreFree();
 	void runCore();
-	std::string getDateandTime();
 	void executeProcess();
 	std::shared_ptr<Process> getProcessinCPUCore();
 	int getCoreID();

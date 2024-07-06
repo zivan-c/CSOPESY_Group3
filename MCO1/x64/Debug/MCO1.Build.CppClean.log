@@ -3,6 +3,8 @@ c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\m
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mainmenu.obj
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\osconfig.obj
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\scheduler.obj
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\rrscheduler.obj
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\processscreen.obj
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\process.obj
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\preemptivesjf.obj
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\nonpreemptivesjf.obj
@@ -17,9 +19,18 @@ c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\m
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\consolemanager.h.ifc.d.json
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\consolemanager.h.obj
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\consolemanager.h.module.json
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.pdb
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\cl.command.1.tlog
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\cl.read.1.tlog
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\cl.write.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link-cvtres.read.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link-cvtres.write.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link-rc.read.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link-rc.write.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link.command.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link.read.1.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link.read.3.tlog
+c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1.tlog\link.write.1.tlog
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1_md.tlog\cl.command.1.tlog
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1_md.tlog\microsoft.build.cpptasks.cl.read.1.tlog
 c:\users\aurelio garcia\documents\comsci\csopesy\group 3 - mco1\csopesy_group3\mco1\x64\debug\mco1_md.tlog\microsoft.build.cpptasks.cl.write.1.tlog

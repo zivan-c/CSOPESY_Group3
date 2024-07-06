@@ -3,24 +3,15 @@
 #include <cstdlib> //linux, change to windows if needed
 #include <thread>
 
+ProcessScreen::ProcessScreen() {
+    // Constructor implementation
+}
 
+ProcessScreen::~ProcessScreen() {
+    // Destructor implementation
+}
 
-ProcessScreen* ProcessScreen::singletonInstance = nullptr;
-ProcessScreen* ProcessScreen::getInstance() {
-
-    return singletonInstance;
-
-};
-
-void ProcessScreen::initialize() {  //must run alongside initializing of scheduler
-
-    singletonInstance = new ProcessScreen();
-    singletonInstance->isRunning = false;
-
-};
-
-
-void ProcessScreen::runScreen() {
+void ProcessScreen::runConsole() {
 
     std::thread processScreenThread;
     processScreenThread = std::thread([this]() {
@@ -46,7 +37,7 @@ void ProcessScreen::processUserInput(std::string input) {
 
     if (input == "exit") {
 
-        singletonInstance->isRunning = false;
+        this->isRunning = false;
         //insert code for returning to the main menu
 
     }

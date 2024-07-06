@@ -269,7 +269,7 @@ void CPUScheduler::printReport() {
             auto process = i->getProcessinCPUCore();
             if (process != nullptr) {  // Check if the process is not a null pointer
                 std::string processName = process->getProcessName();
-                std::string processInstructionTime = process->getDateAndTime();
+                std::string processInstructionTime = process->getInstructionTime();
                 int coreID = i->getCoreID();
                 int remainingInstructions = process->getRemainingInstructions();
                 int totalInstructions = process->getTotalInstructions();
@@ -300,7 +300,7 @@ void CPUScheduler::printReport() {
     for (auto i : finishedProcesses) {
 
         std::string processName = i->getProcessName();
-        std::string processInstructionTime = i->getDateAndTime();
+        std::string processInstructionTime = i->getInstructionTime();
         int totalInstructions = i->getTotalInstructions();
 
         std::cout << processName << " " <<
@@ -351,7 +351,7 @@ void CPUScheduler::createReportFile() {
             if (!(i->isCoreFree())) {
 
                 std::string processName = i->getProcessinCPUCore()->getProcessName();
-                std::string processInstructionTime = i->getProcessinCPUCore()->getDateAndTime();
+                std::string processInstructionTime = i->getProcessinCPUCore()->getInstructionTime();
                 int coreID = i->getCoreID();
                 int remainingInstructions = i->getProcessinCPUCore()->getRemainingInstructions();
                 int totalInstructions = i->getProcessinCPUCore()->getTotalInstructions();
@@ -371,7 +371,7 @@ void CPUScheduler::createReportFile() {
         for (auto& i : finishedProcesses) {
 
             std::string processName = i->getProcessName();
-            std::string processInstructionTime = i->getDateAndTime();
+            std::string processInstructionTime = i->getInstructionTime();
             int totalInstructions = i->getTotalInstructions();
 
             outputFile << processName << " " <<

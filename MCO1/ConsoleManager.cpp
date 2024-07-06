@@ -20,6 +20,12 @@ ConsoleManager* ConsoleManager::getInst()
     return cmmnInst;
 }
 
+void ConsoleManager::process() const {
+    if (curCon) {
+        curCon->runConsole();
+    }
+}
+
 // Initialize the ConsoleManager
 void ConsoleManager::initConMgr()
 {
@@ -47,32 +53,6 @@ void ConsoleManager::destroy()
     }
 }
 
-// Draw the currently accessed console
-void ConsoleManager::drawConsole() const
-{
-    if (this->curCon != nullptr)
-    {
-        this->curCon->display();
-    }
-    else
-    {
-        std::cerr << "No Console Assigned..." << std::endl;
-    }
-}
-
-// Process the currently accessed console
-void ConsoleManager::process() const
-{
-    if (this->curCon != nullptr)
-    {
-        this->curCon->process();
-    }
-    else
-    {
-        std::cerr << "No Console Assigned..." << std::endl;
-    }
-}
-
 void ConsoleManager::changeConsole(std::string name)
 {
     try
@@ -80,7 +60,7 @@ void ConsoleManager::changeConsole(std::string name)
         system("cls");
         this->lastCon = this->curCon;
         this->curCon = this->conMap.at(name);
-        this->curCon->activate();
+        this->curCon->runConsole();
     }
     catch (const std::out_of_range&)
     {
@@ -106,7 +86,7 @@ void ConsoleManager::changeScreen(std::string name)
         system("cls");
         this->lastCon = this->curCon;
         this->curCon = this->conMap.at(name);
-        this->curCon->activate();
+        this->curCon->runConsole();
     }
     catch (const std::out_of_range&)
     {
@@ -141,10 +121,12 @@ ConsoleManager::ConsoleManager()
     // this->consoleTable[MARQCONSOLE] = marqueeConsole;      
 
     // Screen [Almost Done]
-    ProcessScreen::initialize();
+    const std::shared_ptr<ProcessScreen> prcsCon = std::make_shared<ProcessScreen>();
+    this->conMap[SCHED] = prcsCon;
 
     // Config
 
+    // Setup 
     this->changeConsole(MAIN);
 }
 
