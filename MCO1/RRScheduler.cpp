@@ -1,38 +1,19 @@
-#include "RRScheduler.h"
-#include "CPUScheduler.h"
-#include <thread>
-
-void RRScheduler::runScheduler() {
-
-    std::thread schedulerThread;
-    isRunning = 1;
-
-    schedulerThread = std::thread([this]() {
-
-        std::vector<std::shared_ptr<CPUCore>>& cpuCores = CPUScheduler::getInstance()->cpuCores;
-
-        std::cout << "RRSCHED is running!" << std::endl;
-
-        while (isRunning) {
-            if ((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(cpuCores.empty()))) {
-
-                for (auto& i : cpuCores) {
-                    //forchecking
+#pragma once
+#include <vector>
+#include <string>
+#include <iostream>
+#include <memory>
+#include "Process.h"
+#include "CPUCore.h"
 
 
-                    if (i->isCoreFree()) {
+//Scheduler class that each algorithm inherits for easier linkage
+class Scheduler {
 
-                        i->getProcessFromReadyQueue();
+public:
+	virtual void runScheduler() = 0;
+	int isRunning = 1;
+private:
 
-                    }
-
-
-
-                }
-            }
-        }
-        });
-
-    schedulerThread.detach();
 
 };

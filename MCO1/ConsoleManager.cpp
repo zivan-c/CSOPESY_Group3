@@ -146,7 +146,6 @@ ConsoleManager::ConsoleManager()
 
 
     // Config
-
     this->changeConsole(MAIN);
 }
 

@@ -7,6 +7,7 @@
 #include "CPUCore.h"
 
 
+//Scheduler class that each algorithm inherits for easier linkage
 class Scheduler {
 
 public:

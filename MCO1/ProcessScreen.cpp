@@ -1,39 +1,21 @@
 #include "ProcessScreen.h"
 #include <iostream>
-#include <cstdlib> //linux, change to windows if needed
+#include <cstdlib> 
 #include <thread>
-#include <Windows.h>
-#include "Console.h"
-#include "ConsoleManager.h"
-#include "CPUScheduler.h"
-#include "OSConfig.h"
-#include "Scheduler.h"
-#include "Process.h"
 
-ProcessScreen::ProcessScreen() {
-}
 
-ProcessScreen::~ProcessScreen() {
-    // Cleanup code if necessary
-}
-
-void ProcessScreen::display() {
-    // Implementation of the display function
-}
-
-void ProcessScreen::activate() {
-    // Implementation of the process function
-}
-
-void ProcessScreen::process() {
+//Overrides the virtual function
+//Should only be run once a process has been attached
+void ProcessScreen::runConsole() {
 
     std::thread processScreenThread;
     processScreenThread = std::thread([this]() {
         this->isRunning = true;
-        system("clear");
+        system("clear"); //change for windows version
         std::cout << "Process name: " << screenProcess->getProcessName() << "\n" << std::endl;
         std::cout << "Process ID: " << screenProcess->getProcessID() << "\n" << std::endl;
 
+        //While running for process-smi and exit commands
         while (isRunning) {
 
             std::string input;
@@ -47,6 +29,7 @@ void ProcessScreen::process() {
 
 };
 
+//Processes user input
 void ProcessScreen::processUserInput(std::string input) {
 
     if (input == "exit") {
@@ -71,6 +54,7 @@ void ProcessScreen::processUserInput(std::string input) {
 };
 
 
+//Attaches process to the object
 void ProcessScreen::attachProcessToScreen(std::shared_ptr<Process> process) {
 
     this->screenProcess = process;

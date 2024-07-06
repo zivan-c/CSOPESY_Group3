@@ -75,6 +75,7 @@ public:
     int instructionsLowerBound;
     int instructionsHigherBound;
     float executionDelay;
+    void pushToReadyQueue(std::shared_ptr<Process>);
 
 private:
     std::mutex queueMutex;
