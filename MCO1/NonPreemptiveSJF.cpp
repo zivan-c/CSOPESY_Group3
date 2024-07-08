@@ -10,7 +10,7 @@ void NonPreemptiveSJF::runScheduler() {
 
     while (isRunning) {
 
-      if ((CPUScheduler::getInstance()->isReadyQueueAvailable()) &&
+      if ((CPUScheduler::getInstance()->getReadyQueue()->isReadyQueueAvailable()) &&
           (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
 
         for (auto i : CPUScheduler::getInstance()->cpuCores) {

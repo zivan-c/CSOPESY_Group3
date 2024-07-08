@@ -6,6 +6,7 @@
 #include "Process.h"
 #include "CPUCore.h"
 #include "Console.h"
+#include "ReadyQueue.h"
 
 #include <vector>
 #include <string>
@@ -48,13 +49,8 @@ public:
 
 
   //creating mutex functions for readyQueue, all functions related to it are accessed here
-  
-  std::shared_ptr<Process> removeProcessFromReadyQueue();
-  void addProcessToReadyQueue(std::shared_ptr<Process> process);
-  int returnLowestRemainingInstructions();
-  bool isReadyQueueAvailable();
 
-  void sortReadyQueue();
+  std::shared_ptr<ReadyQueue> getReadyQueue();
 
 
   void addProcessToFinishedProcesses(std::shared_ptr<Process> process);
@@ -75,7 +71,6 @@ public:
   int instructionsLowerBound;
   int instructionsHigherBound;
   float executionDelay;
-  void pushToReadyQueue(std::shared_ptr<Process>);
 
 private:
   std::mutex queueMutex;
@@ -83,7 +78,7 @@ private:
   SchedulerAlgorithm scheduler;
   std::shared_ptr<Scheduler> CPUSchedulerAlgorithm;
   static CPUScheduler* singletonInstance;
-  std::vector <std::shared_ptr<Process> > readyQueue;
+  std::shared_ptr<ReadyQueue> readyQueue;
   std::vector <std::shared_ptr<Process> > finishedProcesses;
   
 };

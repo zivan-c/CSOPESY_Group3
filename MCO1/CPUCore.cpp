@@ -25,7 +25,7 @@ void CPUCore::executeProcess(){
 //Returns the pointer for the process inside of it
 std::shared_ptr<Process> CPUCore::getProcessinCPUCore(){
 
-  std::lock_guard<std::mutex> lock(queueMutex); 
+  //std::lock_guard<std::mutex> lock(queueMutex); 
   if(processInCPUCore){
     return processInCPUCore;
   }else{
@@ -84,15 +84,17 @@ void CPUCore::RRCPUBehavior() {
                 std::this_thread::sleep_for(delayDuration);
             } else {
                 //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+                if(processInCPUCore->getProcessState() == Process::ProcessState::FINISHED){
                 addToFinishedList();
                 getProcessFromReadyQueue();
                 break;
+                }
             }
         }
         returnProcesstoReadyQueue();
         getProcessFromReadyQueue();
     } else {
-        if (CPUScheduler::getInstance()->isReadyQueueAvailable()) {
+        if (CPUScheduler::getInstance()->getReadyQueue()->isReadyQueueAvailable()) {
             getProcessFromReadyQueue();
         }
     }
@@ -102,10 +104,10 @@ void CPUCore::RRCPUBehavior() {
 //Gets a process from the readyqueue and assigns it to the core
 void CPUCore::getProcessFromReadyQueue(){
   //
-  std::lock_guard<std::mutex> lock(queueMutex); 
+  //std::lock_guard<std::mutex> lock(queueMutex); 
 
-  if(CPUScheduler::getInstance()->isReadyQueueAvailable()){
-    this->processInCPUCore = CPUScheduler::getInstance()->removeProcessFromReadyQueue(); 
+  if(CPUScheduler::getInstance()->getReadyQueue()->isReadyQueueAvailable()){
+    this->processInCPUCore = CPUScheduler::getInstance()->getReadyQueue()->removeProcessFromReadyQueue(); 
     this->isAvailable = false;
     if(processInCPUCore){
       processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
@@ -130,10 +132,10 @@ void CPUCore::addToFinishedList(){
 //Used by the RR and Preemptive Scheduler
 void CPUCore::returnProcesstoReadyQueue(){
 
-  std::lock_guard<std::mutex> lock(queueMutex);
+  //std::lock_guard<std::mutex> lock(queueMutex);
     if(processInCPUCore){
       processInCPUCore->setProcessState(Process::ProcessState::READY);
-      CPUScheduler::getInstance()->addProcessToReadyQueue(processInCPUCore); 
+      CPUScheduler::getInstance()->getReadyQueue()->pushToReadyQueue(processInCPUCore); 
       removeProcessinCPUCore();
     }
 
@@ -159,7 +161,7 @@ int CPUCore::getCoreID(){
 
 int CPUCore::isCoreFree(){
 
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+  //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
   if (this->isAvailable){
     return 1;
   }else{

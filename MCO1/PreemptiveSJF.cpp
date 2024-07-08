@@ -12,7 +12,7 @@ void PreemptiveSJF::runScheduler(){
     while(isRunning){
 
       //Checks if ready queue has processes and there are CPU cores)
-      if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
+      if((CPUScheduler::getInstance()->getReadyQueue()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
       
         for (auto& i : CPUScheduler::getInstance()->cpuCores){
 
@@ -24,7 +24,7 @@ void PreemptiveSJF::runScheduler(){
             //if the instructions left in the process in the core is greater than the one
             //in the front of th sorted ready queue
               if((i->getProcessinCPUCore()->getRemainingInstructions()) >
-            CPUScheduler::getInstance()->returnLowestRemainingInstructions()){
+            CPUScheduler::getInstance()->getReadyQueue()->returnLowestRemainingInstructions()){
 
                 //Exchange of processes
                 i->returnProcesstoReadyQueue();

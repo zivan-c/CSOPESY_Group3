@@ -8,7 +8,6 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
-#include <algorithm>
 
 CPUScheduler *CPUScheduler::singletonInstance = nullptr;
 CPUScheduler *CPUScheduler::getInstance() { return singletonInstance; };
@@ -38,6 +37,7 @@ void CPUScheduler::initialize(int cpuCores,
   singletonInstance->instructionsLowerBound = instructionsLowerBound;
   singletonInstance->instructionsHigherBound = instructionsHigherBound;
   singletonInstance->executionDelay = executionDelay;
+  singletonInstance->readyQueue = std::make_shared<ReadyQueue>();
 
   singletonInstance->setupCPUS();
   singletonInstance->setupScheduler();
@@ -49,6 +49,7 @@ void CPUScheduler::initialize(int cpuCores,
 
   //Starts the thread for the scheduler
   singletonInstance->CPUSchedulerAlgorithm->runScheduler();
+
   
 
 };
@@ -104,34 +105,15 @@ void CPUScheduler::setupScheduler() {
 //For the manual creation of a process
 void CPUScheduler::createProcess(std::string name) {
 
-  int isNameUsed = 0;
-
-  //Checks if the process is already present somewhere
-  if(!(readyQueue.empty())){
-    for (auto&i : readyQueue) {
-
-      if (i->getProcessName() == name) {
-        isNameUsed = 1;
-      }
-    }
-  }
-
-  //If not used, then create it and push to the vector
-  if (!isNameUsed) {
-
-    std::shared_ptr<Process> process = std::make_shared<Process>(
+  std::shared_ptr<Process> process = std::make_shared<Process>(
         name, this->instructionsLowerBound, this->instructionsHigherBound);
-    //for checking of process creation
-    Process::processCount++;
-    this->pushToReadyQueue(process);
+  Process::processCount++;
+  this->readyQueue->pushToReadyQueue(process);
 
     
-    if(scheduler == SJF){
-      this->sortReadyQueue();
-    };
-    
+  if(scheduler == SJF){
+    this->readyQueue->sortReadyQueue();
   } else {
-
     std::cout << "The name " << name << " already exists." << std::endl;
   }
 };
@@ -166,13 +148,13 @@ void CPUScheduler::createDynamicProcesses() {
         //for checking of process creation
       
 
-        this->pushToReadyQueue(process);
+        this->readyQueue->pushToReadyQueue(process);
 
 //
         //If the scheduler is SJF, sort the readyQueue with the addition of the new process
         if(scheduler == SJF){
 
-          this->sortReadyQueue();
+          this->readyQueue->sortReadyQueue();
 
         }
 
@@ -375,50 +357,25 @@ void CPUScheduler::createReportFile() {
 
 };
 
+std::shared_ptr<ReadyQueue> CPUScheduler::getReadyQueue(){
+
+  //std::lock_guard<std::mutex> lock(queueMutex); 
+  return readyQueue;
+
+};
 
 //Returns the remaining instructions of the process at the front of the sorted vector
 //in ascending order due to SJF
-int CPUScheduler::returnLowestRemainingInstructions(){
-
-  auto front = readyQueue.front();
-  int lowestInstructions = front->getRemainingInstructions();
-  return lowestInstructions;
-}
 
 
 //Returns the process at the front of the ready queue
 //Uses mutexes to avoid race conditions
-std::shared_ptr<Process> CPUScheduler::removeProcessFromReadyQueue(){
-
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutexcpusch.c
-  if (!readyQueue.empty()) {
-    auto front = readyQueue.front();
-    readyQueue.erase(readyQueue.begin());
-    return front;
-  } else {
-      return nullptr; // or throw an exception, handle as appropriate
-  }
-
-};
 
 //For returning a process to the ready queue from the core
 //for algorithms: RR and Preemptive SJF
-void CPUScheduler::addProcessToReadyQueue(std::shared_ptr<Process> process){
-  this->pushToReadyQueue(process);
-};
 
 //Checks if the readyQueue available
 //Also enclosed in a mutex
-bool CPUScheduler::isReadyQueueAvailable(){
-
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-  if(readyQueue.empty()){
-    return false;
-  }else{
-    return true;
-  }
-
-};
 
 //Adds a process to the finished processes
 void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> process){
@@ -429,51 +386,12 @@ void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> proces
 };
 
 
+
+
 //Sorts the ready queue for the SJF algorithms in ascending order of their remaining instructions
 //Enclosed in a mutex to avoid race conditions
-void CPUScheduler::sortReadyQueue(){
-
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-  //
- std::sort(readyQueue.begin(), readyQueue.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
-        return a->getRemainingInstructions() < b->getRemainingInstructions();
-    }); 
-};
-
-
 //Returns a pointer to the process to use for screen-s and screen-r
 //It checks for the process in both the CPU cores and the ready queue
-std::shared_ptr<Process> CPUScheduler::getProcessPointer(std::string process){
-  
-  for(auto& i : cpuCores){
-
-    if(!(i->isCoreFree())){
-      if (i->getProcessinCPUCore()->getProcessName() == process){
-        return i->getProcessinCPUCore();
-      }
-    }
-  }
-
-  if(!(readyQueue.empty())){
-    for(auto& i : readyQueue){
-      if(i->getProcessName() == process){
-        return i;
-      }
-    }
-  }
-
-  return nullptr;
 
 
-};
-
-
-
-void CPUScheduler::pushToReadyQueue(std::shared_ptr<Process> process){
-  
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-  readyQueue.push_back(process);
-
-
-};
 

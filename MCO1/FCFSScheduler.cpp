@@ -10,7 +10,7 @@ void FCFSScheduler::runScheduler(){
 
     while(isRunning){
 
-      if((CPUScheduler::getInstance()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
+      if((CPUScheduler::getInstance()->getReadyQueue()->isReadyQueueAvailable()) && (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
           for (auto i : CPUScheduler::getInstance()->cpuCores){
 
             //Checks if the core is free, then attaches a process from the ready queue to it
