@@ -127,12 +127,15 @@
     <ClCompile Include="CPUCore.cpp" />
     <ClCompile Include="CPUScheduler.cpp" />
     <ClCompile Include="FCFSScheduler.cpp" />
+    <ClCompile Include="FirstFit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Marquee.cpp" />
+    <ClCompile Include="MemoryAllocator.cpp" />
     <ClCompile Include="NonPreemptiveSJF.cpp" />
     <ClCompile Include="PreemptiveSJF.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="ProcessScreen.cpp" />
+    <ClCompile Include="ReadyQueue.cpp" />
     <ClCompile Include="RRScheduler.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="OSConfig.cpp" />
@@ -143,14 +146,17 @@
     <ClInclude Include="CPUCore.h" />
     <ClInclude Include="CPUScheduler.h" />
     <ClInclude Include="FCFSScheduler.h" />
+    <ClInclude Include="FirstFit.h" />
     <ClInclude Include="IETThread.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MarqueeWorkerThread.h" />
+    <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="NonPreemptiveSJF.h" />
     <ClInclude Include="OSConfig.h" />
     <ClInclude Include="PreemptiveSJF.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ProcessScreen.h" />
+    <ClInclude Include="ReadyQueue.h" />
     <ClInclude Include="RRScheduler.h" />
     <ClInclude Include="Scheduler.h" />
   </ItemGroup>

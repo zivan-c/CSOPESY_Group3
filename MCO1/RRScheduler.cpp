@@ -14,5 +14,4 @@ void RRScheduler::runScheduler() {
         });
 
     schedulerThread.detach();
-
 };

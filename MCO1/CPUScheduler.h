@@ -6,6 +6,7 @@
 #include "Process.h"
 #include "CPUCore.h"
 #include "Console.h"
+#include "ReadyQueue.h"
 
 #include <vector>
 #include <string>
@@ -29,8 +30,9 @@ public:
     static CPUScheduler* getInstance();
 
     static void initialize(int cpuCores, SchedulerAlgorithm schedulerAlgorithm, float executionDelay,
-        int quantumCycles, int preemptive, int creationDelay,
-        int instructionsLowerBound, int instructionsHigherBound);
+        int quantumCycles, int preemptive, float creationDelay,
+        int instructionsLowerBound, int instructionsHigherBound,
+        int processMemoryLower, int processMemoryHigher);
 
     void setupCPUS();
     void setupScheduler(); //include parameters for algorithm, quantum cycles, etc 
@@ -49,15 +51,13 @@ public:
 
     //creating mutex functions for readyQueue, all functions related to it are accessed here
 
-    std::shared_ptr<Process> removeProcessFromReadyQueue();
-    void addProcessToReadyQueue(std::shared_ptr<Process> process);
-    int returnLowestRemainingInstructions();
-    bool isReadyQueueAvailable();
-
-    void sortReadyQueue();
 
 
     void addProcessToFinishedProcesses(std::shared_ptr<Process> process);
+
+
+    //for memory progress printing
+    void printMemoryProgress();
 
     //to 
     //static void returntoReadyQueue(std::shared_ptr<Process> process);
@@ -75,7 +75,10 @@ public:
     int instructionsLowerBound;
     int instructionsHigherBound;
     float executionDelay;
-    void pushToReadyQueue(std::shared_ptr<Process>);
+    int overallMemory;
+    int processMemoryLower;
+    int processMemoryHigher;
+    int quantumCycleAmount;
 
 private:
     std::mutex queueMutex;
@@ -83,7 +86,6 @@ private:
     SchedulerAlgorithm scheduler;
     std::shared_ptr<Scheduler> CPUSchedulerAlgorithm;
     static CPUScheduler* singletonInstance;
-    std::vector <std::shared_ptr<Process> > readyQueue;
     std::vector <std::shared_ptr<Process> > finishedProcesses;
 
 };

@@ -5,14 +5,14 @@
         {
             "primary-output": "MCO1\\x64\\Debug\\ConsoleManager.h.obj",
             "outputs": [
-                "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MCO1\\x64\\Debug\\vc143.pdb",
+                "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\MCO1\\x64\\Debug\\vc143.pdb",
                 "MCO1\\x64\\Debug\\",
-                "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MCO1\\x64\\Debug\\ConsoleManager.h.ifc"
+                "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\MCO1\\x64\\Debug\\ConsoleManager.h.ifc"
             ],
             "provides": [
                 {
                     "logical-name": "ConsoleManager.h",
-                    "source-path": "c:\\users\\renka\\documents\\github\\csopesy_group3\\mco1\\consolemanager.h",
+                    "source-path": "c:\\users\\aurelio garcia\\documents\\comsci\\csopesy\\group 3 - mco1\\csopesy_group3\\mco1\\consolemanager.h",
                     "lookup-method": "absolute"
                 }
             ],

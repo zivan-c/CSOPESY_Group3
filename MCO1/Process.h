@@ -22,7 +22,8 @@ public:
     static int processIDCount;
     static int processCount;
 
-    Process(std::string name, int instructionsLowerBound, int instructionsHigherBound);
+    Process(std::string name, int instructionsLowerBound, int instructionsHigherBound, int processMemoryLower,
+        int processMemoryHigher);
     void executeInstruction();
     int getRemainingInstructions();
     int getTotalInstructions();
@@ -35,6 +36,7 @@ public:
     void printProcessProgress();
     std::string getDateAndTime();
     std::string getInstructionTime();
+    int getMemory();
 
 
 private:
@@ -45,5 +47,6 @@ private:
     int remainingInstructions;
     ProcessState processState;
     std::string instructionDateAndTime;
+    int memoryAmount;
 
 };

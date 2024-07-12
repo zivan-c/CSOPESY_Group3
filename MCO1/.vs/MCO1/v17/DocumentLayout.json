@@ -1,58 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\",
+  "WorkspaceRootPath": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\OSConfig.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:OSConfig.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\FirstFit.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:FirstFit.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\FirstFit.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:FirstFit.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\Console.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:Console.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\OSConfig.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:OSConfig.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\Process.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\Process.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:Process.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\FCFSScheduler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:FCFSScheduler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\CPUCore.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:CPUCore.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\CPUScheduler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:CPUScheduler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\IETThread.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:IETThread.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MainMenu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:MainMenu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MainMenu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:MainMenu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\ConsoleManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:ConsoleManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\ConsoleManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:ConsoleManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -71,25 +35,12 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "OSConfig.h",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\OSConfig.h",
-              "RelativeDocumentMoniker": "OSConfig.h",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\OSConfig.h",
-              "RelativeToolTip": "OSConfig.h",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAowA8AAAADAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-07-05T14:40:39.682Z",
-              "EditorCaption": ""
             }
           ]
         },
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -97,158 +48,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CPUScheduler.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\CPUScheduler.cpp",
-              "RelativeDocumentMoniker": "CPUScheduler.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\CPUScheduler.cpp",
-              "RelativeToolTip": "CPUScheduler.cpp",
-              "ViewState": "AQIAACEAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 0,
+              "Title": "FirstFit.cpp",
+              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\FirstFit.cpp",
+              "RelativeDocumentMoniker": "FirstFit.cpp",
+              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\FirstFit.cpp",
+              "RelativeToolTip": "FirstFit.cpp",
+              "ViewState": "AQIAAFQAAAAAAAAAAAAnwGEAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T15:12:04.342Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "FCFSScheduler.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\FCFSScheduler.cpp",
-              "RelativeDocumentMoniker": "FCFSScheduler.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\FCFSScheduler.cpp",
-              "RelativeToolTip": "FCFSScheduler.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T15:11:45.929Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "OSConfig.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\OSConfig.cpp",
-              "RelativeDocumentMoniker": "OSConfig.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\OSConfig.cpp",
-              "RelativeToolTip": "OSConfig.cpp",
-              "ViewState": "AQIAAD8AAAAAAAAAAAAAAEQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T14:39:46.914Z",
+              "WhenOpened": "2024-07-12T08:08:33.982Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Console.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\Console.cpp",
-              "RelativeDocumentMoniker": "Console.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\Console.cpp",
-              "RelativeToolTip": "Console.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "Process.cpp",
+              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\Process.cpp",
+              "RelativeDocumentMoniker": "Process.cpp",
+              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\Process.cpp",
+              "RelativeToolTip": "Process.cpp",
+              "ViewState": "AQIAAJkAAAAAAAAAAAAnwKUAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T14:53:03.064Z",
+              "WhenOpened": "2024-07-12T08:08:10.23Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "FirstFit.h",
+              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\FirstFit.h",
+              "RelativeDocumentMoniker": "FirstFit.h",
+              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\FirstFit.h",
+              "RelativeToolTip": "FirstFit.h",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAnwBoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-07-12T08:07:19.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\main.cpp",
+              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\main.cpp",
+              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\main.cpp",
               "RelativeToolTip": "main.cpp",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAABMAAAAKAAAA",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T14:39:35.427Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CPUCore.h",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\CPUCore.h",
-              "RelativeDocumentMoniker": "CPUCore.h",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\CPUCore.h",
-              "RelativeToolTip": "CPUCore.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-07-05T15:15:34.563Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Process.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\Process.cpp",
-              "RelativeDocumentMoniker": "Process.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\Process.cpp",
-              "RelativeToolTip": "Process.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T15:15:50.839Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IETThread.h",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\IETThread.h",
-              "RelativeDocumentMoniker": "IETThread.h",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\IETThread.h",
-              "RelativeToolTip": "IETThread.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-07-05T15:00:55.184Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ConsoleManager.h",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\ConsoleManager.h",
-              "RelativeDocumentMoniker": "ConsoleManager.h",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\ConsoleManager.h",
-              "RelativeToolTip": "ConsoleManager.h",
-              "ViewState": "AQIAABYAAAAAAAAAAAAowCgAAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-07-05T14:58:53.866Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ConsoleManager.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\ConsoleManager.cpp",
-              "RelativeDocumentMoniker": "ConsoleManager.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\ConsoleManager.cpp",
-              "RelativeToolTip": "ConsoleManager.cpp",
-              "ViewState": "AQIAAIcAAAAAAAAAAAAAAHIAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T14:39:35.403Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "MainMenu.cpp",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MainMenu.cpp",
-              "RelativeDocumentMoniker": "MainMenu.cpp",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MainMenu.cpp",
-              "RelativeToolTip": "MainMenu.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-05T14:39:35.464Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "MainMenu.h",
-              "DocumentMoniker": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MainMenu.h",
-              "RelativeDocumentMoniker": "MainMenu.h",
-              "ToolTip": "C:\\Users\\renka\\Documents\\GitHub\\CSOPESY_Group3\\MCO1\\MainMenu.h",
-              "RelativeToolTip": "MainMenu.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-07-05T14:39:35.559Z",
+              "WhenOpened": "2024-07-12T08:06:44.441Z",
               "EditorCaption": ""
             }
           ]

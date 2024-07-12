@@ -72,7 +72,7 @@ void OSConfig::readConfig() {
 	OSConfig::DELAYS_PER_EXEC = std::stod(umap["delays-per-exec"]);
 
 	// Scheduler
-	CPUScheduler::initialize(NUM_CPU, algo, DELAYS_PER_EXEC, TIMESLICE, PREEMPTIVE, BATCH_PROCESS_FREQ, MIN_INS, MAX_INS);
+	// CPUScheduler::initialize(NUM_CPU, algo, DELAYS_PER_EXEC, TIMESLICE, PREEMPTIVE, BATCH_PROCESS_FREQ, MIN_INS, MAX_INS);
 }
 
 void OSConfig::initialize() {

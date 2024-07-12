@@ -15,5 +15,4 @@ public:
 	int isRunning = 1;
 private:
 
-
 };

@@ -116,7 +116,6 @@ ConsoleManager::ConsoleManager()
 
     // Screen [Almost Done]
     const std::shared_ptr<ProcessScreen> processScreen = std::make_shared<ProcessScreen>();
-    this->conMap[PROCESS] = processScreen;
 
     // Set Main Console
     this->changeConsole(MAIN);

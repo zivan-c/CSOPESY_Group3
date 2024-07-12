@@ -5,10 +5,11 @@
 #include "NonPreemptiveSJF.h"
 #include "Process.h"
 #include "PreemptiveSJF.h"
+#include "FirstFit.h"
 #include <chrono>
 #include <thread>
+#include <string>
 #include <fstream>
-#include <algorithm>
 
 CPUScheduler* CPUScheduler::singletonInstance = nullptr;
 CPUScheduler* CPUScheduler::getInstance() { return singletonInstance; };
@@ -18,9 +19,10 @@ CPUScheduler* CPUScheduler::getInstance() { return singletonInstance; };
 void CPUScheduler::initialize(int cpuCores,
     SchedulerAlgorithm schedulerAlgorithm,
     float executionDelay, int quantumCycles,
-    int preemptive, int creationDelay,
+    int preemptive, float creationDelay,
     int instructionsLowerBound,
-    int instructionsHigherBound) {
+    int instructionsHigherBound, int processMemoryLower,
+    int processMemoryHigher) {
 
 
     //Sets up the default values for process for subsequent process creation.
@@ -38,9 +40,15 @@ void CPUScheduler::initialize(int cpuCores,
     singletonInstance->instructionsLowerBound = instructionsLowerBound;
     singletonInstance->instructionsHigherBound = instructionsHigherBound;
     singletonInstance->executionDelay = executionDelay;
+    singletonInstance->processMemoryLower = processMemoryLower;
+    singletonInstance->processMemoryHigher = processMemoryHigher;
+
+    //for memory
+    singletonInstance->quantumCycleAmount = 0;
 
     singletonInstance->setupCPUS();
     singletonInstance->setupScheduler();
+
 
     //Starts threads for CPU cores
     for (auto& core : singletonInstance->cpuCores) {
@@ -49,6 +57,7 @@ void CPUScheduler::initialize(int cpuCores,
 
     //Starts the thread for the scheduler
     singletonInstance->CPUSchedulerAlgorithm->runScheduler();
+
 
 
 };
@@ -108,35 +117,17 @@ void CPUScheduler::setupScheduler() {
 //For the manual creation of a process
 void CPUScheduler::createProcess(std::string name) {
 
-    int isNameUsed = 0;
-
-    //Checks if the process is already present somewhere
-    if (!(readyQueue.empty())) {
-        for (auto& i : readyQueue) {
-
-            if (i->getProcessName() == name) {
-                isNameUsed = 1;
-            }
-        }
-    }
-
-    //If not used, then create it and push to the vector
-    if (!isNameUsed) {
-
-        std::shared_ptr<Process> process = std::make_shared<Process>(
-            name, this->instructionsLowerBound, this->instructionsHigherBound);
-        //for checking of process creation
-        Process::processCount++;
-        this->pushToReadyQueue(process);
+    std::shared_ptr<Process> process = std::make_shared<Process>(
+        name, this->instructionsLowerBound, this->instructionsHigherBound, this->processMemoryLower,
+        this->processMemoryHigher);
+    Process::processCount++;
+    ReadyQueue::getInstance()->pushToReadyQueue(process);
 
 
-        if (scheduler == SJF) {
-            this->sortReadyQueue();
-        };
-
+    if (scheduler == SJF) {
+        ReadyQueue::getInstance()->sortReadyQueue();
     }
     else {
-
         std::cout << "The name " << name << " already exists." << std::endl;
     }
 };
@@ -167,15 +158,18 @@ void CPUScheduler::createDynamicProcesses() {
 
             //if (!isNameUsed) {
             std::shared_ptr<Process> process = std::make_shared<Process>(
-                name, this->instructionsLowerBound, this->instructionsHigherBound);
+                name, this->instructionsLowerBound, this->instructionsHigherBound, this->processMemoryLower,
+                this->processMemoryHigher);
             //for checking of process creation
 
-            this->pushToReadyQueue(process);
+
+            ReadyQueue::getInstance()->pushToReadyQueue(process);
+
             //
                     //If the scheduler is SJF, sort the readyQueue with the addition of the new process
             if (scheduler == SJF) {
 
-                this->sortReadyQueue();
+                ReadyQueue::getInstance()->sortReadyQueue();
 
             }
 
@@ -227,11 +221,13 @@ void CPUScheduler::printReport() {
     int coresUsed = 0;
     int coresAvailable = 0;
     for (auto& i : this->cpuCores) {
-        if (i->isCoreFree()) {
-            coresAvailable++;
+        auto process = i->getProcessinCPUCore();
+        if (i != nullptr && !(i->isCoreFree())) {
+            //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
+            coresUsed++;
         }
         else {
-            coresUsed++;
+            coresAvailable++;
         }
     }
 
@@ -247,61 +243,51 @@ void CPUScheduler::printReport() {
     std::cout << "Running processes:" << std::endl;
 
     for (auto i : this->cpuCores) {
-        if (i != nullptr && !(i->isCoreFree())) {  // Check if i is not a null pointer and if it's not available
-
-            auto process = i->getProcessinCPUCore();
-            if (process != nullptr) {  // Check if the process is not a null pointer
+        auto process = i->getProcessinCPUCore();
+        if (process != nullptr) {  // Check if the process is not a null pointer
+            //if(i->getProcessinCPUCore()){
 
                 //Prints the process information inside the core.
-                std::string processName = process->getProcessName();
-                std::string processInstructionTime = process->getInstructionTime();
-                int coreID = i->getCoreID();
-                int remainingInstructions = process->getRemainingInstructions();
-                int totalInstructions = process->getTotalInstructions();
+            std::string processName = process->getProcessName();
+            std::string processInstructionTime = process->getInstructionTime();
+            int coreID = i->getCoreID();
+            int remainingInstructions = process->getRemainingInstructions();
+            int totalInstructions = process->getTotalInstructions();
 
-                std::cout << processName << " " <<
-                    processInstructionTime << " Core: " <<
-                    coreID << " " <<
-                    remainingInstructions << "/" <<
-                    totalInstructions << std::endl;
-            }
-            else {
-                std::cerr << "Error: getProcessinCPUCore() returned a null pointer" << std::endl;
-            }
-        }
-        else {
-            if (i == nullptr) {
-                std::cerr << "Error: Encountered null pointer in cpuCores" << std::endl;
-            }
+            std::cout << processName << " " <<
+                processInstructionTime << " Core: " <<
+                coreID << " " <<
+                remainingInstructions << "/" <<
+                totalInstructions << std::endl;
         }
     }
-
-
 
     std::cout << "\n";
     std::cout << "Finished processes:" << std::endl;
 
     //Prints out process information for all finished processes
-    for (auto i : finishedProcesses) {
+    for (auto& i : finishedProcesses) {
 
         std::string processName = i->getProcessName();
         std::string processInstructionTime = i->getInstructionTime();
         int totalInstructions = i->getTotalInstructions();
+        int remainingInstructions = i->getRemainingInstructions();
 
         std::cout << processName << " " <<
             processInstructionTime << " FINISHED " <<
-            totalInstructions << "/" <<
+            remainingInstructions << "/" <<
             totalInstructions << std::endl;
 
     }
 
     std::cout << "----------------------------------------" << std::endl;
 
-    for (auto& i : this->cpuCores) {
-        if (i->isCoreFree()) {
-            i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
-        }
-    }
+    //for (auto &i : this->cpuCores) {
+    //i->runCore();
+      //if (i->isCoreFree()) {
+        //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
+      //}
+    //}
 
 };
 
@@ -320,15 +306,19 @@ void CPUScheduler::createReportFile() {
 
         int coresUsed = 0;
         int coresAvailable = 0;
-        for (auto& i : this->cpuCores) {
-            if (i->isCoreFree()) {
-                coresAvailable++;
+        for (auto i : this->cpuCores) {
+            auto process = i->getProcessinCPUCore();
+            if (process != nullptr) {
+                //if (i != nullptr && !(i->isCoreFree())) {
+                  //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
+                coresUsed++;
             }
             else {
-                coresUsed++;
+                coresAvailable++;
             }
         }
 
+        //For utilization percentage
         double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
 
         outputFile << "CPU utilization: " << percentage << "%\n" << std::endl;
@@ -339,94 +329,65 @@ void CPUScheduler::createReportFile() {
 
         outputFile << "Running processes:" << std::endl;
 
-        for (auto& i : this->cpuCores) {
-            if (!(i->isCoreFree())) {
+        for (auto i : this->cpuCores) {
+            auto process = i->getProcessinCPUCore();
+            if (process != nullptr) {  // Check if the process is not a null pointer
 
-                std::string processName = i->getProcessinCPUCore()->getProcessName();
-                std::string processInstructionTime = i->getProcessinCPUCore()->getInstructionTime();
+                //Prints the process information inside the core.
+                std::string processName = process->getProcessName();
+                std::string processInstructionTime = process->getInstructionTime();
                 int coreID = i->getCoreID();
-                int remainingInstructions = i->getProcessinCPUCore()->getRemainingInstructions();
-                int totalInstructions = i->getProcessinCPUCore()->getTotalInstructions();
+                int remainingInstructions = process->getRemainingInstructions();
+                int totalInstructions = process->getTotalInstructions();
 
                 outputFile << processName << " " <<
                     processInstructionTime << " Core: " <<
                     coreID << " " <<
                     remainingInstructions << "/" <<
                     totalInstructions << std::endl;
-
             }
         }
 
         outputFile << "\n";
         outputFile << "Finished processes:" << std::endl;
 
+        //Prints out process information for all finished processes
         for (auto& i : finishedProcesses) {
 
             std::string processName = i->getProcessName();
             std::string processInstructionTime = i->getInstructionTime();
             int totalInstructions = i->getTotalInstructions();
+            int remainingInstructions = i->getRemainingInstructions();
 
             outputFile << processName << " " <<
                 processInstructionTime << " FINISHED " <<
-                totalInstructions << "/" <<
+                remainingInstructions << "/" <<
                 totalInstructions << std::endl;
 
         }
 
         outputFile << "----------------------------------------" << std::endl;
-        outputFile.close();
 
-        std::cout << "Report generated in csopesy-log.txt" << std::endl;
-    }
+    };
+
+    std::cout << "Report generated in csopesy-log.txt" << std::endl;
+
 
 };
 
 
 //Returns the remaining instructions of the process at the front of the sorted vector
 //in ascending order due to SJF
-int CPUScheduler::returnLowestRemainingInstructions() {
-
-    auto front = readyQueue.front();
-    int lowestInstructions = front->getRemainingInstructions();
-    return lowestInstructions;
-}
 
 
 //Returns the process at the front of the ready queue
 //Uses mutexes to avoid race conditions
-std::shared_ptr<Process> CPUScheduler::removeProcessFromReadyQueue() {
-
-    std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutexcpusch.c
-    if (!readyQueue.empty()) {
-        auto front = readyQueue.front();
-        readyQueue.erase(readyQueue.begin());
-        return front;
-    }
-    else {
-        return nullptr; // or throw an exception, handle as appropriate
-    }
-
-};
 
 //For returning a process to the ready queue from the core
 //for algorithms: RR and Preemptive SJF
-void CPUScheduler::addProcessToReadyQueue(std::shared_ptr<Process> process) {
-    this->pushToReadyQueue(process);
-};
 
 //Checks if the readyQueue available
 //Also enclosed in a mutex
-bool CPUScheduler::isReadyQueueAvailable() {
-
-    std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-    if (readyQueue.empty()) {
-        return false;
-    }
-    else {
-        return true;
-    }
-
-};
 
 //Adds a process to the finished processes
 void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> process) {
@@ -437,50 +398,13 @@ void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> proces
 };
 
 
+
+
 //Sorts the ready queue for the SJF algorithms in ascending order of their remaining instructions
 //Enclosed in a mutex to avoid race conditions
-void CPUScheduler::sortReadyQueue() {
-
-    std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-    //
-    std::sort(readyQueue.begin(), readyQueue.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
-        return a->getRemainingInstructions() < b->getRemainingInstructions();
-        });
-};
-
-
 //Returns a pointer to the process to use for screen-s and screen-r
 //It checks for the process in both the CPU cores and the ready queue
-std::shared_ptr<Process> CPUScheduler::getProcessPointer(std::string process) {
 
-    for (auto& i : cpuCores) {
-
-        if (!(i->isCoreFree())) {
-            if (i->getProcessinCPUCore()->getProcessName() == process) {
-                return i->getProcessinCPUCore();
-            }
-        }
-    }
-
-    if (!(readyQueue.empty())) {
-        for (auto& i : readyQueue) {
-            if (i->getProcessName() == process) {
-                return i;
-            }
-        }
-    }
-
-    return nullptr;
-
-
-};
-
-
-
-void CPUScheduler::pushToReadyQueue(std::shared_ptr<Process> process) {
-
-    std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-    readyQueue.push_back(process);
-
-
-};
+//for Memory Allocator progress
+//
+//

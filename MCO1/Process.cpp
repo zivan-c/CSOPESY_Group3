@@ -6,12 +6,15 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 
 int Process::processCount = 0;
 int Process::processIDCount = 0;
 
-Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound) {
+Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound,
+    int processMemoryLower, int processMemoryHigher) {
 
+    //Randomizer to set the amount of instructions for the process
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(instructionsLowerBound, instructionsHigherBound);
@@ -25,8 +28,17 @@ Process::Process(std::string name, int instructionsLowerBound, int instructionsH
     this->remainingInstructions = this->totalInstructions;
     this->processState = Process::ProcessState::READY;
 
+    //for memory
+    int base = 2;
+    std::uniform_int_distribution<> disMemory(instructionsLowerBound, instructionsHigherBound);
+    int exponent = disMemory(gen);
+    this->memoryAmount = static_cast<int>(pow(base, exponent));
+
+
+
 };
 
+//Instruction execution, with an update for the latest instruction time
 void Process::executeInstruction() {
 
     if (this != nullptr) {
@@ -41,6 +53,7 @@ void Process::executeInstruction() {
         }
     }
 };
+
 
 int Process::getRemainingInstructions() {
 
@@ -122,6 +135,8 @@ int Process::getCoreID() {
 
 };
 
+
+//Prints the progress of itself for screen-s and screen-r commands
 void Process::printProcessProgress() {
 
     std::cout << "Process: " << this->processName << "\n" << std::endl;
@@ -141,13 +156,15 @@ void Process::printProcessProgress() {
 
 };
 
+//Gets the date and time, should change depending on Windows/Linux implementation
+//localtime_r for Linux, and localtime_s for Windows
 std::string Process::getDateAndTime() {
 
     auto now = std::chrono::system_clock::now();
     std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
 
     std::tm local_tm;
-    localtime_s(&local_tm, &calendarTime); // Use localtime_s for thread safety on Windows
+    localtime_s(&local_tm, &calendarTime);
 
     std::ostringstream oss;
     oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)");
@@ -156,8 +173,15 @@ std::string Process::getDateAndTime() {
 
 };
 
+
+
 std::string Process::getInstructionTime() {
 
     return this->instructionDateAndTime;
+
+};
+int Process::getMemory() {
+
+    return this->memoryAmount;
 
 };
