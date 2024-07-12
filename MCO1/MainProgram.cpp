@@ -9,17 +9,24 @@ void commandCheck(std::string input);
 int main(){
   
   bool running = 1;
-  int cpuCores = 8;
-  int quantumCycles = 5;
+  int cpuCores = 2;
+  int quantumCycles = 4;
   int lowerInstructionsBound = 100;
   int higherInstructionsBound = 100;
   float executionDelay = 0.05;
-  float creationDelay = 0.15;
+  float creationDelay = 0.25;
   int preemptive = 1;
+  
+  //for Week8 Homework
+  int overallMemory = 16384;
+  int processMemoryLower = 4;
+  int processMemoryHigher = 12;
+
   CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::RR;
 
   CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
-                          creationDelay, lowerInstructionsBound, higherInstructionsBound);
+                          creationDelay, lowerInstructionsBound, higherInstructionsBound, overallMemory, 
+                           processMemoryLower, processMemoryHigher);
 
   
 

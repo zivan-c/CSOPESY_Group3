@@ -6,11 +6,13 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 
 int Process::processCount = 0;
 int Process::processIDCount = 0;
 
-Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound){
+Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound, 
+                 int processMemoryLower, int processMemoryHigher){
 
   //Randomizer to set the amount of instructions for the process
   std::random_device rd;
@@ -25,6 +27,14 @@ Process::Process(std::string name, int instructionsLowerBound, int instructionsH
   this->totalInstructions = dis(gen);
   this->remainingInstructions = this->totalInstructions;
   this->processState = Process::ProcessState::READY;
+
+  //for memory
+  int base = 2; 
+  std::uniform_int_distribution<> disMemory(instructionsLowerBound, instructionsHigherBound);
+  int exponent = disMemory(gen);
+  this->memoryAmount = static_cast<int>(pow(base, exponent)); 
+  
+
 
 };
 

@@ -5,8 +5,10 @@
 #include "NonPreemptiveSJF.h"
 #include "Process.h"
 #include "PreemptiveSJF.h"
+#include "FirstFit.h"
 #include <chrono>
 #include <thread>
+#include <string>
 #include <fstream>
 
 CPUScheduler *CPUScheduler::singletonInstance = nullptr;
@@ -19,7 +21,8 @@ void CPUScheduler::initialize(int cpuCores,
                               float executionDelay, int quantumCycles,
                               int preemptive, float creationDelay,
                               int instructionsLowerBound,
-                              int instructionsHigherBound) {
+                              int instructionsHigherBound, int overallMemory, int processMemoryLower,
+                               int processMemoryHigher) {
 
   
   //Sets up the default values for process for subsequent process creation.
@@ -37,10 +40,17 @@ void CPUScheduler::initialize(int cpuCores,
   singletonInstance->instructionsLowerBound = instructionsLowerBound;
   singletonInstance->instructionsHigherBound = instructionsHigherBound;
   singletonInstance->executionDelay = executionDelay;
+  singletonInstance->overallMemory = overallMemory;
+  singletonInstance->processMemoryLower = processMemoryLower;
+  singletonInstance->processMemoryHigher = processMemoryHigher;
   singletonInstance->readyQueue = std::make_shared<ReadyQueue>();
+  
+  //for memory
+  singletonInstance->quantumCycleAmount = 0;
 
   singletonInstance->setupCPUS();
   singletonInstance->setupScheduler();
+
 
   //Starts threads for CPU cores
   for (auto& core : singletonInstance->cpuCores) {
@@ -50,6 +60,8 @@ void CPUScheduler::initialize(int cpuCores,
   //Starts the thread for the scheduler
   singletonInstance->CPUSchedulerAlgorithm->runScheduler();
 
+  //For memory
+  singletonInstance->memoryAllocator = std::make_shared<FirstFit>(overallMemory);
   
 
 };
@@ -106,7 +118,8 @@ void CPUScheduler::setupScheduler() {
 void CPUScheduler::createProcess(std::string name) {
 
   std::shared_ptr<Process> process = std::make_shared<Process>(
-        name, this->instructionsLowerBound, this->instructionsHigherBound);
+        name, this->instructionsLowerBound, this->instructionsHigherBound, this->processMemoryLower, 
+        this->processMemoryHigher);
   Process::processCount++;
   this->readyQueue->pushToReadyQueue(process);
 
@@ -144,7 +157,8 @@ void CPUScheduler::createDynamicProcesses() {
 
       //if (!isNameUsed) {
         std::shared_ptr<Process> process = std::make_shared<Process>(
-            name, this->instructionsLowerBound, this->instructionsHigherBound);
+            name, this->instructionsLowerBound, this->instructionsHigherBound, this->processMemoryLower,
+       this->processMemoryHigher);
         //for checking of process creation
       
 
@@ -393,5 +407,61 @@ void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> proces
 //Returns a pointer to the process to use for screen-s and screen-r
 //It checks for the process in both the CPU cores and the ready queue
 
+//for Memory Allocator progress
+//
+//
+std::string CPUScheduler::getDateAndTime(){
 
+  auto now = std::chrono::system_clock::now();
+  std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
+
+  std::tm local_tm;
+  localtime_r(&calendarTime, &local_tm); 
+
+  std::ostringstream oss;
+  oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)"); 
+
+  return oss.str();
+
+};
+
+void CPUScheduler::printMemoryProgress(){
+
+  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+  //
+  //
+
+  this->quantumCycleAmount++;
+  std::ofstream memoryFile; 
+  std::stringstream ss;
+  ss << "memory_stamp_<" << this->quantumCycleAmount << ">.txt";
+  std::string memoryFileName = ss.str(); 
+  memoryFile.open(memoryFileName);
+
+  if(!memoryFile){
+  
+    std::cout << "File could not be opened." << std::endl;
+
+  }else{
+
+    std::string dateAndTime = this->getDateAndTime();
+
+    memoryFile << "Timestamp: " << dateAndTime << std::endl; 
+    memoryFile << "Number of processes in memory: " << std::endl;
+
+    //place here the total amount of unallocated memory remaining
+    memoryFile << "Total external fragmentation in KB: placement here var" << "\n" << std::endl;
+
+    memoryFile << "----end---- = " << this->overallMemory << "\n" << std::endl;
+ 
+    //per process in the memory
+    
+    memoryFile << "----start----- = 0" << std::endl;
+
+  }
+
+
+
+
+};
 
