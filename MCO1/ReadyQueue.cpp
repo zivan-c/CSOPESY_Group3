@@ -3,6 +3,16 @@
 #include <memory>
 #include <algorithm>
 
+ReadyQueue *ReadyQueue::singletonInstance = nullptr;
+ReadyQueue* ReadyQueue::getInstance() { return singletonInstance; };
+
+void ReadyQueue::initialize() {
+
+  singletonInstance = new ReadyQueue();
+
+}
+
+
 
 std::shared_ptr<Process> ReadyQueue::removeProcessFromReadyQueue(){
   std::lock_guard<std::mutex> lock(queueMutex); 

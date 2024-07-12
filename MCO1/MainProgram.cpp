@@ -1,5 +1,6 @@
 #include "ProcessScreen.h"
 #include "CPUScheduler.h"
+#include "FirstFit.h"
 
 #include <string>
 #include <iostream> 
@@ -13,7 +14,7 @@ int main(){
   int quantumCycles = 4;
   int lowerInstructionsBound = 100;
   int higherInstructionsBound = 100;
-  float executionDelay = 0.05;
+  float executionDelay = 0.001;
   float creationDelay = 0.25;
   int preemptive = 1;
   
@@ -24,8 +25,11 @@ int main(){
 
   CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::RR;
 
+
+  ReadyQueue::initialize();
+  FirstFit::initialize(overallMemory);
   CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
-                          creationDelay, lowerInstructionsBound, higherInstructionsBound, overallMemory, 
+                          creationDelay, lowerInstructionsBound, higherInstructionsBound, 
                            processMemoryLower, processMemoryHigher);
 
   

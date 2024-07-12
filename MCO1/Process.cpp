@@ -172,5 +172,10 @@ std::string Process::getInstructionTime(){
   return this->instructionDateAndTime;
 
 };
+int Process::getMemory(){
+
+  return this->memoryAmount;
+
+};
 
 

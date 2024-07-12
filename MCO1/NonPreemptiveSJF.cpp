@@ -1,5 +1,6 @@
 #include "NonPreemptiveSJF.h"
 #include "CPUScheduler.h"
+#include "ReadyQueue.h"
 #include <thread>
 
 void NonPreemptiveSJF::runScheduler() {
@@ -10,7 +11,7 @@ void NonPreemptiveSJF::runScheduler() {
 
     while (isRunning) {
 
-      if ((CPUScheduler::getInstance()->getReadyQueue()->isReadyQueueAvailable()) &&
+      if ((ReadyQueue::getInstance()->isReadyQueueAvailable()) &&
           (!(CPUScheduler::getInstance()->cpuCores.empty()))) {
 
         for (auto i : CPUScheduler::getInstance()->cpuCores) {

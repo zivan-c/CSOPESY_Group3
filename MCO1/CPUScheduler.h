@@ -7,7 +7,6 @@
 #include "CPUCore.h"
 #include "Console.h"
 #include "ReadyQueue.h"
-#include "MemoryAllocator.h"
 
 #include <vector>
 #include <string>
@@ -32,7 +31,7 @@ public:
   
   static void initialize(int cpuCores, SchedulerAlgorithm schedulerAlgorithm, float executionDelay,
                           int quantumCycles, int preemptive, float creationDelay,
-                          int instructionsLowerBound, int instructionsHigherBound, int overallMemory, 
+                          int instructionsLowerBound, int instructionsHigherBound, 
                          int processMemoryLower, int processMemoryHigher);
 
   void setupCPUS();
@@ -52,7 +51,6 @@ public:
 
   //creating mutex functions for readyQueue, all functions related to it are accessed here
 
-  std::shared_ptr<ReadyQueue> getReadyQueue();
 
 
   void addProcessToFinishedProcesses(std::shared_ptr<Process> process);
@@ -80,6 +78,7 @@ public:
   int overallMemory;
   int processMemoryLower;
   int processMemoryHigher;
+  int quantumCycleAmount;
 
 private:
   std::mutex queueMutex;
@@ -87,12 +86,6 @@ private:
   SchedulerAlgorithm scheduler;
   std::shared_ptr<Scheduler> CPUSchedulerAlgorithm;
   static CPUScheduler* singletonInstance;
-  std::shared_ptr<ReadyQueue> readyQueue;
   std::vector <std::shared_ptr<Process> > finishedProcesses;
-  std::shared_ptr<MemoryAllocator> memoryAllocator;
-  
-  //for memory allocator tracking text files
-  int quantumCycleAmount;
-  std::string getDateAndTime();
   
 };

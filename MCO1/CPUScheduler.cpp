@@ -21,7 +21,7 @@ void CPUScheduler::initialize(int cpuCores,
                               float executionDelay, int quantumCycles,
                               int preemptive, float creationDelay,
                               int instructionsLowerBound,
-                              int instructionsHigherBound, int overallMemory, int processMemoryLower,
+                              int instructionsHigherBound, int processMemoryLower,
                                int processMemoryHigher) {
 
   
@@ -40,10 +40,8 @@ void CPUScheduler::initialize(int cpuCores,
   singletonInstance->instructionsLowerBound = instructionsLowerBound;
   singletonInstance->instructionsHigherBound = instructionsHigherBound;
   singletonInstance->executionDelay = executionDelay;
-  singletonInstance->overallMemory = overallMemory;
   singletonInstance->processMemoryLower = processMemoryLower;
   singletonInstance->processMemoryHigher = processMemoryHigher;
-  singletonInstance->readyQueue = std::make_shared<ReadyQueue>();
   
   //for memory
   singletonInstance->quantumCycleAmount = 0;
@@ -60,8 +58,6 @@ void CPUScheduler::initialize(int cpuCores,
   //Starts the thread for the scheduler
   singletonInstance->CPUSchedulerAlgorithm->runScheduler();
 
-  //For memory
-  singletonInstance->memoryAllocator = std::make_shared<FirstFit>(overallMemory);
   
 
 };
@@ -121,11 +117,11 @@ void CPUScheduler::createProcess(std::string name) {
         name, this->instructionsLowerBound, this->instructionsHigherBound, this->processMemoryLower, 
         this->processMemoryHigher);
   Process::processCount++;
-  this->readyQueue->pushToReadyQueue(process);
+  ReadyQueue::getInstance()->pushToReadyQueue(process);
 
     
   if(scheduler == SJF){
-    this->readyQueue->sortReadyQueue();
+    ReadyQueue::getInstance()->sortReadyQueue();
   } else {
     std::cout << "The name " << name << " already exists." << std::endl;
   }
@@ -162,13 +158,13 @@ void CPUScheduler::createDynamicProcesses() {
         //for checking of process creation
       
 
-        this->readyQueue->pushToReadyQueue(process);
+      ReadyQueue::getInstance()->pushToReadyQueue(process);
 
 //
         //If the scheduler is SJF, sort the readyQueue with the addition of the new process
         if(scheduler == SJF){
 
-          this->readyQueue->sortReadyQueue();
+        ReadyQueue::getInstance()->sortReadyQueue();
 
         }
 
@@ -219,10 +215,9 @@ void CPUScheduler::printReport() {
   //To check how many cores are being used
   int coresUsed = 0;
   int coresAvailable = 0;
-  for (auto i : this->cpuCores) {
+  for (auto& i : this->cpuCores) {
     auto process = i->getProcessinCPUCore();
-    if(process != nullptr){ 
-    //if (i != nullptr && !(i->isCoreFree())) {
+    if (i != nullptr && !(i->isCoreFree())) {
       //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
       coresUsed++;
     } else {
@@ -244,6 +239,7 @@ void CPUScheduler::printReport() {
   for (auto i : this->cpuCores) {
           auto process = i->getProcessinCPUCore();
           if (process != nullptr) {  // Check if the process is not a null pointer
+          //if(i->getProcessinCPUCore()){
               
               //Prints the process information inside the core.
               std::string processName = process->getProcessName();
@@ -280,12 +276,12 @@ void CPUScheduler::printReport() {
 
   std::cout << "----------------------------------------" << std::endl;
 
-  for (auto &i : this->cpuCores) {
-  i->runCore();
-    if (i->isCoreFree()) {
-      i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
-    }
-  }
+  //for (auto &i : this->cpuCores) {
+  //i->runCore();
+    //if (i->isCoreFree()) {
+      //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::PROCESSING);
+    //}
+  //}
   
 };
 
@@ -371,12 +367,6 @@ void CPUScheduler::createReportFile() {
 
 };
 
-std::shared_ptr<ReadyQueue> CPUScheduler::getReadyQueue(){
-
-  //std::lock_guard<std::mutex> lock(queueMutex); 
-  return readyQueue;
-
-};
 
 //Returns the remaining instructions of the process at the front of the sorted vector
 //in ascending order due to SJF
@@ -410,58 +400,4 @@ void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> proces
 //for Memory Allocator progress
 //
 //
-std::string CPUScheduler::getDateAndTime(){
-
-  auto now = std::chrono::system_clock::now();
-  std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
-
-  std::tm local_tm;
-  localtime_r(&calendarTime, &local_tm); 
-
-  std::ostringstream oss;
-  oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)"); 
-
-  return oss.str();
-
-};
-
-void CPUScheduler::printMemoryProgress(){
-
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-  //
-  //
-
-  this->quantumCycleAmount++;
-  std::ofstream memoryFile; 
-  std::stringstream ss;
-  ss << "memory_stamp_<" << this->quantumCycleAmount << ">.txt";
-  std::string memoryFileName = ss.str(); 
-  memoryFile.open(memoryFileName);
-
-  if(!memoryFile){
-  
-    std::cout << "File could not be opened." << std::endl;
-
-  }else{
-
-    std::string dateAndTime = this->getDateAndTime();
-
-    memoryFile << "Timestamp: " << dateAndTime << std::endl; 
-    memoryFile << "Number of processes in memory: " << std::endl;
-
-    //place here the total amount of unallocated memory remaining
-    memoryFile << "Total external fragmentation in KB: placement here var" << "\n" << std::endl;
-
-    memoryFile << "----end---- = " << this->overallMemory << "\n" << std::endl;
- 
-    //per process in the memory
-    
-    memoryFile << "----start----- = 0" << std::endl;
-
-  }
-
-
-
-
-};
 

@@ -42,4 +42,8 @@ private:
   void normalCPUBehavior();
   void RRCPUBehavior();
 
+
+  //for memory
+  void* processPointer; 
+
 };

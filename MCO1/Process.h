@@ -36,6 +36,7 @@ public:
   void printProcessProgress();
   std::string getDateAndTime();
   std::string getInstructionTime();
+  int getMemory();
 
 
 private:
