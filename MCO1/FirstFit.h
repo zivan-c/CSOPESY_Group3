@@ -10,8 +10,8 @@ public:
 
 static FirstFit* getInstance();
 static void initialize(int memoryAmount);
-bool allocate(std::shared_ptr<Process>, int processMemoryAmount); 
-void deallocate(std::shared_ptr<Process>, int processMemoryAmount);
+bool allocate(std::string processName, int processMemoryAmount); 
+void deallocate(std::string processName, int processMemoryAmount);
 int totalExternalFragmentation();
 std::string getDateAndTime();
 void printMemoryProgress();
@@ -25,7 +25,7 @@ int allocatedMemory;
 private: 
 
 std::mutex queueMutex;
-std::vector<std::pair<std::shared_ptr<Process>, bool> > memory;
+std::vector<std::pair<std::string, bool> > memory;
 static FirstFit* singletonInstance;
 FirstFit(int size);
 

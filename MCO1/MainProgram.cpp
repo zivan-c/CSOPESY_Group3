@@ -19,7 +19,7 @@ int main(){
   int preemptive = 1;
   
   //for Week8 Homework
-  int overallMemory = 16384;
+  int overallMemory = 16385;
   int processMemoryLower = 4;
   int processMemoryHigher = 12;
 

@@ -12,9 +12,8 @@
 FirstFit *FirstFit::singletonInstance = nullptr;
 FirstFit *FirstFit::getInstance() { return singletonInstance; };
 
-
-
-FirstFit::FirstFit(int size) : memory(size, {nullptr, false}) {
+FirstFit::FirstFit(int size) 
+    : memory(size, std::make_pair("", false)) {
     this->memorySize = size;
     this->allocatedMemory = 0;
     this->processesinMemory = 0;
@@ -26,11 +25,8 @@ void FirstFit::initialize(int memoryAmount){
 
 };
 
-
-
-bool FirstFit::allocate(std::shared_ptr<Process> process, int processMemoryAmount){
-//returns if allocation is successful or not 
-    std::lock_guard<std::mutex> lock(queueMutex); 
+bool FirstFit::allocate(std::string processName, int processMemoryAmount) {
+    // Returns if allocation is successful or not 
     int freeCount = 0;
     int startIndex = 0;
 
@@ -49,33 +45,36 @@ bool FirstFit::allocate(std::shared_ptr<Process> process, int processMemoryAmoun
 
     // Allocate the memory
     for (size_t i = startIndex; i < startIndex + processMemoryAmount; ++i) {
-        memory[i] = {process, true};
+        memory[i] = std::make_pair(processName, true);
     }
 
+    //std::cout << processName << " has been allocated with: " << processMemoryAmount << std::endl;
     allocatedMemory += processMemoryAmount;
-    std::cout << allocatedMemory << std::endl;
     processesinMemory++;
     return true;
+};
 
-}; 
-
-
-void FirstFit::deallocate(std::shared_ptr<Process> process, int processMemoryAmount) {
-
-    std::lock_guard<std::mutex> lock(queueMutex); 
+void FirstFit::deallocate(std::string processName, int processMemoryAmount) {
+    int deallocatedCount = 0;
+    
     for (auto& unit : memory) {
-        if (unit.first == process) {
-            unit = {nullptr, false};
+        if (unit.first == processName) {
+            unit = std::make_pair("", false);
+            deallocatedCount++;
+            if (deallocatedCount == processMemoryAmount) break;
         }
     }
-    
+
     processesinMemory--;
+    //std::cout << processName << " has been DEALLOCATED with: " << processMemoryAmount << std::endl;
+  
     allocatedMemory -= processMemoryAmount;
-};
+}
+
 
 int FirstFit::totalExternalFragmentation(){
 
-  std::lock_guard<std::mutex> lock(queueMutex); 
+  //std::lock_guard<std::mutex> lock(queueMutex); 
   int externalFragmentationSize = 0;
 
  for(size_t i = 0; i < memory.size(); i++){
@@ -106,7 +105,7 @@ std::string FirstFit::getDateAndTime(){
 
 void FirstFit::printMemoryProgress(){
 
-  std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+  //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
   //
   //
 
@@ -128,7 +127,7 @@ void FirstFit::printMemoryProgress(){
     memoryFile << "Number of processes in memory: " << FirstFit::getInstance()->processesinMemory << std::endl;
 
     //place here the total amount of unallocated memory remaining
-    memoryFile << "Total external fragmentation in KB: placement here var" <<
+    memoryFile << "Total external fragmentation in KB: " <<
       FirstFit::getInstance()->totalExternalFragmentation() << "\n" << std::endl;
 
     memoryFile << "----end---- = " << FirstFit::getInstance()->memorySize << "\n" << std::endl;
@@ -136,7 +135,7 @@ void FirstFit::printMemoryProgress(){
 
    for (size_t i = 0; i < memory.size(); ++i) {
       if (memory[i].second) { // If memory block is allocated
-        memoryFile << "Process Name: " << memory[i].first->getProcessName() << "\n";
+        memoryFile << "Process Name: " << memory[i].first << "\n";
         memoryFile << "Start Index: " << i << "\n";
                 // Find the end index of the allocated memory block
         size_t endIndex = i;

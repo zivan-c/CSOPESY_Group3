@@ -77,8 +77,11 @@ void CPUCore::normalCPUBehavior(){
 
 //RR scheduler CPU Behavior, where the core itself switches the processes from itself and the 
 //ready queue, done so, since the quantum cycles of each core is not synchronized.
+//
+//
+//
 void CPUCore::RRCPUBehavior() {
-    if (processInCPUCore) {
+    if (processInCPUCore != nullptr) {
         for (int i = 0; i < quantumCycles; i++) {
             if (processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING) {
                 executeProcess();
@@ -87,41 +90,25 @@ void CPUCore::RRCPUBehavior() {
             } else {
                 //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
                 if(processInCPUCore->getProcessState() == Process::ProcessState::FINISHED){
+                    std::lock_guard<std::mutex> lock(queueMutex); 
+                    CPUScheduler::getInstance()->quantumCycleAmount++;
+                    FirstFit::getInstance()->printMemoryProgress();
+                    FirstFit::getInstance()->deallocate(processInCPUCore->getProcessName(), processInCPUCore->getMemory());
+                    addToFinishedList();
+                    getProcessFromReadyQueue();
 
-                //deallocate process from memory
-                CPUScheduler::getInstance()->quantumCycleAmount++;
-                FirstFit::getInstance()->printMemoryProgress();
-                FirstFit::getInstance()->deallocate(processInCPUCore, processInCPUCore->getMemory());
-                addToFinishedList();
-            
-                std::lock_guard<std::mutex> lock(queueMutex); 
-                getProcessFromReadyQueue();
-
-                if(!(FirstFit::getInstance()->allocate(processInCPUCore, processInCPUCore->getMemory()))){
-                    returnProcesstoReadyQueue();
                 }
         
               }
                 //if not, return to readyqueue
             }
-        }
         
 
-        //print progress and deallocate
+        std::lock_guard<std::mutex> lock(queueMutex); 
         CPUScheduler::getInstance()->quantumCycleAmount++;
         FirstFit::getInstance()->printMemoryProgress();
-        FirstFit::getInstance()->deallocate(processInCPUCore, processInCPUCore->getMemory());
         returnProcesstoReadyQueue();
-        std::lock_guard<std::mutex> lock(queueMutex); 
         getProcessFromReadyQueue();
-        if(processInCPUCore){
-
-          if(!(FirstFit::getInstance()->allocate(processInCPUCore, processInCPUCore->getMemory()))){
-            returnProcesstoReadyQueue();
-          }
-
-        } 
-        
         //check if process can be allocated
         //if can do nothing
         //if not, return to readyqueue
@@ -130,14 +117,6 @@ void CPUCore::RRCPUBehavior() {
         if (ReadyQueue::getInstance()->isReadyQueueAvailable()) {
             std::lock_guard<std::mutex> lock(queueMutex); 
             getProcessFromReadyQueue();
-            if(processInCPUCore){
-
-              if(!(FirstFit::getInstance()->allocate(processInCPUCore, processInCPUCore->getMemory()))){
-                returnProcesstoReadyQueue();
-              }
-
-            } 
-            
             //check if process can be allocated
             //if can do nothing
             //if not, return to readyqueue
@@ -152,14 +131,168 @@ void CPUCore::getProcessFromReadyQueue(){
   //std::lock_guard<std::mutex> lock(queueMutex); 
 
   if(ReadyQueue::getInstance()->isReadyQueueAvailable()){
-    this->processInCPUCore = ReadyQueue::getInstance()->removeProcessFromReadyQueue(); 
-    this->isAvailable = false;
-    if(processInCPUCore){
-      processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
-    };
-  }
 
+    std::shared_ptr<Process> placeholder = ReadyQueue::getInstance()->removeProcessFromReadyQueue(); 
+    if(placeholder != nullptr){
+
+      if(!FirstFit::getInstance()->allocate(placeholder->getProcessName(), placeholder->getMemory())){
+        ReadyQueue::getInstance()->pushToReadyQueue(placeholder);
+        this->processInCPUCore = nullptr;
+      }else{
+
+        this->processInCPUCore = placeholder; 
+        this->isAvailable = false;
+        if(processInCPUCore){
+          processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
+        }
+      }
+    }
+  }
 };
+
+
+//
+/* void CPUCore::RRCPUBehavior() {
+    if (processInCPUCore != nullptr) {
+        for (int i = 0; i <= quantumCycles; i++) {
+            if (processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING) {
+                executeProcess();
+                std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000);
+                std::this_thread::sleep_for(delayDuration);
+            } else {
+                //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+                if(processInCPUCore->getProcessState() == Process::ProcessState::FINISHED){
+                    CPUScheduler::getInstance()->quantumCycleAmount++;
+                    FirstFit::getInstance()->printMemoryProgress();
+                    FirstFit::getInstance()->deallocate(processInCPUCore->getProcessName(), processInCPUCore->getMemory());
+                    addToFinishedList();
+                    std::lock_guard<std::mutex> lock(queueMutex); 
+                    getProcessFromReadyQueue();
+
+                }
+        
+              }
+                //if not, return to readyqueue
+            }
+        
+
+        //print progress and deallocate
+        CPUScheduler::getInstance()->quantumCycleAmount++;
+        FirstFit::getInstance()->printMemoryProgress();
+        FirstFit::getInstance()->deallocate(processInCPUCore->getProcessName(), processInCPUCore->getMemory());
+        returnProcesstoReadyQueue();
+        std::lock_guard<std::mutex> lock(queueMutex); 
+        getProcessFromReadyQueue();
+        //check if process can be allocated
+        //if can do nothing
+        //if not, return to readyqueue
+
+    } else {
+        if (ReadyQueue::getInstance()->isReadyQueueAvailable()) {
+            std::lock_guard<std::mutex> lock(queueMutex); 
+            getProcessFromReadyQueue();
+            //check if process can be allocated
+            //if can do nothing
+            //if not, return to readyqueue
+        }
+    }
+};
+
+
+//Gets a process from the readyqueue and assigns it to the core
+void CPUCore::getProcessFromReadyQueue(){
+  //
+  //std::lock_guard<std::mutex> lock(queueMutex); 
+
+  if(ReadyQueue::getInstance()->isReadyQueueAvailable()){
+
+    std::shared_ptr<Process> placeholder = ReadyQueue::getInstance()->removeProcessFromReadyQueue(); 
+
+    if(!FirstFit::getInstance()->allocate(placeholder->getProcessName(), placeholder->getMemory())){
+      ReadyQueue::getInstance()->pushToReadyQueue(placeholder);
+      this->processInCPUCore = nullptr;
+    }else{
+      this->processInCPUCore = placeholder; 
+      this->isAvailable = false;
+      if(processInCPUCore){
+        processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
+      }
+    }
+  }
+};
+
+
+
+void CPUCore::RRCPUBehavior() {
+    if (processInCPUCore != nullptr) {
+        for (int i = 0; i <= quantumCycles; i++) {
+            if (processInCPUCore->getProcessState() == Process::ProcessState::PROCESSING) {
+                executeProcess();
+                std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000);
+                std::this_thread::sleep_for(delayDuration);
+            } else {
+                //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
+                if(processInCPUCore->getProcessState() == Process::ProcessState::FINISHED){
+                    CPUScheduler::getInstance()->quantumCycleAmount++;
+                    FirstFit::getInstance()->printMemoryProgress();
+                    FirstFit::getInstance()->deallocate(processInCPUCore->getProcessName(), processInCPUCore->getMemory());
+                    addToFinishedList();
+                    std::lock_guard<std::mutex> lock(queueMutex); 
+                    getProcessFromReadyQueue();
+
+                }
+        
+              }
+                //if not, return to readyqueue
+            }
+        
+
+        //print progress and deallocate
+        CPUScheduler::getInstance()->quantumCycleAmount++;
+        FirstFit::getInstance()->printMemoryProgress();
+        FirstFit::getInstance()->deallocate(processInCPUCore->getProcessName(), processInCPUCore->getMemory());
+        returnProcesstoReadyQueue();
+        std::lock_guard<std::mutex> lock(queueMutex); 
+        getProcessFromReadyQueue();
+        //check if process can be allocated
+        //if can do nothing
+        //if not, return to readyqueue
+
+    } else {
+        if (ReadyQueue::getInstance()->isReadyQueueAvailable()) {
+            std::lock_guard<std::mutex> lock(queueMutex); 
+            getProcessFromReadyQueue();
+            //check if process can be allocated
+            //if can do nothing
+            //if not, return to readyqueue
+        }
+    }
+};
+
+
+//Gets a process from the readyqueue and assigns it to the core
+void CPUCore::getProcessFromReadyQueue(){
+  //
+  //std::lock_guard<std::mutex> lock(queueMutex); 
+
+  if(ReadyQueue::getInstance()->isReadyQueueAvailable()){
+
+    std::shared_ptr<Process> placeholder = ReadyQueue::getInstance()->removeProcessFromReadyQueue(); 
+
+    if(!FirstFit::getInstance()->allocate(placeholder->getProcessName(), placeholder->getMemory())){
+      ReadyQueue::getInstance()->pushToReadyQueue(placeholder);
+      this->processInCPUCore = nullptr;
+    }else{
+      this->processInCPUCore = placeholder; 
+      this->isAvailable = false;
+      if(processInCPUCore){
+        processInCPUCore->setProcessState(Process::ProcessState::PROCESSING);
+      }
+    }
+  }
+};
+
+*/
 
 
 //Adds the process to the finished list.
@@ -177,7 +310,9 @@ void CPUCore::addToFinishedList(){
 void CPUCore::returnProcesstoReadyQueue(){
 
   //std::lock_guard<std::mutex> lock(queueMutex);
+  //
     if(processInCPUCore){
+      FirstFit::getInstance()->deallocate(processInCPUCore->getProcessName(), processInCPUCore->getMemory());
       processInCPUCore->setProcessState(Process::ProcessState::READY);
       ReadyQueue::getInstance()->pushToReadyQueue(processInCPUCore); 
       removeProcessinCPUCore();

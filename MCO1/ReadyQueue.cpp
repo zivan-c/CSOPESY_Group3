@@ -15,6 +15,7 @@ void ReadyQueue::initialize() {
 
 
 std::shared_ptr<Process> ReadyQueue::removeProcessFromReadyQueue(){
+
   std::lock_guard<std::mutex> lock(queueMutex); 
   if (!readyQueue.empty()) {
     auto front = readyQueue.front();
@@ -60,8 +61,6 @@ void ReadyQueue::sortReadyQueue() {
 
 
 void ReadyQueue::pushToReadyQueue(std::shared_ptr<Process> process){
-  std::lock_guard<std::mutex> lock(queueMutex); 
-
     readyQueue.push_back(process);
 
 };
