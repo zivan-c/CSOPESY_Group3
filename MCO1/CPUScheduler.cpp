@@ -266,11 +266,12 @@ void CPUScheduler::printReport() {
       std::string processInstructionTime = i->getInstructionTime();
       int totalInstructions = i->getTotalInstructions();
       int remainingInstructions = i->getRemainingInstructions();
+      int memory = i->getMemory();
 
       std::cout << processName << " " << 
       processInstructionTime << " FINISHED " <<
       remainingInstructions << "/" <<
-      totalInstructions << std::endl;
+      totalInstructions << " Memory: " << memory << std::endl;
 
   }
 

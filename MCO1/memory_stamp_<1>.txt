@@ -1,0 +1,2 @@
+Timestamp: (07/12/2024 18:14:41)
+Number of processes in memory: 1

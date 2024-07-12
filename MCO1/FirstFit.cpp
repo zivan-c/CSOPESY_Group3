@@ -13,19 +13,19 @@ FirstFit *FirstFit::singletonInstance = nullptr;
 FirstFit *FirstFit::getInstance() { return singletonInstance; };
 
 
+
+FirstFit::FirstFit(int size) : memory(size, {nullptr, false}) {
+    this->memorySize = size;
+    this->allocatedMemory = 0;
+    this->processesinMemory = 0;
+}
+
 void FirstFit::initialize(int memoryAmount){
 
   singletonInstance = new FirstFit(memoryAmount);
 
 };
 
-FirstFit::FirstFit(int size) : memory(size, {nullptr, false}){
-
-  this->memorySize = size;
-  this->allocatedMemory = 0;
-  this->processesinMemory = 0;
-
-};
 
 
 bool FirstFit::allocate(std::shared_ptr<Process> process, int processMemoryAmount){
@@ -53,6 +53,7 @@ bool FirstFit::allocate(std::shared_ptr<Process> process, int processMemoryAmoun
     }
 
     allocatedMemory += processMemoryAmount;
+    std::cout << allocatedMemory << std::endl;
     processesinMemory++;
     return true;
 
