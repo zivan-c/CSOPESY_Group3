@@ -1,11 +1,11 @@
-Timestamp: (07/12/2024 22:15:38)
+Timestamp: (07/16/2024 14:23:36)
 Number of processes in memory: 1
-Total external fragmentation in KB: 16353
+Total external fragmentation in KB: 16320
 
-----end---- = 16385
+----end---- = 16384
 
-Process Name: Process_0
+Process Name: Process_20
 Start Index: 0
-End Index: 31
+End Index: 63
 
 ----start----- = 0

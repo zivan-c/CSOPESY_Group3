@@ -14,12 +14,12 @@ int main(){
   int quantumCycles = 4;
   int lowerInstructionsBound = 100;
   int higherInstructionsBound = 100;
-  float executionDelay = 0.001;
+  float executionDelay = 0.01;
   float creationDelay = 0.25;
   int preemptive = 1;
   
   //for Week8 Homework
-  int overallMemory = 16385;
+  int overallMemory = 16384;
   int processMemoryLower = 4;
   int processMemoryHigher = 12;
 

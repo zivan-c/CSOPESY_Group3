@@ -131,9 +131,21 @@ void FirstFit::printMemoryProgress(){
       FirstFit::getInstance()->totalExternalFragmentation() << "\n" << std::endl;
 
     memoryFile << "----end---- = " << FirstFit::getInstance()->memorySize << "\n" << std::endl;
+    for (size_t i = 0; i < memory.size(); ++i) {
+      if (memory[i].second) { // If memory block is allocated
+          memoryFile << "Process Name: " << memory[i].first << "\n";
+          memoryFile << "Start Index: " << i << "\n";
+        // Find the end index of the allocated memory block
+          size_t endIndex = i;
+          while (endIndex < memory.size() && memory[endIndex].second) {
+              ++endIndex;
+          }
+          memoryFile << "End Index: " << endIndex - 1 << "\n\n";
+          i = endIndex; // Skip to the end of this allocated block
+      }
+    }
 
-
-   for (size_t i = 0; i < memory.size(); ++i) {
+   /*for (size_t i = 0; i < memory.size(); ++i) {
       if (memory[i].second) { // If memory block is allocated
         memoryFile << "Process Name: " << memory[i].first << "\n";
         memoryFile << "Start Index: " << i << "\n";
@@ -146,6 +158,7 @@ void FirstFit::printMemoryProgress(){
             i = endIndex - 1; // Skip to the end of this allocated block
         }
       }  
+  */
  
     //per process in the memory
     

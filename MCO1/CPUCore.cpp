@@ -105,8 +105,8 @@ void CPUCore::RRCPUBehavior() {
         
 
         std::lock_guard<std::mutex> lock(queueMutex); 
-        CPUScheduler::getInstance()->quantumCycleAmount++;
-        FirstFit::getInstance()->printMemoryProgress();
+        //CPUScheduler::getInstance()->quantumCycleAmount++;
+        //FirstFit::getInstance()->printMemoryProgress();
         returnProcesstoReadyQueue();
         getProcessFromReadyQueue();
         //check if process can be allocated
@@ -122,6 +122,8 @@ void CPUCore::RRCPUBehavior() {
             //if not, return to readyqueue
         }
     }
+
+
 };
 
 
