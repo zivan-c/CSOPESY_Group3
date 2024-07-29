@@ -16,7 +16,7 @@ public:
   };
 
   Process(std::string processName, int instructionsLowerBound, int instructionsHigherBound,
-          int memoryLowerBound, int memoryHigherBound, int minimumPaging, int maximumPaging);
+          int memoryLowerBound, int memoryHigherBound, int pCount);
   
   static int processIDCount;
   static int processCount;
@@ -29,6 +29,7 @@ public:
   int remainingInstructions;
   int totalInstructions;
   int isFinished;
+  int pageCount;
 
 
   void writeToBackingStore(std::ostream& out) const;

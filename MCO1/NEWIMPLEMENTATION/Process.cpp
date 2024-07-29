@@ -11,7 +11,7 @@ int Process::processCount = 0;
 int Process::processIDCount = 0;
 
 Process::Process(std::string processName, int instructionsLowerBound, int instructionsHigherBound,
-          int memoryLowerBound, int memoryHigherBound, int minimumPaging, int maximumPaging){
+          int memoryLowerBound, int memoryHigherBound, int pCount){
 
 
   //Defining Instruction Amount
@@ -35,13 +35,7 @@ Process::Process(std::string processName, int instructionsLowerBound, int instru
   this->processMemory = static_cast<int>(pow(base, exponent)); 
 
   //Define Pages (If needed)
-  if(!(minimumPaging == 1) && (maximumPaging == 1)){ 
-
-    //declare pages here
-    //
-  }else{
-
-  }
+  this->pageCount = pCount;
   
   isFinished = 0;
 

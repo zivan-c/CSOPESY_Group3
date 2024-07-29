@@ -12,7 +12,7 @@ void FlatMemoryAllocator::initialize(int tMemory){
   singletonInstance = new FlatMemoryAllocator();
   singletonInstance->totalMemory = tMemory;
   singletonInstance->allocatedMemory = 0;
-  singletonInstance->backingStore = "backing_store.txt";
+  singletonInstance->backingStore = "flatbacking_store.txt";
 
 };
 

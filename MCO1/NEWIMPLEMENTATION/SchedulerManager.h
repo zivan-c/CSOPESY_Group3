@@ -25,12 +25,11 @@ public:
   int memoryLowerBound;
   int memoryHigherBound;
 
-  int pageLowerBound;
-  int pageHigherBound;
+  int pageCount;
 
   static void initialize(int cpuCount, int qCount, float cDelay, float eDelay,
                     int iLowerBound, int iHigherBound, int mLowerBound,
-                    int mHigherBound, int pLowerBound, int pHigherBound);
+                    int mHigherBound, int pCount);
 
 
   void setupCores();

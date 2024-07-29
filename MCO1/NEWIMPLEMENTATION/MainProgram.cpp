@@ -2,9 +2,12 @@
 #include "ReadyAndFinished.h"
 #include "CPUCore.h"
 #include "FlatMemoryAllocator.h"
+#include "PagingAllocator.h"
 
 #include <string>
 #include <iostream> 
+#include <random>
+#include <cmath>
 
 void commandCheck(std::string input);
 
@@ -22,14 +25,35 @@ int main(){
   int overallMemory = 32768;
   int processMemoryLower = 17;
   int processMemoryHigher = 17;
+  int lowerPageCount = 2;
+  int higherPageCount = 2;
+  int pageCount;
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(lowerPageCount, higherPageCount);
+  pageCount = dis(gen);
+
+  int pageSize = processMemoryLower/pageCount;
 
 
+  if((lowerPageCount == 1) && (higherPageCount == 1)){
 
-  FlatMemoryAllocator::initialize(overallMemory);
-  ReadyAndFinished::initialize();
-  SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay, 
+    FlatMemoryAllocator::initialize(overallMemory);
+    ReadyAndFinished::initialize();
+    SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay, 
                           executionDelay, lowerInstructionsBound, higherInstructionsBound, 
-                           processMemoryLower, processMemoryHigher, 1, 1);
+                           processMemoryLower, processMemoryHigher, 0);
+
+
+  }else{
+
+    PagingAllocator::initialize(overallMemory, pageSize);
+    ReadyAndFinished::initialize();
+    SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay, 
+                          executionDelay, lowerInstructionsBound, higherInstructionsBound, 
+                           processMemoryLower, processMemoryHigher, pageCount);
+  }
 
 
   while(running){

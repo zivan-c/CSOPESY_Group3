@@ -15,7 +15,7 @@ SchedulerManager *SchedulerManager::getInstance() { return singletonInstance; };
 
 void SchedulerManager::initialize(int cpuCount, int qCount, float cDelay, float eDelay,
                     int iLowerBound, int iHigherBound, int mLowerBound,
-                    int mHigherBound, int pLowerBound, int pHigherBound){
+                    int mHigherBound, int pCount){
 
   CPUCore::idleTicks = 0;
   CPUCore::activeTicks = 0;
@@ -32,8 +32,7 @@ void SchedulerManager::initialize(int cpuCount, int qCount, float cDelay, float 
   singletonInstance->instructionsHigherBound = iHigherBound;
   singletonInstance->memoryLowerBound = mLowerBound;
   singletonInstance->memoryHigherBound = mHigherBound;
-  singletonInstance->pageLowerBound = pLowerBound;
-  singletonInstance->pageHigherBound = pHigherBound;
+  singletonInstance->pageCount = pCount;
 
   singletonInstance->setupCores();
 
