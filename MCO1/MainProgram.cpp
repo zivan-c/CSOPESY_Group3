@@ -10,7 +10,7 @@ void commandCheck(std::string input);
 int main(){
   
   bool running = 1;
-  int cpuCores = 2;
+  int cpuCores = 16;
   int quantumCycles = 4;
   int lowerInstructionsBound = 100;
   int higherInstructionsBound = 100;
@@ -81,6 +81,13 @@ void commandCheck(std::string input){
     std::string processName;
     std::cin >> processName;
     CPUScheduler::getInstance()->createProcess(processName);
+
+  }
+  else if(input == "process-smi"){
+
+    FirstFit::getInstance()->isPrinting = true;
+    CPUScheduler::getInstance()->processSMI();
+    FirstFit::getInstance()->isPrinting = false;
 
   }
   else{

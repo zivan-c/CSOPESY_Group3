@@ -36,7 +36,7 @@ public:
   void printProcessProgress();
   std::string getDateAndTime();
   std::string getInstructionTime();
-  int getMemory();
+  int memoryAmount;
 
 
 private:
@@ -47,7 +47,6 @@ private:
   int remainingInstructions;
   ProcessState processState;
   std::string instructionDateAndTime; 
-  int memoryAmount;
 
 };
 

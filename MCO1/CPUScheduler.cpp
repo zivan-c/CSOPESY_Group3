@@ -29,7 +29,6 @@ void CPUScheduler::initialize(int cpuCores,
   Process::processIDCount = 0;  
   Process::processCount = 0;
 
-
   //Sets up the singleton member with arguments passed from config.txt file. 
   singletonInstance = new CPUScheduler();
   singletonInstance->cpuCoresAmount = cpuCores;
@@ -247,12 +246,13 @@ void CPUScheduler::printReport() {
               int coreID = i->getCoreID();
               int remainingInstructions = process->getRemainingInstructions();
               int totalInstructions = process->getTotalInstructions();
+              int processMemory = process->memoryAmount;
 
               std::cout << processName << " " << 
                         processInstructionTime << " Core: " <<
                         coreID << " " << 
                         remainingInstructions << "/" <<
-                        totalInstructions << std::endl;
+                        totalInstructions << " Memory: " << processMemory << std::endl;
         }
       }
 
@@ -266,12 +266,11 @@ void CPUScheduler::printReport() {
       std::string processInstructionTime = i->getInstructionTime();
       int totalInstructions = i->getTotalInstructions();
       int remainingInstructions = i->getRemainingInstructions();
-      int memory = i->getMemory();
 
       std::cout << processName << " " << 
       processInstructionTime << " FINISHED " <<
-      remainingInstructions << "/" <<
-      totalInstructions << " Memory: " << memory << std::endl;
+      totalInstructions << "/" <<
+      totalInstructions << std::endl;
 
   }
 
@@ -313,7 +312,6 @@ void CPUScheduler::createReportFile() {
 
   //For utilization percentage
   double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
-
   outputFile << "CPU utilization: " << percentage << "%\n" << std::endl;
   outputFile << "Cores used: " << coresUsed << std::endl;
   outputFile << "Cores available: " << coresAvailable << "\n" << std::endl;
@@ -390,15 +388,61 @@ void CPUScheduler::addProcessToFinishedProcesses(std::shared_ptr<Process> proces
 
 };
 
+void CPUScheduler::processSMI(){
 
 
+  int coresUsed = 0;
+  int coresAvailable = 0;
+  for (auto i : this->cpuCores) {
+    auto process = i->getProcessinCPUCore();
+    if(process != nullptr){ 
+    //if (i != nullptr && !(i->isCoreFree())) {
+      //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
+      coresUsed++;
+    } else {
+    }
+  }
 
-//Sorts the ready queue for the SJF algorithms in ascending order of their remaining instructions
-//Enclosed in a mutex to avoid race conditions
-//Returns a pointer to the process to use for screen-s and screen-r
-//It checks for the process in both the CPU cores and the ready queue
+  //For utilization percentage
+  double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
+  //int usedMemory = FirstFit::getInstance()->allocatedMemory; 
+  //int totalMemory = FirstFit::getInstance()->memorySize;
+  std::cout << "\nCPU-Util: " << percentage << "%" << std::endl;
+  //std::cout << "Memory Usage: " << usedMemory << " / " << totalMemory << std::endl;
 
-//for Memory Allocator progress
-//
-//
+  //double memoryPercentage = ((double)usedMemory / (double)totalMemory) * 100;
+  //std::cout << "Memory Util: " << memoryPercentage << "%" << std::endl;
+
+  FirstFit::getInstance()->printMemoryProgress();
+
+
+  /*int coresUsed = 0;
+  int coresAvailable = 0;
+  for (auto i : this->cpuCores) {
+    auto process = i->getProcessinCPUCore();
+    if(process != nullptr){ 
+    //if (i != nullptr && !(i->isCoreFree())) {
+      //i->getProcessinCPUCore()->setProcessState(Process::ProcessState::WAITING);
+      coresUsed++;
+    } else {
+    }
+  }
+
+  //For utilization percentage
+  double percentage = ((double)coresUsed / (double)cpuCoresAmount) * 100;
+  //int usedMemory = FirstFit::getInstance()->allocatedMemory; 
+  //int totalMemory = FirstFit::getInstance()->memorySize;
+
+  std::cout << "CPU-Util: " << percentage << "%" << std::endl;
+  //std::cout << "Memory Usage: " << usedMemory << " / " << totalMemory << std::endl;
+
+  //double memoryPercentage = ((double)usedMemory / (double)totalMemory) * 100;
+  //std::cout << "Memory Util: " << memoryPercentage << "%" << std::endl;
+
+  */
+
+  //FirstFit::getInstance()->allow = 1;
+};
+
+
 

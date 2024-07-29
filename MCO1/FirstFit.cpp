@@ -3,8 +3,6 @@
 #include <vector>
 #include "Process.h"
 #include <chrono>
-#include <mutex>
-#include <fstream>
 #include <sstream>
 #include <string>
 #include "CPUScheduler.h"
@@ -13,68 +11,81 @@ FirstFit *FirstFit::singletonInstance = nullptr;
 FirstFit *FirstFit::getInstance() { return singletonInstance; };
 
 FirstFit::FirstFit(int size) 
-    : memory(size, std::make_pair("", false)) {
+    : memory(size, std::make_pair(nullptr, false)) {
     this->memorySize = size;
     this->allocatedMemory = 0;
     this->processesinMemory = 0;
+    this->isPrinting = false;
 }
 
 void FirstFit::initialize(int memoryAmount){
 
   singletonInstance = new FirstFit(memoryAmount);
+  singletonInstance->allow = 1;
 
 };
 
-bool FirstFit::allocate(std::string processName, int processMemoryAmount) {
+bool FirstFit::allocate(std::shared_ptr<Process> process, int processMemoryAmount) {
     // Returns if allocation is successful or not 
-    int freeCount = 0;
-    int startIndex = 0;
+  while(true){
+    if (!isPrinting){
+      int freeCount = 0;
+      int startIndex = 0;
 
-    // Find a contiguous block of free memory
-    for (size_t i = 0; i < memory.size(); ++i) {
-        if (!memory[i].second) { // If the memory unit is free
-            if (freeCount == 0) startIndex = i;
-            freeCount++;
-            if (freeCount == processMemoryAmount) break;
-        } else {
-            freeCount = 0;
-        }
+      // Find a contiguous block of free memory
+      for (size_t i = 0; i < memory.size(); ++i) {
+          if (!memory[i].second) { // If the memory unit is free
+              if (freeCount == 0) startIndex = i;
+              freeCount++;
+              if (freeCount == processMemoryAmount) break;
+          } else {
+              freeCount = 0;
+          }
+      }
+
+      if (freeCount < processMemoryAmount) return false; // Not enough contiguous memory
+
+      // Allocate the memory
+      for (size_t i = startIndex; i < startIndex + processMemoryAmount; ++i) {
+          memory[i] = std::make_pair(process, true);
+      }
+
+      allocatedMemory += processMemoryAmount;
+      processesinMemory++;
+      return true;
     }
-
-    if (freeCount < processMemoryAmount) return false; // Not enough contiguous memory
-
-    // Allocate the memory
-    for (size_t i = startIndex; i < startIndex + processMemoryAmount; ++i) {
-        memory[i] = std::make_pair(processName, true);
-    }
-
-    //std::cout << processName << " has been allocated with: " << processMemoryAmount << std::endl;
-    allocatedMemory += processMemoryAmount;
-    processesinMemory++;
-    return true;
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
 };
 
-void FirstFit::deallocate(std::string processName, int processMemoryAmount) {
-    int deallocatedCount = 0;
+bool FirstFit::deallocate(std::shared_ptr<Process> process, int processMemoryAmount) {
     
-    for (auto& unit : memory) {
-        if (unit.first == processName) {
-            unit = std::make_pair("", false);
-            deallocatedCount++;
-            if (deallocatedCount == processMemoryAmount) break;
-        }
-    }
+    while(true){
+      if (!isPrinting){
 
-    processesinMemory--;
-    //std::cout << processName << " has been DEALLOCATED with: " << processMemoryAmount << std::endl;
-  
-    allocatedMemory -= processMemoryAmount;
+        int deallocatedCount = 0;
+      
+        for (auto& unit : memory) {
+          if (unit.first == process) {
+              unit = std::make_pair(nullptr, false);
+              deallocatedCount++;
+              if (deallocatedCount == processMemoryAmount) break;
+          }
+        }
+
+        processesinMemory--;
+        allocatedMemory -= processMemoryAmount;
+        return true;
+
+      }
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    }
 }
 
 
 int FirstFit::totalExternalFragmentation(){
 
-  //std::lock_guard<std::mutex> lock(queueMutex); 
   int externalFragmentationSize = 0;
 
  for(size_t i = 0; i < memory.size(); i++){
@@ -105,69 +116,28 @@ std::string FirstFit::getDateAndTime(){
 
 void FirstFit::printMemoryProgress(){
 
-  //std::lock_guard<std::mutex> lock(queueMutex); // Lock the mutex
-  //
-  //
-
-  std::ofstream memoryFile; 
-  std::stringstream ss;
-  ss << "memory_stamp_<" << CPUScheduler::getInstance()->quantumCycleAmount << ">.txt";
-  std::string memoryFileName = ss.str(); 
-  memoryFile.open(memoryFileName);
-
-  if(!memoryFile){
-  
-    std::cout << "File could not be opened." << std::endl;
-
-  }else{
-
-    std::string dateAndTime = this->getDateAndTime();
-
-    memoryFile << "Timestamp: " << dateAndTime << std::endl; 
-    memoryFile << "Number of processes in memory: " << FirstFit::getInstance()->processesinMemory << std::endl;
-
-    //place here the total amount of unallocated memory remaining
-    memoryFile << "Total external fragmentation in KB: " <<
-      FirstFit::getInstance()->totalExternalFragmentation() << "\n" << std::endl;
-
-    memoryFile << "----end---- = " << FirstFit::getInstance()->memorySize << "\n" << std::endl;
-    for (size_t i = 0; i < memory.size(); ++i) {
-      if (memory[i].second) { // If memory block is allocated
-          memoryFile << "Process Name: " << memory[i].first << "\n";
-          memoryFile << "Start Index: " << i << "\n";
-        // Find the end index of the allocated memory block
-          size_t endIndex = i;
-          while (endIndex < memory.size() && memory[endIndex].second) {
-              ++endIndex;
-          }
-          memoryFile << "End Index: " << endIndex - 1 << "\n\n";
-          i = endIndex; // Skip to the end of this allocated block
-      }
-    }
-
-   /*for (size_t i = 0; i < memory.size(); ++i) {
-      if (memory[i].second) { // If memory block is allocated
-        memoryFile << "Process Name: " << memory[i].first << "\n";
-        memoryFile << "Start Index: " << i << "\n";
-                // Find the end index of the allocated memory block
-        size_t endIndex = i;
-        while (endIndex < memory.size() && memory[endIndex].second) {
-              ++endIndex;
-        }
-        memoryFile << "End Index: " << endIndex - 1 << "\n\n";
-            i = endIndex - 1; // Skip to the end of this allocated block
-        }
-      }  
-  */
- 
-    //per process in the memory
+  std::cout << "\n==========================================\n" << std::endl;
+  std::cout << "Running processes and memory usage:\n" << std::endl;
+  std::cout << "------------------------------------------\n" << std::endl;
     
-    memoryFile << "----start----- = 0" << std::endl;
-
+  int allMemory = 0;
+  for (size_t i = 0; i < memory.size(); ++i) {
+    if (memory[i].second) { // If memory block is allocated
+      std::cout << memory[i].first->getProcessName() << " " << memory[i].first->memoryAmount << "KB" << std::endl;
+      allMemory += memory[i].first->memoryAmount;
+      // Find the end index of the allocated memory block
+      size_t endIndex = i;
+      while (endIndex < memory.size() && memory[endIndex].second) {
+        ++endIndex;
+      }
+      i = endIndex; // Skip to the end of this allocated block
+    }
   }
 
-
-
+  std::cout << "\nMemory Usage: " << allMemory << " / " << memorySize << std::endl;
+  double memoryPercentage = ((double)allMemory / (double)memorySize) * 100;
+  std::cout << "Memory Util: " << memoryPercentage << "%" << std::endl;
+  std::cout << "\n------------------------------------------\n" << std::endl;
 
 };
 

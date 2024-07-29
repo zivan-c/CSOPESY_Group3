@@ -12,9 +12,9 @@ void RRScheduler::runScheduler(){
 
     //Implementation is within the CPUCore class
     //
-    CPUScheduler::getInstance()->quantumCycleAmount++; 
-    FirstFit::getInstance()->printMemoryProgress();
-    std::chrono::duration<float, std::milli> delayDuration(0.003 * 1000);
+    //CPUScheduler::getInstance()->quantumCycleAmount++; 
+    //FirstFit::getInstance()->printMemoryProgress();
+    std::chrono::duration<float, std::milli> delayDuration(0.0035 * 1000);
     std::this_thread::sleep_for(delayDuration);
 
   });

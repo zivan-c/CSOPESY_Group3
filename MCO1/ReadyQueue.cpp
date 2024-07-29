@@ -5,6 +5,7 @@
 
 ReadyQueue *ReadyQueue::singletonInstance = nullptr;
 ReadyQueue* ReadyQueue::getInstance() { return singletonInstance; };
+std::counting_semaphore<1> ReadyQueue::accessSemaphore(1);
 
 void ReadyQueue::initialize() {
 
@@ -17,6 +18,7 @@ void ReadyQueue::initialize() {
 std::shared_ptr<Process> ReadyQueue::removeProcessFromReadyQueue(){
 
   std::lock_guard<std::mutex> lock(queueMutex); 
+  //accessSemaphore.acquire();
   if (!readyQueue.empty()) {
     auto front = readyQueue.front();
     readyQueue.erase(readyQueue.begin());
@@ -24,13 +26,14 @@ std::shared_ptr<Process> ReadyQueue::removeProcessFromReadyQueue(){
   } else {
       return nullptr; // or throw an exception, handle as appropriate
   }
+  //accessSemaphore.release();
 
 
 };
 
 
 int ReadyQueue::returnLowestRemainingInstructions(){
-  std::lock_guard<std::mutex> lock(queueMutex); 
+  //std::lock_guard<std::mutex> lock(queueMutex); 
   auto front = readyQueue.front();
   int lowestInstructions = front->getRemainingInstructions();
   return lowestInstructions;
@@ -40,7 +43,7 @@ int ReadyQueue::returnLowestRemainingInstructions(){
 bool ReadyQueue::isReadyQueueAvailable(){
 
 
-  std::lock_guard<std::mutex> lock(queueMutex); 
+  //std::lock_guard<std::mutex> lock(queueMutex); 
 
   if(!(readyQueue.empty())){
     return true;
@@ -52,7 +55,7 @@ bool ReadyQueue::isReadyQueueAvailable(){
 
 void ReadyQueue::sortReadyQueue() {
 
-  std::lock_guard<std::mutex> lock(queueMutex); 
+  //std::lock_guard<std::mutex> lock(queueMutex); 
 
     std::sort(readyQueue.begin(), readyQueue.end(), [](const std::shared_ptr<Process>& a, const std::shared_ptr<Process>& b) {
         return a->getRemainingInstructions() < b->getRemainingInstructions();
@@ -61,7 +64,12 @@ void ReadyQueue::sortReadyQueue() {
 
 
 void ReadyQueue::pushToReadyQueue(std::shared_ptr<Process> process){
+
+  std::lock_guard<std::mutex> lock(queueMutex); 
+
+  //accessSemaphore.acquire();
     readyQueue.push_back(process);
+  //accessSemaphore.release();
 
 };
 

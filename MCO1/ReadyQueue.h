@@ -2,6 +2,7 @@
 #include "Process.h"
 #include <memory>
 #include <mutex>
+#include <semaphore>
 
 class ReadyQueue{
 public: 
@@ -19,5 +20,6 @@ private:
   std::mutex queueMutex;
   static ReadyQueue* singletonInstance;
   std::vector<std::shared_ptr<Process> > readyQueue; 
+  static std::counting_semaphore<1> accessSemaphore;
 
 };

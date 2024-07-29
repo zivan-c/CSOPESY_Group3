@@ -6,6 +6,7 @@
 #include <thread>
 #include "Scheduler.h"
 #include <mutex>
+#include <semaphore>
 
 class CPUCore{
 
@@ -27,11 +28,15 @@ public:
   void returnProcesstoReadyQueue();
   void addToFinishedList();
   void removeProcessinCPUCore();
+  static std::counting_semaphore<1> sem;  
+  
 
 private:
 
   std::thread coreThread;
-  std::mutex queueMutex;
+
+  //for synchronization
+
   bool isAvailable;
 
   int cpuCoreID;

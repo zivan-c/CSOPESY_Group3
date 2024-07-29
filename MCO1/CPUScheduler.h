@@ -59,6 +59,9 @@ public:
   //for memory progress printing
   void printMemoryProgress();
 
+  //for processSMI checking();
+  void processSMI();
+
   //to 
   //static void returntoReadyQueue(std::shared_ptr<Process> process);
   //static void placeInFinishedProcesses(std::shared_ptr<Process> process);
