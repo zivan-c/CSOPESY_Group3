@@ -45,7 +45,7 @@ void SchedulerManager::initialize(int cpuCount, int qCount, float cDelay, float 
 void SchedulerManager::setupCores(){
 
   int isFlatMemory;
-  if((pageLowerBound == 1) && (pageHigherBound == 1)){
+  if(pageCount == 1){
     isFlatMemory = 1;
   }else{
     isFlatMemory = 0;
@@ -84,7 +84,7 @@ void SchedulerManager::createProcesses(){
 
       std::shared_ptr<Process> newProcess = std::make_shared<Process>(processName,
       instructionsLowerBound, instructionsHigherBound, memoryLowerBound, 
-      memoryHigherBound, pageLowerBound, pageHigherBound);
+      memoryHigherBound, pageCount);
 
       ReadyAndFinished::getInstance()->pushProcessToReady(newProcess);
       newProcess.reset();

@@ -14,7 +14,7 @@ void commandCheck(std::string input);
 int main(){
   
   bool running = 1;
-  int cpuCores = 16;
+  int cpuCores = 4;
   int quantumCycles = 5;
   int lowerInstructionsBound = 100;
   int higherInstructionsBound = 100;
@@ -23,10 +23,10 @@ int main(){
   
   //for Week8 Homework
   int overallMemory = 32768;
-  int processMemoryLower = 17;
-  int processMemoryHigher = 17;
-  int lowerPageCount = 2;
-  int higherPageCount = 2;
+  int processMemoryLower = 10;
+  int processMemoryHigher = 12;
+  int lowerPageCount = 1;
+  int higherPageCount = 1;
   int pageCount;
 
   std::random_device rd;
@@ -37,7 +37,7 @@ int main(){
   int pageSize = processMemoryLower/pageCount;
 
 
-  if((lowerPageCount == 1) && (higherPageCount == 1)){
+  if(pageCount == 1){
 
     FlatMemoryAllocator::initialize(overallMemory);
     ReadyAndFinished::initialize();

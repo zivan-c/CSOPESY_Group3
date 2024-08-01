@@ -55,6 +55,7 @@ void CPUCore::FCFSBehavior(){
       std::chrono::duration<float, std::milli> printDelay(5000); 
       std::this_thread::sleep_for(printDelay);
     }
+    FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore);
     ReadyAndFinished::getInstance()->pushProcessToFinished(processInCore);
     removeProcess();
 
@@ -85,7 +86,7 @@ void CPUCore::RRBehavior(){
 
       }else{
 
-        FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore->processID);
+        FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore);
         ReadyAndFinished::getInstance()->pushProcessToFinished(processInCore);
         removeProcess();
         return;
@@ -105,6 +106,9 @@ void CPUCore::RRBehavior(){
 
   }else{
 
+    std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
+        std::this_thread::sleep_for(delayDuration);
+
     idleTicks++;
     getProcess();
 
@@ -118,8 +122,7 @@ void CPUCore::getProcess(){
 
   if(placeholder != nullptr){
 
-    placeholder->processState = Process::PROCESSING;
-    
+    //placeholder->processState = Process::PROCESSING;
     if(FlatMemoryAllocator::getInstance()->allocateProcess(placeholder)){ //(TODO) change to checking if memory allocation is successful
       processInCore = placeholder;
       placeholder.reset();
