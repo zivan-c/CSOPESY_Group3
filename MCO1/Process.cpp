@@ -30,10 +30,9 @@ Process::Process(std::string name, int instructionsLowerBound, int instructionsH
 
     //for memory
     int base = 2;
-    std::uniform_int_distribution<> disMemory(instructionsLowerBound, instructionsHigherBound);
+    std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
     int exponent = disMemory(gen);
     this->memoryAmount = static_cast<int>(pow(base, exponent));
-
 
 
 };

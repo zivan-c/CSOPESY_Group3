@@ -5,7 +5,7 @@
 #include "Process.h"
 
 
-class FirstFit : public MemoryAllocator {
+class FirstFit {
 
 public:
 
