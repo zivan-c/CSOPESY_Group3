@@ -11,8 +11,6 @@ class FlatMemoryAllocator{
 public:
 
   int totalMemory;
-  
-  //NEW IMPLEMENTATION
   int usedMemory; //total used memory including external fragmentation
   int activeMemory; //total memory of active processes
   int inactiveMemory; //all external fragmentation

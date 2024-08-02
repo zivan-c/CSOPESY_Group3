@@ -96,60 +96,6 @@ int FlatMemoryAllocator::allocateProcess(std::shared_ptr<Process> process){
 };
 
 
-/*int FlatMemoryAllocator::allocateProcessFirst(std::shared_ptr<Process> process){
-
-  std::lock_guard<std::mutex> lock(mtx);
-  int freeMemory = (totalMemory - allocatedMemory);
-  
-  if(freeMemory >= process->processMemory){
-
-    allocatedMemory += process->processMemory;
-    processesInMemory.push_back(process);
-    return 1;
-
-  }else{
-
-    if(!processesInMemory.empty()){
-
-      std::shared_ptr<Process> placeholder = nullptr;
-
-      for(auto i : processesInMemory){
-        if(i->processState == Process::READY){
-          placeholder = i;
-        }
-      }
-
-
-      if(placeholder != nullptr){ //IF A PROCESS IN READY STATE IS FOUND
-
-        int availableSpace = totalMemory - (allocatedMemory - placeholder->processMemory);
-        
-        if(availableSpace >= process->processMemory){
-
-          placeholder->serializeToFile(backingStore);
-
-          for(auto it = processesInMemory.begin(); it != processesInMemory.end(); ) {
-            if ((*it)->processID == placeholder->processID) {
-              allocatedMemory -= (*it)->processMemory;
-              it = processesInMemory.erase(it);
-            } else {
-              ++it;
-            }
-          }
-
-          allocatedMemory += process->processMemory;
-          processesInMemory.push_back(process);
-          return 1;
-
-        }else{ return 0;}
-      }else {return 0;}
-    }else {return 0;}
-  }   
-  return 0;
-};
-*/
-
-
 
 void FlatMemoryAllocator::deallocateProcess(std::shared_ptr<Process> process){
 
@@ -244,7 +190,6 @@ int FlatMemoryAllocator::backingStoreOperation() {
 
 int FlatMemoryAllocator::allocate(std::shared_ptr<Process> process){
 
-
   //std::cout << "In allocate function " << std::endl;
   int freeCount = 0;
   int startIndex = 0;
@@ -288,7 +233,7 @@ int FlatMemoryAllocator::getExternalFragmentation(){
   }
 
 
-  std::cout << "in external fragmentation" << std::endl;
+  //std::cout << "in external fragmentation" << std::endl;
   // If no blocks are allocated, return 0
   if (firstAllocatedIndex == memory.size()) {
       return 0;
@@ -314,7 +259,7 @@ int FlatMemoryAllocator::getActiveMemory(){
         activeMemory++;
       }
   }
-  std::cout << "in active memory" << std::endl;
+  //std::cout << "in active memory" << std::endl;
 
   return activeMemory;
 };

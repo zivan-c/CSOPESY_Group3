@@ -44,17 +44,10 @@ void SchedulerManager::initialize(int cpuCount, int qCount, float cDelay, float 
 
 void SchedulerManager::setupCores(){
 
-  int isFlatMemory;
-  if(pageCount == 1){
-    isFlatMemory = 1;
-  }else{
-    isFlatMemory = 0;
-  }
-
   for(size_t i = 0; i < CPUCoreCount; i++){
 
     std::shared_ptr<CPUCore> cpuCore = std::make_shared<CPUCore>
-      (i + 1, executionDelay, quantumCycleCount, isFlatMemory);
+      (i + 1, executionDelay, quantumCycleCount, pageCount);
 
     coreList.push_back(cpuCore);
 

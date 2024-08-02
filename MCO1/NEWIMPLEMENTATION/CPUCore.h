@@ -17,7 +17,7 @@ public:
   int quantumCycleCount;
   int isFree;
   int isRunning;
-  int isFlatMemory;
+  int pageCount;
 
 
   //For ticks
@@ -27,7 +27,7 @@ public:
   size_t totalTicks;
 
 
-  CPUCore(int coreID, float executionDelay, int quantumCycleCount, int isFlatMemory);
+  CPUCore(int coreID, float executionDelay, int quantumCycleCount, int pageCount);
 
   void run();
 

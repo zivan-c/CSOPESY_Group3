@@ -7,14 +7,13 @@
 #include <string>
 #include <iostream> 
 #include <random>
-#include <cmath>
 
-void commandCheck(std::string input);
+void commandCheck(std::string input, int pageCount);
 
 int main(){
   
   bool running = 1;
-  int cpuCores = 4;
+  int cpuCores = 32;
   int quantumCycles = 5;
   int lowerInstructionsBound = 100;
   int higherInstructionsBound = 100;
@@ -24,7 +23,8 @@ int main(){
   //for Week8 Homework
   int overallMemory = 32768;
   int processMemoryLower = 10;
-  int processMemoryHigher = 12;
+  int processMemoryHigher = 14;
+  int processMemory;
   int lowerPageCount = 1;
   int higherPageCount = 1;
   int pageCount;
@@ -34,7 +34,13 @@ int main(){
   std::uniform_int_distribution<> dis(lowerPageCount, higherPageCount);
   pageCount = dis(gen);
 
-  int pageSize = processMemoryLower/pageCount;
+
+  int base = 2; 
+  std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
+  int exponent = disMemory(gen);
+  processMemory = static_cast<int>(pow(base, exponent)); 
+
+  int pageSize = processMemory/pageCount;
 
 
   if(pageCount == 1){
@@ -43,12 +49,12 @@ int main(){
     ReadyAndFinished::initialize();
     SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay, 
                           executionDelay, lowerInstructionsBound, higherInstructionsBound, 
-                           processMemoryLower, processMemoryHigher, 0);
+                           processMemoryLower, processMemoryHigher, pageCount);
 
 
   }else{
 
-    PagingAllocator::initialize(overallMemory, pageSize);
+    PagingAllocator::initialize(overallMemory, pageSize, pageCount);
     ReadyAndFinished::initialize();
     SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay, 
                           executionDelay, lowerInstructionsBound, higherInstructionsBound, 
@@ -67,14 +73,14 @@ int main(){
     if(input == "exit"){
       running = 0;
     }else{
-      commandCheck(input);
+      commandCheck(input, pageCount);
     }
 
   }      
   
 };
 
-void commandCheck(std::string input){
+void commandCheck(std::string input, int pCount){
 
 
 
@@ -105,16 +111,23 @@ void commandCheck(std::string input){
   else if(input == "process-smi"){
 
     CPUCore::isPrinting = 1;
-    FlatMemoryAllocator::getInstance()->printProcessesInMemory();
+    if(pCount > 1){
+      PagingAllocator::getInstance()->printProcessesInMemory();
+    }else{
+      FlatMemoryAllocator::getInstance()->printProcessesInMemory();
+    }
     CPUCore::isPrinting = 0;
 
   }
   else if(input == "vmstat"){
 
     CPUCore::isPrinting = 1;
-    FlatMemoryAllocator::getInstance()->vmStat();
+    if(pCount > 1){
+      PagingAllocator::getInstance()->vmStat();
+    }else{
+      FlatMemoryAllocator::getInstance()->vmStat();
+    }
     CPUCore::isPrinting = 0;
-
   }
 
   else{

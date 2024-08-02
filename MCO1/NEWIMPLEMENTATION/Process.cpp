@@ -34,9 +34,7 @@ Process::Process(std::string processName, int instructionsLowerBound, int instru
   int exponent = disMemory(gen);
   this->processMemory = static_cast<int>(pow(base, exponent)); 
 
-  //Define Pages (If needed)
   this->pageCount = pCount;
-  
   isFinished = 0;
 
 };

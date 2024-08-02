@@ -1,19 +1,18 @@
 #include "CPUCore.h"
-
 #include "ReadyAndFinished.h"
 #include "FlatMemoryAllocator.h"
-#include <iostream>
+#include "PagingAllocator.h"
 
 size_t CPUCore::activeTicks = 0;
 size_t CPUCore::idleTicks = 0;
 int CPUCore::isPrinting = 0;
 
-CPUCore::CPUCore(int coreID, float executionDelay, int quantumCycleCount, int isFlatMemory){
+CPUCore::CPUCore(int coreID, float executionDelay, int quantumCycleCount, int pCount){
 
   this->coreID = coreID;
   this->executionDelay = executionDelay;
   this->quantumCycleCount = quantumCycleCount;
-  this->isFlatMemory = isFlatMemory;
+  this->pageCount = pCount;
   isRunning = 0;
 
 };
@@ -55,11 +54,20 @@ void CPUCore::FCFSBehavior(){
       std::chrono::duration<float, std::milli> printDelay(5000); 
       std::this_thread::sleep_for(printDelay);
     }
-    FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore);
+
+    if(!(pageCount > 1)){
+      FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore);
+    }else{
+      PagingAllocator::getInstance()->deallocateProcess(processInCore);
+    }
+
     ReadyAndFinished::getInstance()->pushProcessToFinished(processInCore);
     removeProcess();
 
   }else{
+
+    std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
+    std::this_thread::sleep_for(delayDuration);
     idleTicks++;
     getProcess();
   }
@@ -86,7 +94,12 @@ void CPUCore::RRBehavior(){
 
       }else{
 
-        FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore);
+        if(!(pageCount > 1)){
+          FlatMemoryAllocator::getInstance()->deallocateProcess(processInCore);
+        }else{
+          PagingAllocator::getInstance()->deallocateProcess(processInCore);
+        }
+
         ReadyAndFinished::getInstance()->pushProcessToFinished(processInCore);
         removeProcess();
         return;
@@ -107,8 +120,7 @@ void CPUCore::RRBehavior(){
   }else{
 
     std::chrono::duration<float, std::milli> delayDuration(executionDelay * 1000); 
-        std::this_thread::sleep_for(delayDuration);
-
+    std::this_thread::sleep_for(delayDuration);
     idleTicks++;
     getProcess();
 
@@ -122,19 +134,37 @@ void CPUCore::getProcess(){
 
   if(placeholder != nullptr){
 
-    //placeholder->processState = Process::PROCESSING;
-    if(FlatMemoryAllocator::getInstance()->allocateProcess(placeholder)){ //(TODO) change to checking if memory allocation is successful
-      processInCore = placeholder;
-      placeholder.reset();
-      isFree = 0;
+    if(!(pageCount > 1)){
+
+      if(FlatMemoryAllocator::getInstance()->allocateProcess(placeholder)){ 
+          processInCore = placeholder;
+          placeholder.reset();
+          isFree = 0;
+
+      }else{
+
+        placeholder->processState = Process::READY;
+        ReadyAndFinished::getInstance()->pushProcessToReady(placeholder);
+        placeholder.reset();
+        isFree = 1;
+
+      }
 
     }else{
 
-      placeholder->processState = Process::READY;
-      ReadyAndFinished::getInstance()->pushProcessToReady(placeholder);
-      placeholder.reset();
-      isFree = 1;
+      if(PagingAllocator::getInstance()->allocateProcess(placeholder)){ 
+          processInCore = placeholder;
+          placeholder.reset();
+          isFree = 0;
 
+      }else{
+
+        placeholder->processState = Process::READY;
+        ReadyAndFinished::getInstance()->pushProcessToReady(placeholder);
+        placeholder.reset();
+        isFree = 1;
+
+      }
     }
   }
 };
