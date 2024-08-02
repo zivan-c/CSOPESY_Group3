@@ -1,16 +1,11 @@
 #pragma once
 #include <string>
-#include <iostream>
-#include <cstdlib>
-#include <random>
-#include "Console.h"
-
+#include <fstream>
 
 class Process {
 
 public:
 
-    //Enum for process states
     enum ProcessState {
 
         READY,
@@ -19,34 +14,33 @@ public:
         FINISHED
 
     };
+
+    Process(std::string processName, int instructionsLowerBound, int instructionsHigherBound,
+        int memoryLowerBound, int memoryHigherBound, int pCount);
+
     static int processIDCount;
     static int processCount;
 
-    Process(std::string name, int instructionsLowerBound, int instructionsHigherBound, int processMemoryLower,
-        int processMemoryHigher);
-    void executeInstruction();
-    int getRemainingInstructions();
-    int getTotalInstructions();
-    void setProcessState(ProcessState state);
-    ProcessState getProcessState();
-    std::string getProcessName();
-    int getProcessID();
-    int getCoreID();
-    void setCoreID(int coreID);
-    void printProcessProgress();
-    std::string getDateAndTime();
-    std::string getInstructionTime();
-    int getMemory();
+    ProcessState processState;
+    std::string processName;
+    std::string instructionTime;
+    int processID;
+    int processMemory;
+    int remainingInstructions;
+    int totalInstructions;
+    int isFinished;
+    int pageCount;
 
+
+    void writeToBackingStore(std::ostream& out) const;
+    void serializeToFile(const std::string& filename);
+    void executeInstruction();
+    void printFinal();
+    std::string getTime();
 
 private:
-    std::string processName;
-    int processID;
-    int coreID;
-    int totalInstructions;
-    int remainingInstructions;
-    ProcessState processState;
-    std::string instructionDateAndTime;
-    int memoryAmount;
+
+
+
 
 };

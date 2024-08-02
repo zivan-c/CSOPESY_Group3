@@ -1,16 +1,17 @@
 #pragma once
 
-#include <vector>
-#include <memory>
-#include <mutex>
-
 #include "Process.h"
+#include <mutex>
+#include <vector>
 
-class FlatMemoryAllocator {
+class PagingAllocator {
 
 public:
 
 	int totalMemory;
+	int pageCount;
+	int frameCount;
+	int frameSize;
 	int usedMemory; //total used memory including external fragmentation
 	int activeMemory; //total memory of active processes
 	int inactiveMemory; //all external fragmentation
@@ -22,8 +23,8 @@ public:
 	std::vector<std::shared_ptr<Process> > processesInMemory;
 
 
-	void static initialize(int tMemory);
-	static FlatMemoryAllocator* getInstance();
+	void static initialize(int tMemory, int fSize, int pCount);
+	static PagingAllocator* getInstance();
 
 	int allocateProcess(std::shared_ptr<Process>);
 	int allocate(std::shared_ptr<Process>);
@@ -36,11 +37,11 @@ public:
 	int backingStoreOperation();
 
 private:
-	std::mutex mtx;
-	static FlatMemoryAllocator* singletonInstance;
-	std::vector<std::pair<std::shared_ptr<Process>, bool> > memory;
-	FlatMemoryAllocator(int tMemory);
 
+	std::mutex mtx;
+	static PagingAllocator* singletonInstance;
+	std::vector<std::pair<std::shared_ptr<Process>, bool> > memory;
+	PagingAllocator(int tMemory, int fSize, int pCount);
 
 
 };

@@ -1,8 +1,6 @@
 #include "OSConfig.h"
-#include "CPUScheduler.h"
 
 int OSConfig::NUM_CPU = 1;
-CPUScheduler::SchedulerAlgorithm algo;
 int OSConfig::TIMESLICE = 1;
 bool OSConfig::PREEMPTIVE = 1;
 float OSConfig::BATCH_PROCESS_FREQ = 1.0f;
@@ -47,15 +45,12 @@ void OSConfig::readConfig() {
 	}
 	if (umap["scheduler"] == "\"rr\"") {
 		OSConfig::type = RR;
-		algo = CPUScheduler::SchedulerAlgorithm::RR;
 	}
 	else if (umap["scheduler"] == "\"sjf\"") {
 		OSConfig::type = SJF;
-		algo = CPUScheduler::SchedulerAlgorithm::SJF;
 	}
 	else if (umap["scheduler"] == "\"fcfs\"") {
 		OSConfig::type = FCFS;
-		algo = CPUScheduler::SchedulerAlgorithm::FCFS;
 	}
 
 	if (umap["preemptive"] == "0") {

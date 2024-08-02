@@ -5,24 +5,26 @@
   Console.cpp
   ConsoleManager.cpp
   CPUCore.cpp
-  CPUScheduler.cpp
-  FCFSScheduler.cpp
-  FirstFit.cpp
-C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\FirstFit.cpp(40,46): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  FlatMemoryAllocator.cpp
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\FlatMemoryAllocator.cpp(189,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\FlatMemoryAllocator.cpp(229,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   main.cpp
-C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\main.cpp(45,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\main.cpp(20,26): warning C4305: 'initializing': truncation from 'double' to 'float'
   Marquee.cpp
   MemoryAllocator.cpp
-  NonPreemptiveSJF.cpp
-  PreemptiveSJF.cpp
+  PagingAllocator.cpp
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\PagingAllocator.cpp(154,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\PagingAllocator.cpp(177,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Process.cpp
-  ProcessScreen.cpp
-  ReadyQueue.cpp
-  RRScheduler.cpp
+  ReadyAndFinished.cpp
   Scheduler.cpp
   OSConfig.cpp
-C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\OSConfig.cpp(69,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\OSConfig.cpp(72,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\OSConfig.cpp(64,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\OSConfig.cpp(67,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   MainMenu.cpp
+  SchedulerManager.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(374,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(388,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(375,90): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Generating Code...
   MCO1.vcxproj -> C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\x64\Debug\MCO1.exe

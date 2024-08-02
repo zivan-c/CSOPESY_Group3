@@ -1,72 +1,76 @@
-/*
-#include <iostream>
-#include <memory>
-#include <string>
-#include "OSConfig.h"
-#include "ConsoleManager.h"
-
-
-int main() {
-    try {
-        //Initialize ConsoleManager
-        ConsoleManager::initConMgr();
-
-        // Get the ConsoleManager instance
-        ConsoleManager* consoleMgr = ConsoleManager::getInst();
-
-        // Main loop
-        while (consoleMgr->isRunning()) {
-            consoleMgr->process();
-        }
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-
-    return 0;
-}*/
-
-#include "ProcessScreen.h"
-#include "CPUScheduler.h"
-#include "FirstFit.h"
+#include "SchedulerManager.h"
+#include "ReadyAndFinished.h"
+#include "CPUCore.h"
+#include "FlatMemoryAllocator.h"
+#include "PagingAllocator.h"
 
 #include <string>
 #include <iostream> 
+#include <random>
 
-void commandCheck(std::string input);
+void commandCheck(std::string input, int pageCount);
 
 int main() {
 
     bool running = 1;
-    int cpuCores = 2;
-    int quantumCycles = 4;
+    int cpuCores = 32;
+    int quantumCycles = 5;
     int lowerInstructionsBound = 100;
     int higherInstructionsBound = 100;
-    float executionDelay = 0.001;
+    float executionDelay = 0.01;
     float creationDelay = 0.25;
-    int preemptive = 1;
 
-    //for Week8 Homework
-    int overallMemory = 16384;
-    int processMemoryLower = 4;
-    int processMemoryHigher = 12;
+    int overallMemory = 32768;
+    int processMemoryLower = 10;
+    int processMemoryHigher = 14;
+    int processMemory;
+    int lowerPageCount = 1;
+    int higherPageCount = 1;
+    int pageCount;
 
-    CPUScheduler::SchedulerAlgorithm schedulerAlgorithm = CPUScheduler::RR;
+    //Values for all above should be set by the text file in the config
 
 
-    ReadyQueue::initialize();
-    FirstFit::initialize(overallMemory);
-    CPUScheduler::initialize(cpuCores, schedulerAlgorithm, executionDelay, quantumCycles, preemptive,
-        creationDelay, lowerInstructionsBound, higherInstructionsBound,
-        processMemoryLower, processMemoryHigher);
+    //Gets a random value from the lower and higher page count
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(lowerPageCount, higherPageCount);
+    pageCount = dis(gen);
 
+    //Sets a random memory size from the lower and higher memory (for paging allocator)
+    int base = 2;
+    std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
+    int exponent = disMemory(gen);
+    processMemory = static_cast<int>(pow(base, exponent));
+
+    //Gets the memory size of a frame from the memory and the page count
+    int pageSize = processMemory / pageCount;
+
+
+    //If the page count is more than one, it is a paging allocator
+    if (pageCount == 1) {
+
+        FlatMemoryAllocator::initialize(overallMemory);
+        ReadyAndFinished::initialize();
+        SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay,
+            executionDelay, lowerInstructionsBound, higherInstructionsBound,
+            processMemoryLower, processMemoryHigher, pageCount);
+    }
+    else {
+
+        PagingAllocator::initialize(overallMemory, pageSize, pageCount);
+        ReadyAndFinished::initialize();
+        SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay,
+            executionDelay, lowerInstructionsBound, higherInstructionsBound,
+            processMemoryLower, processMemoryHigher, pageCount);
+    }
 
 
     while (running) {
 
         std::cout << "Commands:" << std::endl;
         std::cout << "scheduler-test, scheduler-stop, screen-ls" << std::endl;
-        std::cout << "report-util, createprocess, exit" << std::endl;
+        std::cout << "report-util, exit, process-smi, vmstat" << std::endl;
         std::cout << "Enter command: ";
         std::string input;
         std::cin >> input;
@@ -74,44 +78,68 @@ int main() {
             running = 0;
         }
         else {
-            commandCheck(input);
+            commandCheck(input, pageCount);
         }
 
     }
 
 };
 
-void commandCheck(std::string input) {
+void commandCheck(std::string input, int pCount) {
 
 
 
     if (input == "scheduler-test") {
 
-        CPUScheduler::getInstance()->startScheduler();
+        SchedulerManager::getInstance()->createProcesses();
 
     }
     else if (input == "scheduler-stop") {
 
-        CPUScheduler::getInstance()->stopScheduler();
+        SchedulerManager::isCreatingProcesses = 0;
 
     }
     else if (input == "screen-ls") {
 
-        CPUScheduler::getInstance()->printReport();
+        CPUCore::isPrinting = 1;
+        SchedulerManager::getInstance()->screenLS();
+        CPUCore::isPrinting = 0;
 
     }
     else if (input == "report-util") {
 
-        CPUScheduler::getInstance()->createReportFile();
+        CPUCore::isPrinting = 1;
+        SchedulerManager::getInstance()->reportUtil();
+        CPUCore::isPrinting = 0;
 
     }
-    else if (input == "createprocess") {
+    else if (input == "process-smi") {
 
-        std::string processName;
-        std::cin >> processName;
-        CPUScheduler::getInstance()->createProcess(processName);
+        //Should print from the respective allocator.
+        CPUCore::isPrinting = 1;
+        if (pCount > 1) {
+            PagingAllocator::getInstance()->printProcessesInMemory();
+        }
+        else {
+            FlatMemoryAllocator::getInstance()->printProcessesInMemory();
+        }
+        CPUCore::isPrinting = 0;
 
     }
+    else if (input == "vmstat") {
+
+        CPUCore::isPrinting = 1;
+
+        //Should print from the respective allocator.
+        if (pCount > 1) {
+            PagingAllocator::getInstance()->vmStat();
+        }
+        else {
+            FlatMemoryAllocator::getInstance()->vmStat();
+        }
+        CPUCore::isPrinting = 0;
+    }
+
     else {
 
         std::cout << "Invalid input" << std::endl;

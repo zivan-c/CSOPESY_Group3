@@ -3,12 +3,10 @@
 #include <Windows.h>
 #include "Console.h"
 #include "ConsoleManager.h"
-#include "CPUScheduler.h"
 #include "OSConfig.h"
 #include "Scheduler.h"
 #include <string.h>
 #include "Process.h"
-#include "ProcessScreen.h"
 #include "marqueeWorkerThread.h"  // Include the header for marquee functionality
 
 MainMenu::MainMenu() : Console(MAIN) {
@@ -112,16 +110,13 @@ void MainMenu::process() {
             }
 
             if (command == "scheduler-test") {
-                CPUScheduler::getInstance()->startScheduler();
             }
 
             if (command == "scheduler-stop") {
-                CPUScheduler::getInstance()->stopScheduler();
             }
 
             if (command.find("screen") != std::string::npos) {
                 if (command.find(" -ls") != std::string::npos) {
-                    CPUScheduler::getInstance()->printReport();
                 }
 
                 else if (command.find(" -r") != std::string::npos) {

@@ -1,49 +1,46 @@
 #pragma once
-#include <chrono>
-#include <ctime>
-#include <iomanip>
-#include <string>
+
+#include "Process.h"
+
 #include <thread>
-#include "Scheduler.h"
 #include <mutex>
 
 class CPUCore {
 
+
 public:
 
-	CPUCore(int id, float executionDelay);
-	CPUCore(int id, float executionDelay, int quantumCycles);
-	~CPUCore() = default;
+	std::shared_ptr<Process> processInCore;
 
-	bool isRunning;
+	int coreID;
+	float executionDelay;
+	int quantumCycleCount;
+	int isFree;
+	int isRunning;
+	int pageCount;
 
-	int isCoreFree();
-	void runCore();
-	void executeProcess();
-	std::shared_ptr<Process> getProcessinCPUCore();
-	int getCoreID();
 
-	void getProcessFromReadyQueue();
-	void returnProcesstoReadyQueue();
-	void addToFinishedList();
-	void removeProcessinCPUCore();
+	//For ticks
+	static size_t idleTicks;
+	static size_t activeTicks;
+	static int isPrinting;
+	size_t totalTicks;
+
+
+	CPUCore(int coreID, float executionDelay, int quantumCycleCount, int pageCount);
+
+	void run();
+
+	void FCFSBehavior();
+	void RRBehavior();
+
+	void getProcess();
+	void returnProcess();
+	void removeProcess();
 
 private:
 
-	std::thread coreThread;
-	std::mutex queueMutex;
-	bool isAvailable;
-
-	int cpuCoreID;
-	int quantumCycles;
-	float executionDelay;
-	std::shared_ptr<Process> processInCPUCore;
-
-	void normalCPUBehavior();
-	void RRCPUBehavior();
-
-
-	//for memory
-	void* processPointer;
+	std::thread cpuCoreThread;
+	std::mutex mtx;
 
 };

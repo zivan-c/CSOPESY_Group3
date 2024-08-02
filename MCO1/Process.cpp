@@ -1,186 +1,130 @@
 #include "Process.h"
-#include <string>
-#include <random>
-#include <iostream>
-#include <chrono>
 #include <ctime>
+#include <random>
 #include <sstream>
+#include <chrono>
 #include <iomanip>
 #include <cmath>
+#include <iostream>
 
+//Initializes the process number and ID count for the process creations 
+//in the SchedulerManager
 int Process::processCount = 0;
 int Process::processIDCount = 0;
 
-Process::Process(std::string name, int instructionsLowerBound, int instructionsHigherBound,
-    int processMemoryLower, int processMemoryHigher) {
+//Constructor for a process
+Process::Process(std::string processName, int instructionsLowerBound, int instructionsHigherBound,
+    int memoryLowerBound, int memoryHigherBound, int pCount) {
 
-    //Randomizer to set the amount of instructions for the process
+
+    //Defining Instruction Amount
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(instructionsLowerBound, instructionsHigherBound);
+    this->totalInstructions = dis(gen);
+    this->remainingInstructions = totalInstructions;
 
-    this->processName = name;
+    this->processName = processName;
+
+    //Sets its ID to the processIDCount and increments it for the next
+    //created process
     this->processID = processIDCount;
-
     processIDCount++;
 
-    this->totalInstructions = dis(gen);
-    this->remainingInstructions = this->totalInstructions;
-    this->processState = Process::ProcessState::READY;
+    //Sets the process to ready when pushed to the ready queue
+    this->processState = Process::READY;
 
-    //for memory
+    //Defining Memory Amount
     int base = 2;
-    std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
+    std::uniform_int_distribution<> disMemory(memoryLowerBound, memoryHigherBound);
     int exponent = disMemory(gen);
-    this->memoryAmount = static_cast<int>(pow(base, exponent));
+    this->processMemory = static_cast<int>(pow(base, exponent));
 
+    this->pageCount = pCount;
+    isFinished = 0;
 
 };
 
-//Instruction execution, with an update for the latest instruction time
+//Executes an instruction
 void Process::executeInstruction() {
 
-    if (this != nullptr) {
-        if (this->processState == PROCESSING) {
-            if (this->remainingInstructions == 0) {
-                this->processState = Process::ProcessState::FINISHED;
-            }
-            else {
-                remainingInstructions--;
-                this->instructionDateAndTime = getDateAndTime();
-            }
-        }
-    }
-};
-
-
-int Process::getRemainingInstructions() {
-
-    if (this != nullptr) {
-        return remainingInstructions;
-    }
-    else {
-        return -1;
-    }
-};
-
-int Process::getTotalInstructions() {
-
-    if (this != nullptr) {
-        return totalInstructions;
-    }
-    else {
-        return -1;
-    }
-
-};
-
-void Process::setProcessState(Process::ProcessState state) {
-
-    if (this != nullptr) {
-        this->processState = state;
-    }
-
-};
-
-Process::ProcessState Process::getProcessState() {
-
-    if (this != nullptr) {
-        return this->processState;
-    }
-    else {
-        return PROCESSING;
-    }
-
-};
-
-std::string Process::getProcessName() {
-
-    if (this != nullptr) {
-        return processName;
-    }
-    else {
-        return nullptr;
-    }
-
-};
-
-int Process::getProcessID() {
-
-    if (this != nullptr) {
-        return processID;
-    }
-    else {
-        return -1;
-    }
-
-
-};
-
-void Process::setCoreID(int coreID) {
-
-    this->coreID = coreID;
-
-};
-
-int Process::getCoreID() {
-
-    if (this != nullptr) {
-        return this->coreID;
-    }
-    else {
-        return -1;
-    }
-
-};
-
-
-//Prints the progress of itself for screen-s and screen-r commands
-void Process::printProcessProgress() {
-
-    std::cout << "Process: " << this->processName << "\n" << std::endl;
-    std::cout << "ID: " << this->processID << "\n\n" << std::endl;
+    remainingInstructions--;
+    instructionTime = getTime();
 
     if (remainingInstructions == 0) {
-
-        std::cout << "Process finished!" << "\n" << std::endl;
-
-    }
-    else {
-
-        std::cout << "Current Instruction Line: " << this->remainingInstructions << "\n" << std::endl;
-        std::cout << "Lines of code: " << this->totalInstructions << "\n" << std::endl;
-
+        processState = ProcessState::FINISHED;
+        isFinished = 1;
     }
 
 };
 
-//Gets the date and time, should change depending on Windows/Linux implementation
-//localtime_r for Linux, and localtime_s for Windows
-std::string Process::getDateAndTime() {
+//Gets the time for the latest instruction execution
+std::string Process::getTime() {
+
 
     auto now = std::chrono::system_clock::now();
     std::time_t calendarTime = std::chrono::system_clock::to_time_t(now);
 
     std::tm local_tm;
-    localtime_s(&local_tm, &calendarTime);
+    localtime_s(&local_tm , &calendarTime);
 
     std::ostringstream oss;
     oss << std::put_time(&local_tm, "(%m/%d/%Y %H:%M:%S)");
 
     return oss.str();
 
-};
+}
 
+//Prints the final process completion
+void Process::printFinal() {
 
-
-std::string Process::getInstructionTime() {
-
-    return this->instructionDateAndTime;
-
-};
-int Process::getMemory() {
-
-    return this->memoryAmount;
+    std::cout << processName << " " << instructionTime << " FINISHED " << totalInstructions
+        << "/" << totalInstructions << std::endl;
 
 };
+
+
+//Method to write to the external text file
+void Process::writeToBackingStore(std::ostream& out) const {
+
+    out << processID << " " << processName << " "
+        << remainingInstructions << " " << totalInstructions << " "
+        << processMemory << std::endl;
+
+};
+
+//Writes to an external file to store its information
+//for a backing store emulation
+void Process::serializeToFile(const std::string& filename) {
+
+    std::ifstream infile(filename);
+    std::stringstream buffer;
+    buffer << infile.rdbuf();
+    std::string fileContents = buffer.str();
+    infile.close();
+
+    std::ofstream outfile(filename, std::ios::trunc);
+    std::istringstream iss(fileContents);
+    std::string line;
+    bool updated = false;
+
+    while (std::getline(iss, line)) {
+        std::istringstream lineStream(line);
+        int id;
+        lineStream >> id;
+        if (id == processID) {
+            writeToBackingStore(outfile);
+            updated = true;
+        }
+        else {
+            outfile << line << std::endl;
+        }
+    }
+
+    if (!updated) {
+        writeToBackingStore(outfile);
+    }
+
+    outfile.close();
+
+}

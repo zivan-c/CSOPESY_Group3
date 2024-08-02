@@ -1,9 +1,7 @@
 #include "ConsoleManager.h"
 #include "MainMenu.h"
-#include "CPUScheduler.h"
 #include "Scheduler.h"
 #include "Process.h"
-#include "ProcessScreen.h"
 #include <iostream>
 #include <unordered_map>
 #include <stdexcept> // For std::runtime_error
@@ -112,10 +110,7 @@ ConsoleManager::ConsoleManager()
 
     // Main Menu
     const std::shared_ptr<MainMenu> mainMenu = std::make_shared<MainMenu>();
-    this->conMap[MAIN] = mainMenu;    
-
-    // Screen [Almost Done]
-    const std::shared_ptr<ProcessScreen> processScreen = std::make_shared<ProcessScreen>();
+    this->conMap[MAIN] = mainMenu; 
 
     // Set Main Console
     this->changeConsole(MAIN);
