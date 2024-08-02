@@ -1,17 +1,5 @@
 #include "ReadyAndFinished.h"
 
-
-/*
-  void pushProcessToReady(std::shared_ptr<Process> process);
-  void pushProcessToFinished(std::shared_ptr<Process> process);
-  std::shared_ptr<Process> returnProcess();
-  std::vector<std::shared_ptr<Process>> finishedList;
-
-  static void initialize();
-  static ReadyAndFinished* getInstance(); 
-*/
-
-
 ReadyAndFinished *ReadyAndFinished::singletonInstance = nullptr;
 ReadyAndFinished* ReadyAndFinished::getInstance() { return singletonInstance; };
 
@@ -21,6 +9,7 @@ void ReadyAndFinished::initialize() {
 
 }
 
+//Returns a process from the ready queue and removes it from the list
 std::shared_ptr<Process> ReadyAndFinished::returnProcess(){
   
   std::lock_guard<std::mutex> lock(mtx);
@@ -35,6 +24,7 @@ std::shared_ptr<Process> ReadyAndFinished::returnProcess(){
 
 };
 
+//Pushes the passed process pointer to the back of the ready queue
 void ReadyAndFinished::pushProcessToReady(std::shared_ptr<Process> process){
 
   std::lock_guard<std::mutex> lock(mtx);
@@ -42,6 +32,7 @@ void ReadyAndFinished::pushProcessToReady(std::shared_ptr<Process> process){
 
 };
 
+//Pushes a finished process to the finished list
 void ReadyAndFinished::pushProcessToFinished(std::shared_ptr<Process> process){
 
   std::lock_guard<std::mutex> lock(mtx);

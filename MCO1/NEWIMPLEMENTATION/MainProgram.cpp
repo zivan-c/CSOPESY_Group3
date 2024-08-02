@@ -20,7 +20,6 @@ int main(){
   float executionDelay = 0.01;
   float creationDelay = 0.25;
   
-  //for Week8 Homework
   int overallMemory = 32768;
   int processMemoryLower = 10;
   int processMemoryHigher = 14;
@@ -29,20 +28,26 @@ int main(){
   int higherPageCount = 1;
   int pageCount;
 
+  //Values for all above should be set by the text file in the config
+
+
+  //Gets a random value from the lower and higher page count
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<> dis(lowerPageCount, higherPageCount);
   pageCount = dis(gen);
 
-
+  //Sets a random memory size from the lower and higher memory (for paging allocator)
   int base = 2; 
   std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
   int exponent = disMemory(gen);
   processMemory = static_cast<int>(pow(base, exponent)); 
 
+  //Gets the memory size of a frame from the memory and the page count
   int pageSize = processMemory/pageCount;
 
 
+  //If the page count is more than one, it is a paging allocator
   if(pageCount == 1){
 
     FlatMemoryAllocator::initialize(overallMemory);
@@ -50,8 +55,6 @@ int main(){
     SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay, 
                           executionDelay, lowerInstructionsBound, higherInstructionsBound, 
                            processMemoryLower, processMemoryHigher, pageCount);
-
-
   }else{
 
     PagingAllocator::initialize(overallMemory, pageSize, pageCount);
@@ -110,6 +113,7 @@ void commandCheck(std::string input, int pCount){
   }
   else if(input == "process-smi"){
 
+    //Should print from the respective allocator.
     CPUCore::isPrinting = 1;
     if(pCount > 1){
       PagingAllocator::getInstance()->printProcessesInMemory();
@@ -122,6 +126,8 @@ void commandCheck(std::string input, int pCount){
   else if(input == "vmstat"){
 
     CPUCore::isPrinting = 1;
+
+    //Should print from the respective allocator.
     if(pCount > 1){
       PagingAllocator::getInstance()->vmStat();
     }else{

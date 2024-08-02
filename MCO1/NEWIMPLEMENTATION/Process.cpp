@@ -7,9 +7,12 @@
 #include <cmath>
 #include <iostream>
 
+//Initializes the process number and ID count for the process creations 
+//in the SchedulerManager
 int Process::processCount = 0;
 int Process::processIDCount = 0;
 
+//Constructor for a process
 Process::Process(std::string processName, int instructionsLowerBound, int instructionsHigherBound,
           int memoryLowerBound, int memoryHigherBound, int pCount){
 
@@ -23,9 +26,12 @@ Process::Process(std::string processName, int instructionsLowerBound, int instru
 
   this->processName = processName;
 
+  //Sets its ID to the processIDCount and increments it for the next
+  //created process
   this->processID = processIDCount;
   processIDCount++;
 
+  //Sets the process to ready when pushed to the ready queue
   this->processState = Process::READY;
 
   //Defining Memory Amount
@@ -39,6 +45,7 @@ Process::Process(std::string processName, int instructionsLowerBound, int instru
 
 };
 
+//Executes an instruction
 void Process::executeInstruction(){
 
   remainingInstructions--;
@@ -51,7 +58,7 @@ void Process::executeInstruction(){
 
 };
 
-
+//Gets the time for the latest instruction execution
 std::string Process::getTime(){
 
 
@@ -68,6 +75,7 @@ std::string Process::getTime(){
 
 }
 
+//Prints the final process completion
 void Process::printFinal(){
 
   std::cout << processName << " " << instructionTime << " FINISHED " << totalInstructions
@@ -75,6 +83,8 @@ void Process::printFinal(){
 
 };
 
+
+//Method to write to the external text file
 void Process::writeToBackingStore(std::ostream& out) const {
  
   out << processID << " " << processName << " " 
@@ -83,6 +93,8 @@ void Process::writeToBackingStore(std::ostream& out) const {
 
 };
 
+//Writes to an external file to store its information
+//for a backing store emulation
 void Process::serializeToFile(const std::string& filename) {
 
   std::ifstream infile(filename);

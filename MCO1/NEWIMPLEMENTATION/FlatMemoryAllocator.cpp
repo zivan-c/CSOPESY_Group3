@@ -3,12 +3,15 @@
 #include <iostream>
 #include <unordered_set>
 
+//Defines the number of pages that go in and out,
+//for flat memory a process constitutes to one page.
 int FlatMemoryAllocator::numPagesIn = 0;
 int FlatMemoryAllocator::numPagesOut = 0;
 
 FlatMemoryAllocator *FlatMemoryAllocator::singletonInstance = nullptr;
 FlatMemoryAllocator *FlatMemoryAllocator::getInstance() { return singletonInstance; };
 
+//Constructor
 FlatMemoryAllocator::FlatMemoryAllocator(int tMemory) : 
   memory(tMemory, std::make_pair(nullptr, false)){
 
@@ -20,42 +23,32 @@ FlatMemoryAllocator::FlatMemoryAllocator(int tMemory) :
 
 };
 
+//Creates the singleton
 void FlatMemoryAllocator::initialize(int tMemory){
   singletonInstance = new FlatMemoryAllocator(tMemory);
 };
 
+//Main method to allocate a process
 int FlatMemoryAllocator::allocateProcess(std::shared_ptr<Process> process){
 
   std::lock_guard<std::mutex> lock(mtx);
 
-
-  //For process memory that is higher than the total memory
+  //Checks if the memory is too smalle for the process memory
   if((process->processMemory) > totalMemory){
-    //std::cout << "ifProcessMemoryBigger test" << std::endl;
     return 0;
   }
 
-  //std::cout << "after isBigger than totalMem test" << std::endl;
-
   if(isInMemory(process)){
-    //std::cout << "isInMemory test" << std::endl;
     return 1;
   }
-
-  //std::cout << "after isInMemory test" << std::endl;
-
+  
   if(allocate(process)){
-//    std::cout << "Allocating successful" << std::endl;
     return 1;
   }
-
-  //std::cout << "after allocate test" << std::endl;
-
 
     //Checks non-active processes and places them in the backing store
   while(backingStoreOperation()){
 
-    //std::cout << "BackingStore test" << std::endl;
     std::shared_ptr<Process> processToRemove = nullptr;
 
     // Find the first process in the READY state
@@ -97,6 +90,7 @@ int FlatMemoryAllocator::allocateProcess(std::shared_ptr<Process> process){
 
 
 
+//Method to deallocate a process from the main memory
 void FlatMemoryAllocator::deallocateProcess(std::shared_ptr<Process> process){
 
   std::lock_guard<std::mutex> lock(mtx);
@@ -111,6 +105,7 @@ void FlatMemoryAllocator::deallocateProcess(std::shared_ptr<Process> process){
 
 };
 
+//Method that provides information on the active processes inside the memory
 void FlatMemoryAllocator::printProcessesInMemory(){
 
   std::lock_guard<std::mutex> lock(mtx);
@@ -143,7 +138,7 @@ void FlatMemoryAllocator::printProcessesInMemory(){
 
   for(auto i : processingProcesses){
 
-    std::cout << i->processName << " " << i->processMemory << std::endl; 
+    std::cout << i->processName << " " << i->processMemory << "KB" << std::endl; 
 
   }
 
@@ -151,6 +146,7 @@ void FlatMemoryAllocator::printProcessesInMemory(){
 };
 
 
+//Method that provides information on the memory
 void FlatMemoryAllocator::vmStat(){
 
   std::lock_guard<std::mutex> lock(mtx);
@@ -172,7 +168,10 @@ void FlatMemoryAllocator::vmStat(){
 };
 
 
-
+//This method checks for the number of processes inside
+//the main memory in a READY state, meaning, they are not
+//currently active, which means they can be placed in the 
+//backing store
 int FlatMemoryAllocator::backingStoreOperation() {
 
     std::unordered_set<std::shared_ptr<Process> > readyProcesses;
@@ -188,9 +187,9 @@ int FlatMemoryAllocator::backingStoreOperation() {
     return readyProcesses.size();
 }
 
+//allocates a process inside the main memory
 int FlatMemoryAllocator::allocate(std::shared_ptr<Process> process){
 
-  //std::cout << "In allocate function " << std::endl;
   int freeCount = 0;
   int startIndex = 0;
 
@@ -219,6 +218,8 @@ int FlatMemoryAllocator::allocate(std::shared_ptr<Process> process){
 
 };
 
+//Gets all the free blocks in between the first
+//and the last process inside the main memory
 int FlatMemoryAllocator::getExternalFragmentation(){
 
   int firstAllocatedIndex = memory.size();
@@ -232,8 +233,6 @@ int FlatMemoryAllocator::getExternalFragmentation(){
       }
   }
 
-
-  //std::cout << "in external fragmentation" << std::endl;
   // If no blocks are allocated, return 0
   if (firstAllocatedIndex == memory.size()) {
       return 0;
@@ -251,6 +250,7 @@ int FlatMemoryAllocator::getExternalFragmentation(){
 };
 
 
+//Gets all the memory blocks that are occupied to symbolize the active memory
 int FlatMemoryAllocator::getActiveMemory(){
 
   int activeMemory = 0;
@@ -259,12 +259,13 @@ int FlatMemoryAllocator::getActiveMemory(){
         activeMemory++;
       }
   }
-  //std::cout << "in active memory" << std::endl;
 
   return activeMemory;
 };
 
 
+//Method checks if the process trying to be allocated already resides in the main memory,
+//if it is, just set the process state to PROCESING and return true
 int FlatMemoryAllocator::isInMemory(std::shared_ptr<Process> process){
 
   for (int i = 0; i < memory.size(); ++i) {

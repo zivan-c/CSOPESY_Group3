@@ -4,12 +4,15 @@
 #include <iostream>
 #include <string>
 
+//Initializes and defines the number of pages
+//that go in and out of the main memory
 int PagingAllocator::numPagesIn = 0;
 int PagingAllocator::numPagesOut = 0;
 
 PagingAllocator *PagingAllocator::singletonInstance = nullptr;
 PagingAllocator *PagingAllocator::getInstance() { return singletonInstance; };
 
+//Constructor for the paging allocator
 PagingAllocator::PagingAllocator(int tMemory, int fSize, int pCount){
 
   int size = tMemory / fSize;
@@ -31,8 +34,7 @@ void PagingAllocator::initialize(int tMemory, int fSize, int pCount){
 };
 
 
-
-
+//method to deallocate a process from memory
 void PagingAllocator::deallocateProcess(std::shared_ptr<Process> process){
 
   std::lock_guard<std::mutex> lock(mtx);
@@ -47,29 +49,22 @@ void PagingAllocator::deallocateProcess(std::shared_ptr<Process> process){
 
 };
 
+//Main method to allocate a process to the main memory
 int PagingAllocator::allocateProcess(std::shared_ptr<Process> process){
 
   std::lock_guard<std::mutex> lock(mtx);
 
 
-  //std::cout << "in pagingallocateprocess" << std::endl;
-
   if(isInMemory(process)){
-    //std::cout << "isInMemory test" << std::endl;
     return 1;
   }
-  //std::cout << "after isInMemory test" << std::endl;
 
   if(allocate(process)){
-//    std::cout << "Allocating successful" << std::endl;
     return 1;
   }
-  //std::cout << "after allocate test" << std::endl;
 
-    //Checks non-active processes and places them in the backing store
   while(backingStoreOperation()){
 
-    //std::cout << "BackingStore test" << std::endl;
     std::shared_ptr<Process> processToRemove = nullptr;
     // Find the first process in the READY state
     for (const auto& block : memory) {
@@ -107,15 +102,14 @@ int PagingAllocator::allocateProcess(std::shared_ptr<Process> process){
 };
 
 
+//Method to allocate a process to the main memory
 int PagingAllocator::allocate(std::shared_ptr<Process> process){
 
-  //std::cout << "In allocate function " << std::endl;
   int freeCount = 0;
   int startIndex = 0;
 
-  // Find a contiguous block of free memory
   for (int i = 0; i < memory.size(); ++i) {
-      if (!memory[i].second) { // If the memory unit is free
+      if (!memory[i].second) { 
           if (freeCount == 0) startIndex = i;
           freeCount++;
           if (freeCount == process->pageCount) break;
@@ -131,15 +125,17 @@ int PagingAllocator::allocate(std::shared_ptr<Process> process){
     }
     numPagesIn += pageCount;
     process->processState = Process::PROCESSING;
-    //std::cout << "successful allocation" << std::endl;
     return 1;
   }else{
-    //std::cout << "unsuccessful allocation" << std::endl;
     return 0;
   }
 
 };
 
+
+//Method to check how many processes in the main memory
+//are inactive/READY, this is for putting said processes
+//in a backing store and freeing up the space
 int PagingAllocator::backingStoreOperation() {
 
   std::unordered_set<std::shared_ptr<Process> > readyProcesses;
@@ -157,6 +153,8 @@ int PagingAllocator::backingStoreOperation() {
 };
 
 
+//Checks if the passed process is already allocated in the main 
+//memory, if it is return 1, else, 0
 int PagingAllocator::isInMemory(std::shared_ptr<Process> process){
 
   for (int i = 0; i < memory.size(); ++i) {
@@ -169,25 +167,24 @@ int PagingAllocator::isInMemory(std::shared_ptr<Process> process){
 };
 
 
+//Gets the total amount of memory in between the 
+//first and the last process in the main memory
 int PagingAllocator::getExternalFragmentation(){
 
   int firstAllocatedIndex = memory.size();
   int lastAllocatedIndex = 0;
 
-  // Identify the first and last allocated blocks
   for (int i = 0; i < memory.size(); ++i) {
       if (memory[i].first != nullptr) {
           if (i < firstAllocatedIndex) firstAllocatedIndex = i;
           if (i > lastAllocatedIndex) lastAllocatedIndex = i;
       }
   }
-  //std::cout << "in external fragmentation" << std::endl;
-  // If no blocks are allocated, return 0
+  
   if (firstAllocatedIndex == memory.size()) {
       return 0;
   }
 
-  // Count free blocks between the first and last allocated blocks
   int freeBlocks = 0;
   for (int i = firstAllocatedIndex; i <= lastAllocatedIndex; ++i) {
       if (memory[i].second == false) {
@@ -195,12 +192,15 @@ int PagingAllocator::getExternalFragmentation(){
       }
   }
 
+  //Gets the amount of blocks and multiply it by the size of 
+  //a frame in the main memory
   int freeSize = freeBlocks * frameSize;
-
   return freeSize;
 };
 
 
+//Gets the memory thats been occupied by a process, regardless
+//if it is processing or not
 int PagingAllocator::getActiveMemory(){
 
   std::unordered_set<std::shared_ptr<Process> > readyProcesses;

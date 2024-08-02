@@ -1,6 +1,5 @@
 #include "SchedulerManager.h"
 #include "ReadyAndFinished.h"
-#include "FlatMemoryAllocator.h"
 #include "CPUCore.h"
 #include "Process.h"
 
@@ -13,6 +12,7 @@ int SchedulerManager::isCreatingProcesses = 0;
 SchedulerManager *SchedulerManager::singletonInstance = nullptr;
 SchedulerManager *SchedulerManager::getInstance() { return singletonInstance; };
 
+//Main initializer to start the CPUs and the processes creation
 void SchedulerManager::initialize(int cpuCount, int qCount, float cDelay, float eDelay,
                     int iLowerBound, int iHigherBound, int mLowerBound,
                     int mHigherBound, int pCount){
@@ -42,6 +42,7 @@ void SchedulerManager::initialize(int cpuCount, int qCount, float cDelay, float 
 
 };
 
+//Sets up the CPU Cores by pushing them into a vector
 void SchedulerManager::setupCores(){
 
   for(size_t i = 0; i < CPUCoreCount; i++){
@@ -55,6 +56,7 @@ void SchedulerManager::setupCores(){
 
 }
 
+//Generates a process name for the dynamically created processes
 std::string SchedulerManager::generateProcessName(){
 
   std::string name = "Process_" + std::to_string(Process::processCount);
@@ -64,6 +66,7 @@ std::string SchedulerManager::generateProcessName(){
 }
 
 
+//Creates processes
 void SchedulerManager::createProcesses(){
 
   isCreatingProcesses = 1;
@@ -95,6 +98,7 @@ void SchedulerManager::createProcesses(){
 };
 
 
+//Shows information about running processses and finished processes
 void SchedulerManager::screenLS(){
 
   int coresUsed = 0;
@@ -130,13 +134,12 @@ void SchedulerManager::screenLS(){
           int coreID = i->coreID;
           int remainingInstructions = process->remainingInstructions;
           int totalInstructions = process->totalInstructions;
-          int processMemory = process->processMemory;
 
           std::cout << processName << " " << 
                     processInstructionTime << " Core: " <<
                     coreID << " " << 
                     remainingInstructions << "/" <<
-                    totalInstructions << " Memory: " << processMemory << std::endl;
+                    totalInstructions << std::endl;
     }
   }
   std::cout << "\nFinished processes:" << std::endl;
@@ -150,6 +153,7 @@ void SchedulerManager::screenLS(){
 };
 
 
+//Screen-Ls but it prints it out to a text file
 void SchedulerManager::reportUtil(){
 
   std::ofstream outputFile; 
