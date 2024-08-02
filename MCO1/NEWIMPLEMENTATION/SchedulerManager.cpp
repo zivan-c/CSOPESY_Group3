@@ -119,7 +119,7 @@ void SchedulerManager::screenLS(){
   std::cout << "\nCPU utilization: " << percentage << "%\n" << std::endl;
   std::cout << "Cores used: " << coresUsed << std::endl;
   std::cout << "Cores available: " << coresAvailable << "\n" << std::endl;
-  std::cout << "----------------------------------------" << "\n"
+  std::cout << "--------------------------------------------------" << "\n"
               << std::endl;
 
   std::cout << "Running processes:" << std::endl;
@@ -142,13 +142,17 @@ void SchedulerManager::screenLS(){
                     totalInstructions << std::endl;
     }
   }
+
+  std::cout << "--------------------------------------------------" << std::endl;
+
   std::cout << "\nFinished processes:" << std::endl;
   for(auto& i : ReadyAndFinished::getInstance()->finishedList){
 
     i->printFinal();
 
   }
-  
+
+  std::cout << "--------------------------------------------------" << std::endl;
 
 };
 
@@ -183,7 +187,7 @@ void SchedulerManager::reportUtil(){
     outputFile << "CPU utilization: " << percentage << "%\n" << std::endl;
     outputFile << "Cores used: " << coresUsed << std::endl;
     outputFile << "Cores available: " << coresAvailable << "\n" << std::endl;
-    outputFile << "----------------------------------------" << "\n"
+    outputFile << "--------------------------------------------------" << "\n"
                 << std::endl;
 
     outputFile << "Running processes:" << std::endl;
@@ -216,7 +220,7 @@ void SchedulerManager::reportUtil(){
       
     }
 
-    outputFile << "----------------------------------------" << "\n"
+    outputFile << "--------------------------------------------------" << "\n"
                 << std::endl;
 
   }

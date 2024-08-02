@@ -241,11 +241,12 @@ void PagingAllocator::printProcessesInMemory(){
   int allocatedMemory = getActiveMemory();
   double memoryPercentage = ((double)allocatedMemory / (double)totalMemory) * 100;
 
-
-  std::cout << "\nCPU-Util: " << CPUPercentage << std::endl;
+  std::cout << "===============================================" << std::endl;
+  std::cout << "\nCPU-Util: " << CPUPercentage << "%" << std::endl;
   std::cout << "Memory Usage: " << allocatedMemory << "KB / " << totalMemory << "KB" << std::endl;
   std::cout << "Memory Utilization: " << memoryPercentage << "%\n" << std::endl;
   std::cout << "Running processes and memory usage: \n" << std::endl;
+  std::cout << "-----------------------------------------------" << std::endl;
 
   std::unordered_set<std::shared_ptr<Process> > processingProcesses;
 
@@ -263,7 +264,8 @@ void PagingAllocator::printProcessesInMemory(){
 
   }
 
-  std::cout << "\n";
+  std::cout << "-----------------------------------------------" << std::endl;
+
 };
 
 
