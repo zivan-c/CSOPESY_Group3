@@ -1,4 +1,5 @@
-#pragma once
+// OLD VERSION //
+ #pragma once
 #include "MainMenu.h"
 #include <Windows.h>
 #include "Console.h"

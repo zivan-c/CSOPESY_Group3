@@ -3,11 +3,14 @@
 #include "CPUCore.h"
 #include "FlatMemoryAllocator.h"
 #include "PagingAllocator.h"
+#include "MarqueeWorkerThread.h"
 
 #include <string>
 #include <iostream> 
 #include <random>
 
+void help();
+void printHeader();
 void commandCheck(std::string input, int pageCount);
 
 int main() {
@@ -65,13 +68,10 @@ int main() {
             processMemoryLower, processMemoryHigher, pageCount);
     }
 
+    printHeader();
 
     while (running) {
-
-        std::cout << "Commands:" << std::endl;
-        std::cout << "scheduler-test, scheduler-stop, screen-ls" << std::endl;
-        std::cout << "report-util, exit, process-smi, vmstat" << std::endl;
-        std::cout << "Enter command: ";
+        std::cout << "\nEnter command (\"help\" for list of commands ): ";
         std::string input;
         std::cin >> input;
         if (input == "exit") {
@@ -85,11 +85,40 @@ int main() {
 
 };
 
+void help() {
+    std::cout << "\nCommand list: \n";
+    std::cout << "help              Shows all commands\n";
+    std::cout << "initialize        Initialize the OS's processor\n";
+    std::cout << "marquee           Open the Marquee Console\n";
+    std::cout << "process-smi       View of memory and processes\n";
+    std::cout << "report-util       Generate CPU utilization report\n";
+    std::cout << "scheduler-test    Generate test processes\n";
+    std::cout << "scheduler-stop    Stop process scheduler\n";
+    std::cout << "screen            Manage screens\n";
+    std::cout << "vmstat            Detailed view of processes, memory, and pages\n";
+    std::cout << "clear             Clear the screen\n";
+    std::cout << "exit              Exit OS\n";
+};
+
+void printHeader() {
+    std::cout << "\n------------------------------------- \n";
+    std::cout << "Welcome to CSOPESY Group 3's Lite OS! \n";
+    std::cout << "\n _____ _____ _____ _____ _____ _____ __ __    _____     _       _    _____ _____ \n";
+    std::cout << "|     |   __|     |  _  |   __|   __|  |  |  |   __|___| |_ ___|_|  |     |   __|\n";
+    std::cout << "|   --|__   |  |  |   __|   __|__   |_   _|  |  |  |___|  _|  _| |  |  |  |__   |\n";
+    std::cout << "|_____|_____|_____|__|  |_____|_____| |_|    |_____|   |_| |_| |_|  |_____|_____|\n";
+    std::cout << "\n------------------------------------- \n";
+};
+
 void commandCheck(std::string input, int pCount) {
 
-
-
-    if (input == "scheduler-test") {
+    if (input == "help") {
+        help();
+    }
+    else if (input == "marquee") {
+        marquee();
+    }
+    else if (input == "scheduler-test") {
 
         SchedulerManager::getInstance()->createProcesses();
 
@@ -142,7 +171,7 @@ void commandCheck(std::string input, int pCount) {
 
     else {
 
-        std::cout << "Invalid input" << std::endl;
+        std::cout << "Invalid input. Please make sure OS is initialized or command is included in \"help\"." << std::endl;
 
     }
 

@@ -3,7 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <conio.h>
-#include "marqueeWorkerThread.h"
+#include "MarqueeWorkerThread.h"
 //#include "functions.h"
 #include "Windows.h"
 
