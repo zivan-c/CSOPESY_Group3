@@ -4,7 +4,7 @@
 #include <mutex>
 #include <conio.h>
 #include "MarqueeWorkerThread.h"
-//#include "functions.h"
+#include "IETThread.h"
 #include "Windows.h"
 
 // Command Variables

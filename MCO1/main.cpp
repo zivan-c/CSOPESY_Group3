@@ -2,6 +2,7 @@
 #include "ReadyAndFinished.h"
 #include "CPUCore.h"
 #include "FlatMemoryAllocator.h"
+#include "marquee.h"
 #include "PagingAllocator.h"
 #include "ProcessScreen.h"
 #include "OSConfig.h"
@@ -103,7 +104,7 @@ int main() {
             }
             /* ===== MARQUEE ===== */
             if (input == "marquee") {
-                //marquee();
+                marquee();
             }
             /* ===== SCHEDULER-TEST ===== */
             if (input == "scheduler-test") {
