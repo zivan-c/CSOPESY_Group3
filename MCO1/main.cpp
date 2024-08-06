@@ -3,14 +3,13 @@
 #include "CPUCore.h"
 #include "FlatMemoryAllocator.h"
 #include "PagingAllocator.h"
-#include "MarqueeWorkerThread.h"
+#include "ProcessScreen.h"
 
 #include <string>
 #include <iostream> 
 #include <random>
+#include <memory>
 
-void help();
-void printHeader();
 void commandCheck(std::string input, int pageCount);
 
 int main() {
@@ -25,10 +24,10 @@ int main() {
 
     int overallMemory = 32768;
     int processMemoryLower = 10;
-    int processMemoryHigher = 14;
+    int processMemoryHigher = 10;
     int processMemory;
-    int lowerPageCount = 1;
-    int higherPageCount = 1;
+    int lowerPageCount = 2;
+    int higherPageCount = 2;
     int pageCount;
 
     //Values for all above should be set by the text file in the config
@@ -68,12 +67,17 @@ int main() {
             processMemoryLower, processMemoryHigher, pageCount);
     }
 
-    printHeader();
+    ProcessScreen::initialize();
+
 
     while (running) {
-        std::cout << "\nEnter command (\"help\" for list of commands ): ";
+
+        std::cout << "Commands:" << std::endl;
+        std::cout << "scheduler-test, scheduler-stop, screen-ls" << std::endl;
+        std::cout << "report-util, exit, process-smi, vmstat" << std::endl;
+        std::cout << "Enter command: ";
         std::string input;
-        std::cin >> input;
+        std::getline(std::cin, input);
         if (input == "exit") {
             running = 0;
         }
@@ -85,40 +89,11 @@ int main() {
 
 };
 
-void help() {
-    std::cout << "\nCommand list: \n";
-    std::cout << "help              Shows all commands\n";
-    std::cout << "initialize        Initialize the OS's processor\n";
-    std::cout << "marquee           Open the Marquee Console\n";
-    std::cout << "process-smi       View of memory and processes\n";
-    std::cout << "report-util       Generate CPU utilization report\n";
-    std::cout << "scheduler-test    Generate test processes\n";
-    std::cout << "scheduler-stop    Stop process scheduler\n";
-    std::cout << "screen            Manage screens\n";
-    std::cout << "vmstat            Detailed view of processes, memory, and pages\n";
-    std::cout << "clear             Clear the screen\n";
-    std::cout << "exit              Exit OS\n";
-};
-
-void printHeader() {
-    std::cout << "\n------------------------------------- \n";
-    std::cout << "Welcome to CSOPESY Group 3's Lite OS! \n";
-    std::cout << "\n _____ _____ _____ _____ _____ _____ __ __    _____     _       _    _____ _____ \n";
-    std::cout << "|     |   __|     |  _  |   __|   __|  |  |  |   __|___| |_ ___|_|  |     |   __|\n";
-    std::cout << "|   --|__   |  |  |   __|   __|__   |_   _|  |  |  |___|  _|  _| |  |  |  |__   |\n";
-    std::cout << "|_____|_____|_____|__|  |_____|_____| |_|    |_____|   |_| |_| |_|  |_____|_____|\n";
-    std::cout << "\n------------------------------------- \n";
-};
-
 void commandCheck(std::string input, int pCount) {
 
-    if (input == "help") {
-        help();
-    }
-    else if (input == "marquee") {
-        marquee();
-    }
-    else if (input == "scheduler-test") {
+
+
+    if (input == "scheduler-test") {
 
         SchedulerManager::getInstance()->createProcesses();
 
@@ -169,9 +144,70 @@ void commandCheck(std::string input, int pCount) {
         CPUCore::isPrinting = 0;
     }
 
+    /*
+    else if (input == "screen-r processname") {
+
+        CPUCore::isPrinting = 1;
+
+
+        std::string processName = "ok"; //change to processName from the input
+        std::shared_ptr<Process> process = nullptr;
+
+        process = SchedulerManager::getInstance()->returnProcessInCore(processName);
+
+        if (process == nullptr) {
+            process = ReadyAndFinished::getInstance()->returnProcessInReady(processName);
+        }
+
+        if (process != nullptr) {
+            ProcessScreen::getInstance()->run(process);
+        }
+        else {
+            std::cout << "Process " << processName << " not found!" << std::endl;
+        }
+
+        CPUCore::isPrinting = 0;
+    }*/
+
+    else if (input.substr(0, 9) == "screen-r ") {//screen-r 
+
+        CPUCore::isPrinting = 1;
+
+        std::cout << "Reading process.." << std::endl;
+        std::string processName = input.substr(9);
+        std::shared_ptr<Process> process = nullptr;
+        std::cout << "Searching for process " + processName << std::endl;
+        process = SchedulerManager::getInstance()->returnProcessInCore(processName);
+
+        if (process == nullptr) {
+            process = ReadyAndFinished::getInstance()->returnProcessInReady(processName);
+        }
+
+        if (process != nullptr) {
+            CPUCore::isPrinting = 0;
+            ProcessScreen::getInstance()->run(process);
+        }
+
+        else {
+            std::cout << "Process " << processName << " not found!" << std::endl;
+        }
+    }
+
+    else if (input.substr(0, 9) == "screen-s ") {
+        std::cout << "Creating process.." << std::endl;
+        std::cout << "Process Name: " + input.substr(9) << std::endl;
+        std::string processName = input.substr(9);
+        std::shared_ptr<Process> process;
+        process = SchedulerManager::getInstance()->createProcess(processName);
+        CPUCore::isPrinting = 0;
+        std::cout << "Process " + processName + " created..." << std::endl;
+        ProcessScreen::getInstance()->run(process);
+        std::cout << "Running process " + processName << std::endl;
+    }
+
     else {
 
-        std::cout << "Invalid input. Please make sure OS is initialized or command is included in \"help\"." << std::endl;
+        std::cout << "Invalid input" << std::endl;
 
     }
 

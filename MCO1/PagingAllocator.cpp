@@ -104,34 +104,63 @@ int PagingAllocator::allocateProcess(std::shared_ptr<Process> process) {
 
 
 //Method to allocate a process to the main memory
+//CHANGE TO CHECK ALL THE BLOCKS, PAGES DO NOT HAVE TO BE 
+//CONTIGUOUS, THEY CAN BE SCATTERED ALONG OTHER 
 int PagingAllocator::allocate(std::shared_ptr<Process> process) {
 
-    int freeCount = 0;
+    /*int freeCount = 0;
     int startIndex = 0;
 
+    //CHANGE THIS TO PLACE IN A VECTOR ALL INDEXES IN THE MEMORY THAT ARE FREE
+    //IF THE SIZE OF THE VECTOR IS BIGGER THAN/EQUAL TO THE PAGE SIZE, ALLOCATE TO THOSE INDEXES.
+    //
     for (int i = 0; i < memory.size(); ++i) {
         if (!memory[i].second) {
             if (freeCount == 0) startIndex = i;
             freeCount++;
             if (freeCount == process->pageCount) break;
-        }
-        else {
+        } else {
             freeCount = 0;
         }
     }
 
     //If it encounters a free contiguous block
-    if (freeCount >= process->pageCount) {
-        for (int i = startIndex; i < startIndex + process->pageCount; ++i) {
-            memory[i] = std::make_pair(process, true);
+    if (freeCount >= process->pageCount){
+      for (int i = startIndex; i < startIndex + process->pageCount; ++i) {
+        memory[i] = std::make_pair(process, true);
+      }
+      numPagesIn += pageCount;
+      process->processState = Process::PROCESSING;
+      return 1;
+    }else{
+      return 0;
+    }
+
+
+    */
+
+    std::vector<int> freeIndices;
+
+    // Find free blocks
+    for (int i = 0; i < memory.size(); ++i) {
+        if (!memory[i].second) {
+            freeIndices.push_back(i);
         }
-        numPagesIn += pageCount;
+    }
+
+    // Check if there are enough free blocks
+    if (freeIndices.size() >= process->pageCount) {
+        // Allocate pages to the process
+        for (int i = 0; i < process->pageCount; ++i) {
+            int index = freeIndices[i];
+            memory[index] = { process, true };
+        }
         process->processState = Process::PROCESSING;
+        numPagesIn += pageCount;
         return 1;
     }
-    else {
-        return 0;
-    }
+    // Not enough free blocks
+    return 0;
 
 };
 

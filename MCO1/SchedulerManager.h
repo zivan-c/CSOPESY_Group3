@@ -39,7 +39,11 @@ public:
     void screenLS();
     void reportUtil();
 
+    std::shared_ptr<Process> createProcess(std::string processName);
+
     std::vector<std::shared_ptr<CPUCore> > coreList;
+
+    std::shared_ptr<Process> returnProcessInCore(std::string processName);
 
 private:
 

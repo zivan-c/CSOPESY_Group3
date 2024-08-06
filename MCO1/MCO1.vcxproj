@@ -131,6 +131,7 @@
     <ClCompile Include="MemoryAllocator.cpp" />
     <ClCompile Include="PagingAllocator.cpp" />
     <ClCompile Include="Process.cpp" />
+    <ClCompile Include="ProcessScreen.cpp" />
     <ClCompile Include="ReadyAndFinished.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="OSConfig.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="OSConfig.h" />
     <ClInclude Include="PagingAllocator.h" />
     <ClInclude Include="Process.h" />
+    <ClInclude Include="ProcessScreen.h" />
     <ClInclude Include="ReadyAndFinished.h" />
     <ClInclude Include="Scheduler.h" />
     <ClInclude Include="SchedulerManager.h" />

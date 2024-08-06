@@ -40,3 +40,18 @@ void ReadyAndFinished::pushProcessToFinished(std::shared_ptr<Process> process) {
     finishedList.push_back(process);
 
 };
+
+std::shared_ptr<Process> ReadyAndFinished::returnProcessInReady(std::string processName) {
+
+    std::lock_guard<std::mutex> lock(mtx);
+    std::shared_ptr<Process> placeholder = nullptr;
+
+    for (auto i : readyQueue) {
+        if (i->processName == processName) {
+            placeholder = i;
+        }
+    }
+
+    return placeholder;
+
+};

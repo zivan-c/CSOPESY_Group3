@@ -16,6 +16,8 @@ public:
 	static void initialize();
 	static ReadyAndFinished* getInstance();
 
+	std::shared_ptr<Process> returnProcessInReady(std::string processName);
+
 
 private:
 
