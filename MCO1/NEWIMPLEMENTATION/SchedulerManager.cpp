@@ -226,4 +226,38 @@ void SchedulerManager::reportUtil(){
   }
 };
 
+std::shared_ptr<Process> SchedulerManager::createProcess(std::string processName){
+
+  Process::processCount++;
+  std::shared_ptr<Process> newProcess = std::make_shared<Process>(processName,
+      instructionsLowerBound, instructionsHigherBound, memoryLowerBound, 
+      memoryHigherBound, pageCount);
+
+  ReadyAndFinished::getInstance()->pushProcessToReady(newProcess);
+
+  return newProcess;
+
+};
+
+
+std::shared_ptr<Process> SchedulerManager::returnProcessInCore(std::string processName){
+
+
+  std::shared_ptr<Process> process = nullptr;
+  for(auto i : coreList){
+
+    if(i->processInCore){
+
+      if(i->processInCore->processName == processName){
+
+        process = i->processInCore;
+
+      }
+
+    }
+
+  }
+  return process;
+
+};
 

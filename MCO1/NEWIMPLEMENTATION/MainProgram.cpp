@@ -3,10 +3,12 @@
 #include "CPUCore.h"
 #include "FlatMemoryAllocator.h"
 #include "PagingAllocator.h"
+#include "ProcessScreen.h"
 
 #include <string>
 #include <iostream> 
 #include <random>
+#include <memory>
 
 void commandCheck(std::string input, int pageCount);
 
@@ -63,6 +65,8 @@ int main(){
                           executionDelay, lowerInstructionsBound, higherInstructionsBound, 
                            processMemoryLower, processMemoryHigher, pageCount);
   }
+
+  ProcessScreen::initialize();
 
 
   while(running){
@@ -136,6 +140,36 @@ void commandCheck(std::string input, int pCount){
     CPUCore::isPrinting = 0;
   }
 
+  else if(input == "screen-r processname"){
+
+    CPUCore::isPrinting = 1;
+
+
+    std::string processName = "ok"; //change to processName from the input
+    std::shared_ptr<Process> process = nullptr;
+
+    process = SchedulerManager::getInstance()->returnProcessInCore(processName);
+
+    if(process == nullptr){
+      process = ReadyAndFinished::getInstance()->returnProcessInReady(processName);
+    }
+
+    if(process != nullptr){
+      ProcessScreen::getInstance()->run(process);
+    }else{
+      std::cout << "Process " << processName << " not found!" << std::endl;
+    }
+
+    CPUCore::isPrinting = 0;
+  }
+  else if(input == "screen-s process"){
+
+    std::string input = "ok"; //change to process name from the input
+    std::shared_ptr<Process> process;
+    process = SchedulerManager::getInstance()->createProcess(input);
+    ProcessScreen::getInstance()->run(process);
+
+  }
   else{
 
     std::cout << "Invalid input" << std::endl;
