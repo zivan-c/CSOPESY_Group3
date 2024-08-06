@@ -22,10 +22,10 @@ int main(){
   
   int overallMemory = 32768;
   int processMemoryLower = 10;
-  int processMemoryHigher = 14;
+  int processMemoryHigher = 10;
   int processMemory;
-  int lowerPageCount = 1;
-  int higherPageCount = 1;
+  int lowerPageCount = 2;
+  int higherPageCount = 2;
   int pageCount;
 
   //Values for all above should be set by the text file in the config
