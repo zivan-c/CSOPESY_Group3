@@ -4,7 +4,7 @@
 #include "FlatMemoryAllocator.h"
 #include "PagingAllocator.h"
 #include "ProcessScreen.h"
-
+#include "OSConfig.h"
 #include <string>
 #include <iostream> 
 #include <random>
@@ -13,21 +13,22 @@
 void commandCheck(std::string input, int pageCount);
 
 int main() {
-
+    OSConfig::initialize();
+    OSConfig::readConfig();
     bool running = 1;
-    int cpuCores = 32;
-    int quantumCycles = 5;
-    int lowerInstructionsBound = 100;
-    int higherInstructionsBound = 100;
-    float executionDelay = 0.01;
-    float creationDelay = 0.25;
+    int cpuCores = OSConfig::NUM_CPU;
+    int quantumCycles = OSConfig::TIMESLICE;
+    int lowerInstructionsBound = OSConfig::MIN_INS;
+    int higherInstructionsBound = OSConfig::MAX_INS;
+    float executionDelay = OSConfig::DELAYS_PER_EXEC;
+    float creationDelay = OSConfig::BATCH_PROCESS_FREQ;
 
-    int overallMemory = 32768;
-    int processMemoryLower = 10;
-    int processMemoryHigher = 10;
+    int overallMemory = OSConfig::MAX_OVR_MEMORY;
+    int processMemoryLower = OSConfig::MIN_MEM;
+    int processMemoryHigher = OSConfig::MAX_MEM;
     int processMemory;
-    int lowerPageCount = 2;
-    int higherPageCount = 2;
+    int lowerPageCount = OSConfig::MIN_PAGE;
+    int higherPageCount = OSConfig::MAX_PAGE;
     int pageCount;
 
     //Values for all above should be set by the text file in the config
