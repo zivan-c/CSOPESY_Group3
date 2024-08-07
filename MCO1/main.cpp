@@ -19,59 +19,7 @@ int main() {
 
     bool running = 1;
     bool initialized = false;
-    int cpuCores = OSConfig::NUM_CPU;
-    int quantumCycles = OSConfig::TIMESLICE;
-    int lowerInstructionsBound = OSConfig::MIN_INS;
-    int higherInstructionsBound = OSConfig::MAX_INS;
-    float executionDelay = OSConfig::DELAYS_PER_EXEC;
-    float creationDelay = OSConfig::BATCH_PROCESS_FREQ;
-
-    int overallMemory = OSConfig::MAX_OVR_MEMORY;
-    int processMemoryLower = OSConfig::MIN_MEM;
-    int processMemoryHigher = OSConfig::MAX_MEM;
-    int processMemory;
-    int lowerPageCount = OSConfig::MIN_PAGE;
-    int higherPageCount = OSConfig::MAX_PAGE;
     int pageCount;
-
-    //Values for all above should be set by the text file in the config
-
-
-    //Gets a random value from the lower and higher page count
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(lowerPageCount, higherPageCount);
-    pageCount = dis(gen);
-
-    //Sets a random memory size from the lower and higher memory (for paging allocator)
-    int base = 2;
-    std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
-    int exponent = disMemory(gen);
-    processMemory = static_cast<int>(pow(base, exponent));
-
-    //Gets the memory size of a frame from the memory and the page count
-    int pageSize = processMemory / pageCount;
-
-
-    //If the page count is more than one, it is a paging allocator
-    if (pageCount == 1) {
-
-        FlatMemoryAllocator::initialize(overallMemory);
-        ReadyAndFinished::initialize();
-        SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay,
-            executionDelay, lowerInstructionsBound, higherInstructionsBound,
-            processMemoryLower, processMemoryHigher, pageCount);
-    }
-    else {
-
-        PagingAllocator::initialize(overallMemory, pageSize, pageCount);
-        ReadyAndFinished::initialize();
-        SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay,
-            executionDelay, lowerInstructionsBound, higherInstructionsBound,
-            processMemoryLower, processMemoryHigher, pageCount);
-    }
-
-    ProcessScreen::initialize();
 
     printHeader();
 
@@ -88,6 +36,58 @@ int main() {
         if (input == "initialize") {
             OSConfig::initialize();
             OSConfig::readConfig();
+            int cpuCores = OSConfig::NUM_CPU;
+            int quantumCycles = OSConfig::TIMESLICE;
+            int lowerInstructionsBound = OSConfig::MIN_INS;
+            int higherInstructionsBound = OSConfig::MAX_INS;
+            float executionDelay = OSConfig::DELAYS_PER_EXEC;
+            float creationDelay = OSConfig::BATCH_PROCESS_FREQ;
+
+            int overallMemory = OSConfig::MAX_OVR_MEMORY;
+            int processMemoryLower = OSConfig::MIN_MEM;
+            int processMemoryHigher = OSConfig::MAX_MEM;
+            int processMemory;
+            int lowerPageCount = OSConfig::MIN_PAGE;
+            int higherPageCount = OSConfig::MAX_PAGE;
+
+            //Values for all above should be set by the text file in the config
+
+
+            //Gets a random value from the lower and higher page count
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> dis(lowerPageCount, higherPageCount);
+            pageCount = dis(gen);
+
+            //Sets a random memory size from the lower and higher memory (for paging allocator)
+            int base = 2;
+            std::uniform_int_distribution<> disMemory(processMemoryLower, processMemoryHigher);
+            int exponent = disMemory(gen);
+            processMemory = static_cast<int>(pow(base, exponent));
+
+            //Gets the memory size of a frame from the memory and the page count
+            int pageSize = processMemory / pageCount;
+
+
+            //If the page count is more than one, it is a paging allocator
+            if (pageCount == 1) {
+
+                FlatMemoryAllocator::initialize(overallMemory);
+                ReadyAndFinished::initialize();
+                SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay,
+                    executionDelay, lowerInstructionsBound, higherInstructionsBound,
+                    processMemoryLower, processMemoryHigher, pageCount);
+            }
+            else {
+
+                PagingAllocator::initialize(overallMemory, pageSize, pageCount);
+                ReadyAndFinished::initialize();
+                SchedulerManager::initialize(cpuCores, quantumCycles, creationDelay,
+                    executionDelay, lowerInstructionsBound, higherInstructionsBound,
+                    processMemoryLower, processMemoryHigher, pageCount);
+            }
+
+            ProcessScreen::initialize();
             initialized = true;
         }
 

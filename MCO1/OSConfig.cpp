@@ -76,7 +76,13 @@ void OSConfig::readConfig() {
 	OSConfig::MIN_INS = std::stoi(umap["min-ins"]);
 	OSConfig::MAX_INS = std::stoi(umap["max-ins"]);
 	OSConfig::DELAYS_PER_EXEC = std::stod(umap["delay-per-exec"]);
-	if (isPowerOfTwo(std::stoi(umap["max-overall-mem"])))
+	OSConfig::MAX_OVR_MEMORY = std::stoi(umap["max-overall-mem"]);
+	OSConfig::MIN_MEM = std::stoi(umap["min-mem-per-proc"]);
+	OSConfig::MAX_MEM = std::stoi(umap["max-mem-per-proc"]);
+	OSConfig::MIN_PAGE = std::stoi(umap["min-page-per-proc"]);
+	OSConfig::MAX_PAGE = std::stoi(umap["max-page-per-proc"]);
+
+	/*==if (isPowerOfTwo(std::stoi(umap["max-overall-mem"])))
 		OSConfig::MAX_OVR_MEMORY = std::stoi(umap["max-overall-mem"]);
 	else
 		std::cerr << "Invalid: max memory is not power of two";
@@ -101,7 +107,7 @@ void OSConfig::readConfig() {
 	if (isPowerOfTwo(std::stoi(umap["max-page-per-proc"])))
 		OSConfig::MAX_PAGE = std::stoi(umap["max-page-per-proc"]);
 	else
-			std::cerr << "Invalid: max page is not power of two";
+			std::cerr << "Invalid: max page is not power of two";*/
 
 	// Scheduler
 	// CPUScheduler::initialize(NUM_CPU, algo, DELAYS_PER_EXEC, TIMESLICE, PREEMPTIVE, BATCH_PROCESS_FREQ, MIN_INS, MAX_INS);

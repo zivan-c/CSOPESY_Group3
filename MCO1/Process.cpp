@@ -22,7 +22,7 @@ Process::Process(std::string processName, int instructionsLowerBound, int instru
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(instructionsLowerBound, instructionsHigherBound);
     this->totalInstructions = dis(gen);
-    this->remainingInstructions = totalInstructions;
+    this->remainingInstructions = 0;
 
     this->processName = processName;
 
@@ -48,10 +48,10 @@ Process::Process(std::string processName, int instructionsLowerBound, int instru
 //Executes an instruction
 void Process::executeInstruction() {
 
-    remainingInstructions--;
+    remainingInstructions++;
     instructionTime = getTime();
 
-    if (remainingInstructions == 0) {
+    if (remainingInstructions == totalInstructions) {
         processState = ProcessState::FINISHED;
         isFinished = 1;
     }
