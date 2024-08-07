@@ -1,7 +1,7 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\aurelio garcia\\documents\\comsci\\csopesy\\group 3 - mco1\\csopesy_group3\\mco1\\consolemanager.h",
+        "Source": "c:\\users\\aurelio garcia\\documents\\comsci\\csopesy\\csopesy_group3\\mco1\\consolemanager.h",
         "ProvidedModule": "",
         "Includes": [
             "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.40.33807\\include\\vector",
@@ -303,7 +303,7 @@
             "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.40.33807\\include\\xtimec.h",
             "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.40.33807\\include\\ctime",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.22621.0\\ucrt\\time.h",
-            "c:\\users\\aurelio garcia\\documents\\comsci\\csopesy\\group 3 - mco1\\csopesy_group3\\mco1\\console.h"
+            "c:\\users\\aurelio garcia\\documents\\comsci\\csopesy\\csopesy_group3\\mco1\\console.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

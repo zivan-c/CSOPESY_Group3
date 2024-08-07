@@ -1,4 +1,12 @@
 ﻿  Scanning sources for module dependencies...
+  CPUCore.cpp
+  PagingAllocator.cpp
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\CSOPESY_Group3\MCO1\PagingAllocator.cpp(183,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\CSOPESY_Group3\MCO1\PagingAllocator.cpp(206,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  SchedulerManager.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(374,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(388,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(375,90): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   main.cpp
-C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\main.cpp(22,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-  MCO1.vcxproj -> C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\Group 3 - MCO1\CSOPESY_Group3\MCO1\x64\Debug\MCO1.exe
+  Generating Code...
+  MCO1.vcxproj -> C:\Users\Aurelio Garcia\Documents\COMSCI\CSOPESY\CSOPESY_Group3\MCO1\x64\Debug\MCO1.exe

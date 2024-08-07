@@ -2,7 +2,7 @@
 #include "ReadyAndFinished.h"
 #include "CPUCore.h"
 #include "Process.h"
-
+#include "PagingAllocator.h"
 #include <iostream>
 #include <fstream>
 
@@ -81,6 +81,11 @@ void SchedulerManager::createProcesses() {
             std::shared_ptr<Process> newProcess = std::make_shared<Process>(processName,
                 instructionsLowerBound, instructionsHigherBound, memoryLowerBound,
                 memoryHigherBound, pageCount);
+
+            if (pageCount > 1) {
+                PagingAllocator::getInstance()->allocate(newProcess);
+                newProcess->processState = Process::READY;
+            }
 
             ReadyAndFinished::getInstance()->pushProcessToReady(newProcess);
             newProcess.reset();

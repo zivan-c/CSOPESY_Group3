@@ -1,17 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\",
+  "WorkspaceRootPath": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\CSOPESY_Group3\\MCO1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\CSOPESY_Group3\\MCO1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.40.33807\\INCLUDE\\XSTRING||{3B902123-F8A7-4915-9F01-361F908088D0}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\ProcessScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F9A0CCE1-F3C0-4861-8A2B-6850B59A349F}|MCO1.vcxproj|solutionrelative:ProcessScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -33,39 +26,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "xstring",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\xstring",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\xstring",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\xstring",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\xstring",
-              "ViewState": "AQIAANUIAAAAAAAAAAArwOAIAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-08-06T14:22:45.133Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ProcessScreen.cpp",
-              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\ProcessScreen.cpp",
-              "RelativeDocumentMoniker": "ProcessScreen.cpp",
-              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\ProcessScreen.cpp",
-              "RelativeToolTip": "ProcessScreen.cpp",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAowBcAAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-06T13:54:12.736Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\main.cpp",
+              "DocumentMoniker": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\CSOPESY_Group3\\MCO1\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
-              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\Group 3 - MCO1\\CSOPESY_Group3\\MCO1\\main.cpp",
+              "ToolTip": "C:\\Users\\Aurelio Garcia\\Documents\\COMSCI\\CSOPESY\\CSOPESY_Group3\\MCO1\\main.cpp",
               "RelativeToolTip": "main.cpp",
-              "ViewState": "AQIAAL0AAAAAAAAAAAAAAE8AAAAVAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-08-06T13:09:12.083Z",
               "EditorCaption": ""

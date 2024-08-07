@@ -15,8 +15,8 @@ public:
 	int usedMemory; //total used memory including external fragmentation
 	int activeMemory; //total memory of active processes
 	int inactiveMemory; //all external fragmentation
-	static int numPagesIn;
-	static int numPagesOut;
+	static size_t numPagesIn;
+	static size_t numPagesOut;
 
 	std::string backingStore;
 

@@ -6,8 +6,8 @@
 
 //Initializes and defines the number of pages
 //that go in and out of the main memory
-int PagingAllocator::numPagesIn = 0;
-int PagingAllocator::numPagesOut = 0;
+size_t PagingAllocator::numPagesIn = 0;
+size_t PagingAllocator::numPagesOut = 0;
 
 PagingAllocator* PagingAllocator::singletonInstance = nullptr;
 PagingAllocator* PagingAllocator::getInstance() { return singletonInstance; };
@@ -45,7 +45,7 @@ void PagingAllocator::deallocateProcess(std::shared_ptr<Process> process) {
             block.second = false;   // Mark the block as free
         }
     }
-    numPagesOut += process->pageCount;
+    numPagesOut += process->processMemory;
 
 };
 
@@ -87,7 +87,7 @@ int PagingAllocator::allocateProcess(std::shared_ptr<Process> process) {
                     block.second = false;   // Mark the block as free
                 }
             }
-            numPagesOut += pageCount;
+            numPagesOut += processToRemove->processMemory;
         }
         else {
             return 0;
@@ -156,7 +156,7 @@ int PagingAllocator::allocate(std::shared_ptr<Process> process) {
             memory[index] = { process, true };
         }
         process->processState = Process::PROCESSING;
-        numPagesIn += pageCount;
+        numPagesIn += process->processMemory;
         return 1;
     }
     // Not enough free blocks
