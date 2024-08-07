@@ -7,7 +7,7 @@
 - MARTINEZ, Michelle Andrea
 
 ## Instructions on running the program:
-- Clone this branch (MCO1_backup)
+- Clone this branch (MCO2---main)
 - Open this project using Visual Code 2022
 - Navigate to `main.cpp` (contains the `main()` function of the program)
 - Build and run project on `main.cpp`
