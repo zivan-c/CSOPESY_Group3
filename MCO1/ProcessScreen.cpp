@@ -39,7 +39,7 @@ void ProcessScreen::run(std::shared_ptr<Process> process) {
             }
             else {
 
-                std::cout << "Remaining Instructions: " << process->remainingInstructions << std::endl;
+                std::cout << "Instruction Line: " << process->remainingInstructions << std::endl;
                 std::cout << "Total Instructions: " << process->totalInstructions << std::endl;
 
             }
